@@ -1,0 +1,264 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Banking Website Homepage">
+    <meta name="author" content="Your Name">
+    <title>Homepage</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Carousel and Page Custom Styles -->
+    <style>
+        body {
+            background-color: #FFFFFF;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            position: fixed; /* Fix the navbar at the top */
+            width: 100%;
+            top: 0;
+            z-index: 1000; /* Ensure it stays above other content */
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            color: #ecf0f1;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3498db;
+        }
+
+        .carousel {
+            width: 100%;
+            height: 80vh; /* Height of the carousel */
+            max-width: 100%;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative; /* Ensure the carousel is positioned correctly */
+            margin-top: 80px; /* Adjust margin to account for fixed navbar */
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%; /* Ensure the slides take up the full height of the carousel */
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%; /* Ensure each slide takes up the full height of the carousel */
+            display: flex;
+            justify-content: center; /* Center the image inside the slide */
+        }
+
+        .slide img {
+            width: 100%;
+            border-radius: 10px;
+            height: 100%; /* Maintain the image's aspect ratio */
+            object-fit: cover; /* Ensure the image covers the entire slide area */
+        }
+
+        .indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: #ffffff;
+        }
+
+        .banner-highlights {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .banner-highlights h2 {
+            margin: 0;
+        }
+
+        .banner-highlights p {
+            margin: 5px 0 0;
+        }
+
+        /* Add a container for the accounts section to center it */
+        .accounts-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            margin-top: 20px;
+}
+        /* Style for Accounts Section */
+        .accounts-section {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%; /* Adjust width as needed */
+            max-width: 600px; /* Set a max-width for larger screens */
+}
+
+        .accounts-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .accounts-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .accounts-section ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Bank Logo" height="40">
+                NanoWealth Bank
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#accountsSection" id="accountsToggle">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'services' %}">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Image Carousel -->
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide"><img src="{% static 'images/b.jpg' %}" alt="Image 1"></div>
+            <div class="slide"><img src="{% static 'images/image2.jpg' %}" alt="Image 2"></div>
+            <div class="slide"><img src="{% static 'images/image3.jpg' %}" alt="Image 3"></div>
+            <div class="slide"><img src="{% static 'images/image4.jpg' %}" alt="Image 4"></div>
+        </div>
+        <div class="indicators">
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+        </div>
+    </div>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <div class="banner-highlights text-center">
+            <marquee scrollamount="10">
+                <h2>Your Financial Partner</h2>
+                <p>Secure Banking Solutions for a Brighter Future</p>
+            </marquee>
+        </div>
+    </section>
+
+    <!-- Accounts Section -->
+    <div class="accounts-container">
+        <div class="accounts-section" id="accountsSection">
+            <h2>Accounts and Deposits</h2>
+            <ul>
+                <li>Savings Account</li>
+                <li>Current Account</li>
+                <li>Fixed Deposit</li>
+                <li>Recurring Deposit</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const accountsToggle = document.getElementById('accountsToggle');
+        const accountsSection = document.getElementById('accountsSection');
+
+        accountsToggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default action of anchor
+            const isVisible = accountsSection.style.display === 'block';
+            accountsSection.style.display = isVisible ? 'none' : 'block'; // Toggle visibility
+        });
+
+        const slides = document.querySelector('.slides');
+        const indicators = document.querySelectorAll('.indicator');
+
+        let currentIndex = 0;
+        const totalSlides = indicators.length;
+
+        function showSlide(index) {
+            slides.style.transform = `translateX(-${index * 100}%)`;
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            indicators[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+        }
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentIndex = index;
+                showSlide(index);
+            });
+        });
+
+        // Automatic slide change
+        setInterval(nextSlide, 3000); // Change image every 3 seconds
+
+        // Initial slide
+        showSlide(currentIndex);
+    </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      background-color: #232041;
+      padding: 10px 20px;
+      color: white;
+    }
+
+    .navbar img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .navbar h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      text-align: left;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #3e8e41;
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar .step {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .progress-bar .step.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .step-content {
+      display: none;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+  </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
+      <h1>NanoWealth Bank</h1>
+    </div>
+  
+    <div class="container">
+      <h2>New User Sign Up</h2>
+  
+      <form id="signupForm" method="POST" action="{% url 'signup' %}">
+        {% csrf_token %}
+        <div class="progress-bar">
+          <div class="step active" data-step="1">Step 1</div>
+          <div class="step" data-step="2">Step 2</div>
+          <div class="step" data-step="3">Step 3</div>
+        </div>
+  
+        <div class="step-content active" id="step-1">
+          <h3>Customer Details</h3>
+          <label for="dob">Date of Birth:</label>
+          <input type="date" id="dob" name="dob" required>
+          <label for="mobilenum">Mobile Number</label>
+          <input type="text" id="mobilenum" name="mobilenum" required>
+          <label for="name">Customer Name</label>
+          <input type="text" id="customername" name="customername" required>
+          <button type="button" onclick="nextStep()">Proceed</button>
+          <button type="reset">Back</button>
+          <button type="button" onclick="cancelSignup()">Cancel</button>
+        </div>
+  
+        <div class="step-content" id="step-2">
+          <h3>Email Authentication</h3>
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" required>
+          <button type="button" onclick="nextStep()">Proceed</button>
+          <button type="button" onclick="prevStep()">Back</button>
+          <button type="button" onclick="cancelSignup()">Cancel</button>
+        </div>
+  
+        <div class="step-content" id="step-3">
+          <h3>User Details</h3>
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit">Submit</button>
+          <button type="button" onclick="prevStep()">Back</button>
+          <button type="button" onclick="cancelSignup()">Cancel</button>
+        </div>
+  
+        <p>Please Note:</p>
+        <ul>
+          <li>Please input valid customer details.</li>
+        </ul>
+      </form>
+    </div>
+  
+    <script>
+      let currentStep = 1;
+  
+      function nextStep() {
+        if (currentStep < 3) {
+          document.getElementById('step-' + currentStep).classList.remove('active');
+          document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
+          currentStep++;
+          document.getElementById('step-' + currentStep).classList.add('active');
+          document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
+        }
+      }
+  
+      function prevStep() {
+        if (currentStep > 1) {
+          document.getElementById('step-' + currentStep).classList.remove('active');
+          document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
+          currentStep--;
+          document.getElementById('step-' + currentStep).classList.add('active');
+          document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
+        }
+      }
+  
+      function cancelSignup() {
+        if (confirm("Are you sure you want to cancel the signup process?")) {
+          window.location.href = "{% url 'home' %}";
+        }
+      }
+  
+      document.getElementById('signupForm').addEventListener('submit', function(event) {
+        if (!isValidEmail(document.getElementById('email').value)) {
+          alert('Please enter a valid email address.');
+          event.preventDefault();
+        }
+      });
+  
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+    </script>
+  </body>
+  </html>
+  

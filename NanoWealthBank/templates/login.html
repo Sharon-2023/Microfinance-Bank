@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* Existing CSS */
+        body {
+            font-family: Calibri, sans-serif;
+            font-size: 20px;
+            background-image: url("{% static 'images/logingrey.jpg' %}");
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo-container {
+            display: flex; /* Use flexbox for horizontal alignment */
+            align-items: center; /* Align items vertically centered */
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .logo-container img {
+            max-width: 150px;
+            margin-right: 20px; /* Space between the image and the bank name */
+        }
+
+        .logo-container h1 {
+            color: #232041;
+            font-size: 48px;
+            margin: 0;
+        }
+
+        .additional-image-container {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: absolute;
+    left: 20px; /* Aligns the left edge with the logo and name */
+    right: 50px; /* Aligns the right edge with the form container */
+    top: 50%;
+    transform: translateY(-50%); /* Vertically center */
+    height: auto; /* Automatically adjust height based on content */
+    width: calc(100% - 70px); /* Full width minus margins */
+}
+
+.additional-image-container img {
+    max-width: 100%; /* Ensure the image does not exceed the container width */
+    max-height: 100%; /* Ensure the image does not exceed the container height */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+}
+
+.additional-image-container p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    text-align: left; /* Center the caption */
+    padding: 5px 10px;
+    position: absolute; /* Position the caption */
+    bottom: 0; /* Align caption at the bottom */
+    left: 0; /* Align the caption to the left */
+    width: auto; /* Adjust the width as needed */
+
+}
+
+
+        .form-container {
+            background-color: #e6e4e4;
+            padding: 50px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            max-width: 350px;
+            width: 100%;
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Existing CSS continues... */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background-color: #0066cc;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #004c99;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .signup-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
+        <h1>NanoWealth Bank</h1>
+    </div>
+    
+    <!-- Additional image with caption below the name and logo -->
+    <div class="additional-image-container">
+        <img src="{% static 'images/loginextra-removebg-preview.png' %}" alt="Additional Image">
+        <p>Ensuring Your Security with Every Transaction</p>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Username">
+                <span id="username-error" class="error-message"></span>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="6" placeholder="Password">
+                <span id="password-error" class="error-message"></span>
+            </div>
+            <button type="submit">Sign In</button>
+            <a href ="{% url 'forgot_password' %}" class="forgot-password">FORGOT PASSWORD?</a>
+            <p class="signup-link">Don't have an account? <a href="{% url 'signup' %}">REGISTER HERE</a></p>
+        </form>
+    </div>
+</body>
+</html>
