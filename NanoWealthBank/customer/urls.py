@@ -4,6 +4,8 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse
 from django.shortcuts import redirect
 
+
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('accounts/', views.accounts, name='accounts'),
@@ -24,6 +26,9 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # Forgot password view
-    path('forgot_password/', views.ForgotPasswordView.as_view(), name='forgot_password'),
-    path('verifycode/<str:email>/',views.verifycode,name="verify_code"),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
+    path('verify_code/<str:email>/',views.verifycode,name="verify_code"),
+    path('reset_password/<str:email>/', views.reset_password, name='reset_password'), 
+    path('verify_forgotcode/<str:email>/',views.verifyforgotcode,name="verify_forgotcode"),
+
 ]

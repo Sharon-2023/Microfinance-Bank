@@ -99,106 +99,210 @@
     .step-content.active {
       display: block;
     }
+
+    /* Live validation styles */
+    .invalid {
+      border-color: red;
+    }
+
+    .valid {
+      border-color: green;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+    }
   </style>
-  </head>
-  <body>
-    <div class="navbar">
-      <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
-      <h1>NanoWealth Bank</h1>
-    </div>
-  
-    <div class="container">
-      <h2>New User Sign Up</h2>
-  
-      <form id="signupForm" method="POST" action="{% url 'signup' %}">
-        {% csrf_token %}
-        <div class="progress-bar">
-          <div class="step active" data-step="1">Step 1</div>
-          <div class="step" data-step="2">Step 2</div>
-          <div class="step" data-step="3">Step 3</div>
-        </div>
-  
-        <div class="step-content active" id="step-1">
-          <h3>Customer Details</h3>
-          <label for="dob">Date of Birth:</label>
-          <input type="date" id="dob" name="dob" required>
-          <label for="mobilenum">Mobile Number</label>
-          <input type="text" id="mobilenum" name="mobilenum" required>
-          <label for="name">Customer Name</label>
-          <input type="text" id="customername" name="customername" required>
-          <button type="button" onclick="nextStep()">Proceed</button>
-          <button type="reset">Back</button>
-          <button type="button" onclick="cancelSignup()">Cancel</button>
-        </div>
-  
-        <div class="step-content" id="step-2">
-          <h3>Email Authentication</h3>
-          <label for="email">Email:</label>
-          <input type="text" id="email" name="email" required>
-          <button type="button" onclick="nextStep()">Proceed</button>
-          <button type="button" onclick="prevStep()">Back</button>
-          <button type="button" onclick="cancelSignup()">Cancel</button>
-        </div>
-  
-        <div class="step-content" id="step-3">
-          <h3>User Details</h3>
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" required>
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-          <button type="submit">Submit</button>
-          <button type="button" onclick="prevStep()">Back</button>
-          <button type="button" onclick="cancelSignup()">Cancel</button>
-        </div>
-  
-        <p>Please Note:</p>
-        <ul>
-          <li>Please input valid customer details.</li>
-        </ul>
-      </form>
-    </div>
-  
-    <script>
-      let currentStep = 1;
-  
-      function nextStep() {
-        if (currentStep < 3) {
-          document.getElementById('step-' + currentStep).classList.remove('active');
-          document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
-          currentStep++;
-          document.getElementById('step-' + currentStep).classList.add('active');
-          document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
-        }
+</head>
+<body>
+  <div class="navbar">
+    <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
+    <h1>NanoWealth Bank</h1>
+  </div>
+
+  <div class="container">
+    <h2>New User Sign Up</h2>
+
+    <form id="signupForm" method="POST" action="{% url 'signup' %}">
+      {% csrf_token %}
+      <div class="progress-bar">
+        <div class="step active" data-step="1">Step 1</div>
+        <div class="step" data-step="2">Step 2</div>
+        <div class="step" data-step="3">Step 3</div>
+      </div>
+
+      <div class="step-content active" id="step-1">
+        <h3>Customer Details</h3>
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+        
+        <label for="mobilenum">Mobile Number (with country code):</label>
+        <input type="text" id="mobilenum" name="mobilenum" required placeholder="+1 1234567890">
+        <div id="phoneError" class="error-message" style="display: none;">Please enter a valid mobile number (numbers only, no letters or symbols).</div>
+
+        <label for="name">Customer Name</label>
+        <input type="text" id="customername" name="customername" required placeholder="First Middle Last">
+        <div id="nameError" class="error-message" style="display: none;">Name must start with a capital letter for each part and contain only letters (e.g., John Doe).</div>
+
+        <button type="button" onclick="nextStep()">Proceed</button>
+        <button type="reset">Back</button>
+        <button type="button" onclick="cancelSignup()">Cancel</button>
+      </div>
+
+      <div class="step-content" id="step-2">
+        <h3>Email Authentication</h3>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+        <button type="button" onclick="nextStep()">Proceed</button>
+        <button type="button" onclick="prevStep()">Back</button>
+        <button type="button" onclick="cancelSignup()">Cancel</button>
+      </div>
+
+      <div class="step-content" id="step-3">
+        <h3>User Details</h3>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required placeholder="Alphanumeric only">
+        <div id="usernameError" class="error-message" style="display: none;">Username must be alphanumeric.</div>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Submit</button>
+        <button type="button" onclick="prevStep()">Back</button>
+        <button type="button" onclick="cancelSignup()">Cancel</button>
+      </div>
+
+      <p>Please Note:</p>
+      <ul>
+        <li>Please input valid customer details.</li>
+      </ul>
+    </form>
+  </div>
+
+  <script>
+    let currentStep = 1;
+
+    function setMaxDate() {
+      const today = new Date();
+      const maxDate = today.toISOString().split('T')[0]; // Get the date in YYYY-MM-DD format
+      document.getElementById('dob').setAttribute('max', maxDate);
+    }
+
+    function nextStep() {
+      if (currentStep < 3) {
+        document.getElementById('step-' + currentStep).classList.remove('active');
+        document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
+        currentStep++;
+        document.getElementById('step-' + currentStep).classList.add('active');
+        document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
       }
-  
-      function prevStep() {
-        if (currentStep > 1) {
-          document.getElementById('step-' + currentStep).classList.remove('active');
-          document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
-          currentStep--;
-          document.getElementById('step-' + currentStep).classList.add('active');
-          document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
-        }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById('step-' + currentStep).classList.remove('active');
+        document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
+        currentStep--;
+        document.getElementById('step-' + currentStep).classList.add('active');
+        document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
       }
-  
-      function cancelSignup() {
-        if (confirm("Are you sure you want to cancel the signup process?")) {
-          window.location.href = "{% url 'home' %}";
-        }
+    }
+
+    function cancelSignup() {
+      if (confirm("Are you sure you want to cancel the signup process?")) {
+        window.location.href = "{% url 'home' %}";
       }
-  
-      document.getElementById('signupForm').addEventListener('submit', function(event) {
-        if (!isValidEmail(document.getElementById('email').value)) {
-          alert('Please enter a valid email address.');
-          event.preventDefault();
-        }
-      });
-  
-      function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    }
+
+    // Validate mobile number with no letters
+    document.getElementById('mobilenum').addEventListener('input', function() {
+      const mobileNum = this.value;
+      const phoneError = document.getElementById('phoneError');
+
+      if (isValidMobileNumber(mobileNum)) {
+        this.classList.remove('invalid');
+        this.classList.add('valid');
+        phoneError.style.display = 'none';
+      } else {
+        this.classList.add('invalid');
+        this.classList.remove('valid');
+        phoneError.style.display = 'block';
       }
-    </script>
-  </body>
-  </html>
-  
+    });
+
+    document.getElementById('customername').addEventListener('input', function() {
+      const name = this.value;
+      const nameError = document.getElementById('nameError');
+
+      if (isValidCustomerName(name)) {
+        this.classList.remove('invalid');
+        this.classList.add('valid');
+        nameError.style.display = 'none';
+      } else {
+        this.classList.add('invalid');
+        this.classList.remove('valid');
+        nameError.style.display = 'block';
+      }
+    });
+
+    document.getElementById('username').addEventListener('input', function() {
+      const username = this.value;
+      const usernameError = document.getElementById('usernameError');
+
+      if (isValidUsername(username)) {
+        this.classList.remove('invalid');
+        this.classList.add('valid');
+        usernameError.style.display = 'none';
+      } else {
+        this.classList.add('invalid');
+        this.classList.remove('valid');
+        usernameError.style.display = 'block';
+      }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+      const email = document.getElementById('email').value;
+      const mobileNum = document.getElementById('mobilenum').value;
+      const name = document.getElementById('customername').value;
+      const username = document.getElementById('username').value;
+
+      if (!isValidEmail(email)) {
+        alert('Please enter a valid email.');
+        event.preventDefault();
+      } else if (!isValidMobileNumber(mobileNum)) {
+        alert('Please enter a valid mobile number.');
+        event.preventDefault();
+      } else if (!isValidCustomerName(name)) {
+        alert('Please enter a valid customer name.');
+        event.preventDefault();
+      } else if (!isValidUsername(username)) {
+        alert('Please enter a valid alphanumeric username.');
+        event.preventDefault();
+      }
+    });
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function isValidMobileNumber(mobileNum) {
+      const phoneRegex = /^\+\d{1,3} \d{10}$/; // +country code followed by 10 digits
+      return phoneRegex.test(mobileNum) && !/[a-zA-Z]/.test(mobileNum); // No alphabets allowed
+    }
+
+    function isValidCustomerName(name) {
+      const nameRegex = /^[A-Z][a-z]+(?: [A-Z][a-z]+)*$/; // Each part must start with a capital letter
+      return nameRegex.test(name) && !/\d/.test(name) && !/[^\w\s]/.test(name); // No digits or symbols
+    }
+
+    function isValidUsername(username) {
+      const usernameRegex = /^[a-zA-Z0-9]+$/; // Alphanumeric only
+      return usernameRegex.test(username);
+    }
+
+    setMaxDate();
+  </script>
+</body>
+</html>
