@@ -11,3 +11,7 @@ class Customer(models.Model):
     is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.customer_name
+class Admin(models.Model):
+     username = models.CharField(max_length=50, unique=True)
+     email = models.EmailField(unique=True)
+     password = models.CharField(max_length=100)

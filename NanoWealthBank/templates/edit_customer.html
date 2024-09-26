@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Customer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="email"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        a {
+            text-align: center;
+            display: block;
+            margin-top: 20px;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Edit Customer</h2>
+        <form method="post" >
+            {% csrf_token %}
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="{{ customer.customer_name }}" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ customer.email }}" required>
+
+            <button type="submit">Update</button>
+        </form>
+        <center>
+            <a href="{% url 'admindashboard' %}">Back to Dashboard</a>
+        </center>
+
+    </div>
+</body>
+</html>

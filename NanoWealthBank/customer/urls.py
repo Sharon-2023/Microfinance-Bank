@@ -30,5 +30,9 @@ urlpatterns = [
     path('verify_code/<str:email>/',views.verifycode,name="verify_code"),
     path('reset_password/<str:email>/', views.reset_password, name='reset_password'), 
     path('verify_forgotcode/<str:email>/',views.verifyforgotcode,name="verify_forgotcode"),
-
+    path('admin_dashboard/', views.admin_dashboard, name='admindashboard'),
+    path('approve/<int:id>/', views.approve_customer, name='approve_customer'),
+    path('view/<int:id>/', views.view_customer, name='view_customer'),
+    path('edit/<int:id>/', views.edit_customer, name='edit_customer'),
+    path('block/<int:id>/', views.block_customer, name='block_customer'),
 ]

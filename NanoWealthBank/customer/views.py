@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login  # Avoid name conflict with the view
 from django.urls import reverse
 from django.http import HttpResponse
@@ -11,7 +11,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from .models import Customer
+from .models import Customer,Admin
 import random
 
 def home(request):
@@ -29,28 +29,44 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def login(request):  # Renamed from `login` to avoid conflict
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Customer, Admin
+
+def login(request):
     if request.method == 'POST':
-        #username = request.POST['username']
-        #password = request.POST['password']
         email = request.POST.get('email')
         password = request.POST.get('password')
         
-        user = Customer.objects.get(email=email)
+        try:
+            # Check if the user is an Admin first
+            admin = Admin.objects.get(email=email)
+            if admin.password == password:
+                return redirect('admindashboard')
+            else:
+                messages.error(request, "Invalid admin credentials.")
+                return render(request, 'login.html')
 
-        if user:
-            if user.password==password:
-                if user.is_active==1:
-                    return redirect('userdashboard')
+        except Admin.DoesNotExist:
+            # Admin not found, proceed to check for Customer
+            try:
+                user = Customer.objects.get(email=email)
+                if user.password == password:
+                    if user.is_active:
+                        return redirect('userdashboard')
+                    else:
+                        messages.error(request, "Customer Not Approved Yet.")
+                        return render(request, 'login.html')
                 else:
-                     messages.error(request, "Customer Not Approved Yet")
-                     return render(request, 'login.html') 
+                    messages.error(request, "Invalid customer credentials.")
+                    return render(request, 'login.html')
 
-        else:
-            messages.error(request, "Invalid username or password.")
-            return render(request, 'login.html')  # Re-render the login page with an error message
-            
+            except Customer.DoesNotExist:
+                messages.error(request, "No user found with the provided email.")
+                return render(request, 'login.html')
+
     return render(request, 'login.html')
+
 
 user_pins={}
 
@@ -223,20 +239,67 @@ def verifyforgotcode(request, email):
 
 
 def reset_password(request, email):
-     if request.method == 'POST':
+    if request.method == 'POST':
         new_password1 = request.POST.get('new_password')
         new_password2 = request.POST.get('confirm_password')
 
         if new_password1 == new_password2:
             try:
                 user = Customer.objects.get(email=email)
-                user.password = new_password1  # Directly set the password
+                user.password=new_password1  # Use set_password to hash the password correctly
                 user.save()  # Save the changes to the database
                 messages.success(request, 'Password has been reset successfully.')
                 return redirect('login')
             except Customer.DoesNotExist:
                 messages.error(request, 'Invalid user.')
+                return render(request, 'reset_password.html', {'email': email})
         else:
             messages.error(request, 'Passwords do not match.')
+            return render(request, 'reset_password.html', {'email': email})
 
-        return render(request, 'reset_password.html',{'email': email})
+    # If the request method is GET, render the reset password form
+    return render(request, 'reset_password.html', {'email': email})
+
+def admin_dashboard(request):
+    pending_customers = Customer.objects.filter(is_active=False)  # Pending approval requests
+    customers = Customer.objects.all()
+    return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers,'customers': customers })
+
+def approve_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+    customer.is_active = True
+    customer.save()
+    if customer:
+        messages.success(request, f'Customer {customer.customer_name} has been approved.')
+        return redirect('admindashboard')
+    return redirect('admin_dashboard')
+
+def block_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+    customer.is_active = not customer.is_active  # Toggle active status
+    customer.save()
+    if customer:
+        messages.success(request, f'Customer {customer.customer_name} has been {"blocked" if not customer.is_active else "unblocked"}.')
+        return redirect('admindashboard')
+    return redirect('admin_dashboard')
+
+def view_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+    return render(request, 'view_customer.html', {'customer': customer})
+
+def edit_customer(request, id):
+    customer = get_object_or_404(Customer, id=id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+
+        # Validate or apply any logic here (e.g., email validation)
+        customer.customer_name = name
+        customer.email = email
+        customer.save()
+
+        messages.success(request, f'Customer {customer.customer_name} has been updated.')
+        return redirect('admindashboard')
+
+    return render(request, 'edit_customer.html', {'customer': customer})
