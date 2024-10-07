@@ -7,11 +7,27 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)  # Store securely using Django's authentication system
     mobile_number = models.CharField(max_length=15)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
     is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.customer_name
+
 class Admin(models.Model):
      username = models.CharField(max_length=50, unique=True)
      email = models.EmailField(unique=True)
      password = models.CharField(max_length=100)
+
+class Savings(models.Model):
+    customer_name = models.CharField(max_length=100)
+    mobile_number = models.CharField(max_length=15)
+    email = models.EmailField(unique=True)
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=100) 
+    pincode = models.CharField(max_length=100)
+    state  = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    account_type = models.CharField(max_length=100)
+    is_active=models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.customer_name

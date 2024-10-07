@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Online</title>
+    <style>
+        body {
+            font-family: 'Calibri', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2e7e3c;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2e7e3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1c5e28;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Apply for Savings Account</h2>
+        <form method="POST" action="{% url 'submit_registration' %}">
+            {% csrf_token %}
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Name*">
+
+            <label for="phone">Mobile Number</label>
+            <input type="text" id="phone" name="phone" required placeholder="Mobile Number*">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Email*">
+
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required placeholder="Address*">
+
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required placeholder="City*">
+
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" name="pincode" required placeholder="Pincode*">
+
+            <label for="state">State</label>
+            <select id="state" name="state" required aria-placeholder="State*">
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Delhi">Delhi (UT)</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachel Pradesh">Himachel Pradesh</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Ladakh">Ladakh (UT)</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+            </select>
+
+            <label for="district">District</label>
+            <input type="text" id="district" name="district" required placeholder="District*">
+
+            <label for="account_type">Account Type</label>
+            <select id="account_type" name="account_type" required aria-placeholder="Account-Type*">
+                <option value="student">Student</option>
+                <option value="mahila_sree">Mahila Sree</option>
+                <option value="zero_balance">Zero Balance</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>

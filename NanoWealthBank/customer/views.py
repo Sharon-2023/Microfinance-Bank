@@ -12,7 +12,12 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from .models import Customer,Admin
+from django.contrib.auth.views import LogoutView
 import random
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
+
 
 def home(request):
     return render(request,'home.html')
@@ -31,6 +36,7 @@ def contact(request):
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 from .models import Customer, Admin
 
 def login(request):
@@ -83,7 +89,14 @@ def business_banking(request):
     return render(request, 'business_banking.html')
 import random;
 
-user_pin={}
+import random
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+from .models import Customer
+
+user_pin = {}
+user_code = {}
 
 def signup(request):
     if request.method == 'POST':
@@ -94,49 +107,36 @@ def signup(request):
         mobile = request.POST.get('mobilenum')
         customer_name = request.POST.get('customername')
 
-        # Check if a user with the email already exists
-        if Customer.objects.filter(email=email).exists():
-            messages.error(request, 'A user with this email already exists.')
-            return redirect('signup')
-
-        # Create an inactive customer account
-        user = Customer(username=username, email=email, password=password, is_active=False, customer_name=customer_name, mobile_number=mobile, date_of_birth=dob)
+        # Create a new user
+        user = Customer(
+            username=username,
+            password=make_password(password),  # Hash the password for security
+            email=email,
+            date_of_birth=dob,  # Ensure your model has this field
+            mobile_number=mobile,  # Ensure your model has this field
+            customer_name=customer_name  # Ensure your model has this field
+        )
         user.save()
-
+        
         if user:
-            try:
-                # Generate a random 4-digit verification code
-                code = random.randint(1000, 9999)
-                user_pins[email] = code
+            # Generate a random 4-digit verification code
+            code = random.randint(1000, 9999)
+            user_code[email] = code  # Store the code
 
-                # Send email with the code
-                send_mail(
-                    'Account Verification Code',
-                    f'Your verification code is {code}.',
-                    'admin@yourdomain.com',  # Replace with your domain
-                    [email],
-                    fail_silently=False,
-                )
-
-                # Redirect to the verification page
-                return redirect('verify_code', email=email)
-            except Exception as e:
-                messages.error(request, 'There was an issue sending the verification email.')
-                print(e)
-
-    return render(request, 'signup.html')
-
-def send_verification_email(user, request):
-    token = default_token_generator.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    verification_link = f"{request.scheme}://{request.get_host()}/verify/{uid}/{token}/"
+            # Send email with the code
+            send_mail(
+                'Account Verification Code',
+                f'Your verification code is {code}.',
+                settings.EMAIL_HOST_USER,  # Use your configured email host user
+                [email],
+                fail_silently=False,
+            )
+        
+            # After saving, redirect to the verification page
+            return redirect('verify_code', email=email)
     
-    subject = 'Verify your email address'
-    message = render_to_string('email_verification.html', {
-        'user': user,
-        'verification_link': verification_link,
-    })
-    send_mail(subject, message, 'no-reply@yourdomain.com', [user.email])
+    return render(request, 'signup.html')  # Render your signup template
+
 
 def verify_email(request, uidb64, token):
     try:
@@ -166,6 +166,8 @@ def activate(request, uidb64, token):
         return redirect('login')
     else:
         return render(request, 'email_verification_failed.html')
+    
+
 
 #def dashboard(request):
     #return render(request, 'customer/userdashboard.html', {'user': request.user})
@@ -209,19 +211,31 @@ def forgot_password(request):
 
      return render(request, 'forgotpassword.html')
 
-def verifycode(request, email):
+#def verify_code(request, email):
+    #if request.method == 'POST':
+        #input_code = request.POST.get('verification_code')
+        #if user_code.get(email) == int(input_code):
+            # Code is correct, proceed with account activation or login
+            #del user_code[email]  # Remove the code after verification
+            #return redirect('signup_success')  # Redirect to a success page
+        #else:
+            # Handle invalid code case
+            #return render(request, 'verify_code.html', {'error': 'Invalid verification code.'})
+    
+    #return render(request, 'verify_code.html')  # Render your verification template 
+def verify_code(request, email):
+    
     if request.method == 'POST':
         entered_code = request.POST.get('pin')
-        correct_code = user_pins.get(email)
+        correct_code = user_code.get(email)
 
-        print(correct_code)
         if correct_code and str(entered_code) == str(correct_code):
-            # Redirect to reset password page
-            return redirect('login')
+            # Redirect to reset password page if the code is correct
+            return render(request,'signup_confirmation.html')
         else:
-            messages.error(request, 'Invalid code. Please try again.')
+            messages.error(request, 'Invalid code. Please try again.')        # Verification logic here
+    return render(request, 'verify_code.html', {'email': email})
 
-    return render(request, 'verifycode.html', {'email': email})
 
 def verifyforgotcode(request, email):
     if request.method == 'POST':
@@ -303,3 +317,110 @@ def edit_customer(request, id):
         return redirect('admindashboard')
 
     return render(request, 'edit_customer.html', {'customer': customer})
+
+import random
+import string
+
+def generate_account_number():
+    return ''.join(random.choices(string.digits, k=10))  # 10-digit account number
+
+def generate_user_id():
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))  # 8-character user ID
+
+def generate_password():
+    return ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=12))  # 12-character password
+
+
+import random
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+
+def create_user_account(request):
+    if request.method == 'POST':
+        # Assuming you have already obtained the username, email, etc.
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        # Generate account number (random 10-digit number)
+        account_number = random.randint(1000000000, 9999999999)
+
+        # Hash the password before storing
+        hashed_password = make_password(password)
+
+        # Create a new user
+        user = User.objects.create(username=username, email=email, password=hashed_password)
+
+        # Save account number (assuming you have a custom user model or profile)
+        # user.profile.account_number = account_number
+        # user.profile.save()
+
+        # Send email
+        send_confirmation_email(user, account_number, password)
+
+        return redirect('success')  # Redirect after successful account creation
+
+    return render(request, 'create_account.html')
+
+
+from django.core.mail import EmailMessage
+
+def send_confirmation_email(user, account_number, password):
+    # Subject and message for the email
+    subject = 'Your Account has been Created'
+    message = f"""
+    Hello {user.username},
+
+    Your account has been successfully created. Here are your account details:
+
+    Account Number: {account_number}
+    Username: {user.username}
+    Password: {password}
+
+    Please keep this information safe.
+
+    Thank you for banking with us!
+
+    Best regards,
+    Your Bank Team
+    """
+
+    # Sending the email
+    email = EmailMessage(
+        subject,
+        message,
+        to=[user.email]  # Send to the registered email address
+    )
+    email.send()
+
+from django.shortcuts import render
+
+def savings_account(request):
+    return render(request, 'savings_account.html')  # Replace with your actual template name
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+
+# View for displaying the Apply Online form
+def savings_application(request):
+    return render(request, 'savings_application.html')
+
+# View for handling form submission
+def submit_registration(request):
+    if request.method == 'POST':
+        # Collect the form data
+        name = request.POST['name']
+        phone = request.POST['phone']
+        email = request.POST['email']
+        address = request.POST['address']
+        city = request.POST['city']
+        pincode = request.POST['pincode']
+        state = request.POST['state']
+        district = request.POST['district']
+        account_type = request.POST['account_type']
+
+        # You can add logic to save the data to a database, send an email, etc.
+
+        # For now, we'll just return a simple response
+        return HttpResponse(f"Thank you, {name}. Your application for {account_type} account has been received.")
+

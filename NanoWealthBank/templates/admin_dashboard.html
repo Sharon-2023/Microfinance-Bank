@@ -23,11 +23,47 @@
             margin: 0;
         }
 
+        .dashboard {
+            display: flex;
+        }
+
+        .left-container {
+            width: 20%;
+            background-color: #001f3f; /* Navy blue color */
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            height: 100vh; /* Full height of the viewport */
+        }
+
+        .left-container .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .left-container .menu-items li {
+            margin-bottom: 15px;
+        }
+
+        .left-container .menu-items li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: white; /* White text color for contrast */
+            font-weight: bold;
+            padding: 10px 0;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .left-container .menu-items li a:hover {
+            color: #ffcc00; /* Change text color on hover */
+        }
+
         .container {
-            margin: 20px auto;
             width: 80%;
             background-color: white;
             padding: 20px;
+            margin: 20px auto;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
         }
@@ -90,6 +126,11 @@
         .section {
             margin-bottom: 40px;
         }
+
+        /* Hide sections by default */
+        .section {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -98,81 +139,114 @@
         <h1>Admin Dashboard</h1>
     </div>
 
-    <div class="container">
-        <!-- Approve Customer Login Requests Section -->
-        <div class="section">
-            <h2>Approve Customer Login Requests</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Customer ID</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for customer in pending_customers %}
-                    <tr>
-                        <td>{{ customer.id }}</td>
-                        <td>{{ customer.customer_name }}</td>
-                        <td>{{ customer.email }}</td>
-                        <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
-                        <td>
-                            <form method="post" action="{% url 'approve_customer' customer.id %}">
-                                {% csrf_token %}
-                                <button class="approve-btn" type="submit">Approve</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No pending approval requests.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="dashboard">
+        <!-- Left-side Container for Menu -->
+        <div class="left-container">
+            <ul class="menu-items">
+                <li><a href="#" id="customer-requests-link">Customer Login Requests</a></li>
+                <li><a href="#">User & Account Management</a></li>
+                <li><a href="#">Transaction Monitoring</a></li>
+                <li><a href="#">Loan Management</a></li>
+                <li><a href="#">Deposits & Withdrawal Requests</a></li>
+                <li><a href="#">Account Approval & Verification</a></li>
+                <li><a href="#">Reports & Analytics</a></li>
+                <li><a href="#">Audit Logs</a></li>
+            </ul>
         </div>
 
-        <!-- List of Customers Section -->
-        <div class="section">
-            <h2>Customer List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Customer ID</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for customer in customers %}
-                    <tr>
-                        <td>{{ customer.id }}</td>
-                        <td>{{ customer.customer_name }}</td>
-                        <td>{{ customer.email }}</td>
-                        <td>{{ customer.is_active|yesno:"Active,Blocked" }}</td>
-                        <td>
-                            <a href="{% url 'view_customer' customer.id %}" class="view-btn">View</a>
-                            <a href="{% url 'edit_customer' customer.id %}" class="edit-btn">Edit</a>
-                            <form method="post" action="{% url 'block_customer' customer.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button class="block-btn" type="submit">{% if customer.is_active %}Block{% else %}Unblock{% endif %}</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No customers found.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Approve Customer Login Requests Section -->
+            <div class="section" id="customer-requests-section">
+                <h2>Approve Customer Login Requests</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in pending_customers %}
+                        <tr>
+                            <td>{{ customer.id }}</td>
+                            <td>{{ customer.customer_name }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
+                            <td>
+                                <form method="post" action="{% url 'approve_customer' customer.id %}">
+                                    {% csrf_token %}
+                                    <button class="approve-btn" type="submit">Approve</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No pending approval requests.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- List of Customers Section -->
+            <div class="section" id="customer-list-section">
+                <h2>Customer List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for customer in customers %}
+                        <tr>
+                            <td>{{ customer.id }}</td>
+                            <td>{{ customer.customer_name }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.is_active|yesno:"Active,Blocked" }}</td>
+                            <td>
+                                <a href="{% url 'view_customer' customer.id %}" class="view-btn">View</a>
+                                <a href="{% url 'edit_customer' customer.id %}" class="edit-btn">Edit</a>
+                                <form method="post" action="{% url 'block_customer' customer.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button class="block-btn" type="submit">{% if customer.is_active %}Block{% else %}Unblock{% endif %}</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No customers found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script>
+        // Get the menu item and sections
+        const customerRequestsLink = document.getElementById('customer-requests-link');
+        const customerRequestsSection = document.getElementById('customer-requests-section');
+        const customerListSection = document.getElementById('customer-list-section');
+
+        // Add click event to the Customer Login Requests menu item
+        customerRequestsLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default behavior of anchor
+
+            // Show the customer requests and customer list sections
+            customerRequestsSection.style.display = 'block';
+            customerListSection.style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>

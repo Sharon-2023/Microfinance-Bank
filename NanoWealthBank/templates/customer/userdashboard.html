@@ -6,15 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
     <style>
+                /* General Body Styling */
+                body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex; /* Layout for sidebar and content */
+        }
+
         /* Navbar Styles */
         .navbar {
-            background-color: #232041;
+            background-color: #2e7e3c;
             color: white;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar .logo-container {
@@ -48,95 +60,78 @@
             margin-right: 10px;
         }
 
-        /* Down Navigation Menu Styles */
-        nav {
+        /* Sidebar Styles */
+        .sidebar {
             background-color: #f0f0f0;
-            padding: 10px 0;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 20px 0 0;
-            padding: 0;
-            text-align: center;
-            position: relative;
-        }
-
-        nav ul li {
-            display: inline-block;
-            position: relative;
-            margin-right: 15px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #000;
-            font-size: 14px;
-            position: relative;
-        }
-
-        /* Adding an arrow symbol next to the Products menu */
-        .dropdown > a::after {
-            content: ' ▼'; /* Unicode symbol for arrow */
-            font-size: 12px;
-            margin-left: 5px;
-        }
-
-        /* Dropdown Styles */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            text-align: left;
-            padding: 5px 0;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #ddd;
-        }
-
-        /* Submenu for Accounts and Deposits */
-        .submenu {
-            display: none;
-            position: absolute;
-            left: 160px; /* Align to the right of the parent */
-            top: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        }
-
-        .submenu a {
-            padding: 12px 16px;
-            display: block;
-            text-decoration: none;
-            color: #000;
-        }
-
-        .submenu a:hover {
-            background-color: #ddd;
-        }
-
-        /* Right arrow for Accounts and Deposits */
-        .dropdown-content .submenu-link::after {
-            content: ' ▶'; /* Unicode symbol for right arrow */
-            float: right;
-        }
-
-        /* Dashboard Content Styles */
-        .dashboard-container {
             padding: 20px;
-            font-family: Arial, sans-serif;
+            width: 250px;
+            margin-top: 70px; /* Ensure it starts after the navbar */
+            position: fixed;
+            top: 70px; /* Position below the navbar */
+            left: 0;
+            height: calc(100% - 70px); /* Sidebar should fill the remaining height */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown-content {
+            display: none; /* Hidden by default */
+            padding-left: 20px; /* Indent for sublist */
+        }
+
+        .dropdown-content li {
+            margin-bottom: 10px; /* Space between sublist items */
+        }
+
+        .dropdown-content li a {
+            color: #007bff; /* Change to your desired color */
+        }
+
+        .dropdown-arrow {
+            cursor: pointer;
+            margin-left: 5px;
+            display: inline-block;
+            transition: transform 0.2s ease; /* Smooth arrow rotation */
+        }
+
+        .dropdown-arrow.rotate {
+            transform: rotate(90deg); /* Rotate arrow when expanded */
+        }
+
+        /* Content Wrapper */
+        .content {
+            margin-left: 250px; /* Align content after the sidebar */
+            padding: 20px;
+            width: 100%;
+            padding-top: 100px; /* Add space for the fixed navbar */
         }
 
         .welcome-message {
@@ -144,101 +139,104 @@
             margin-bottom: 20px;
         }
 
-        /* Full-width rectangle image styles */
         .dashboard-image {
-            width: 100%; /* Full-width */
-            height: auto; /* Keep the aspect ratio */
-            max-height: 400px; /* Set a maximum height */
-            object-fit: cover; /* Cover the area while keeping aspect ratio */
-            margin-bottom: 20px; /* Add spacing */
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            margin-bottom: 20px;
         }
 
-        /* Active dropdown to show submenu */
-        .show {
-            display: block !important;
+        /* Logout Button Styles */
+        .logout-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 15px;
+            text-decoration: none;
         }
+
+        /* Adjust Savings Account Details Styles */
+        .savings-account-container {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #9feeda;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- NanoWealth Bank User Dashboard Navbar -->
+    <!-- Navbar -->
     <div class="navbar">
         <div class="logo-container">
             <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
             <h1>NanoWealth Bank</h1>
         </div>
         <div class="user-info">
-            <span>{{ user.username }}</span>
+            <span>{{ user.customer_name }}</span>
             <img src="{% static 'images/profile-icon.png' %}" alt="Profile Icon">
+            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
         </div>
     </div>
 
-    <!-- Navigation Menu (Below the Navbar) -->
-    <nav>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Menu</h2>
         <ul>
-            <li><a href="#">About Us</a></li>
-            <li class="dropdown">
-                <a href="#" id="productsDropdown">Products</a>
-                <div class="dropdown-content">
-                    <a href="#" class="submenu-link" id="accountsLink">Accounts</a>
-                    <!-- Submenu for Accounts -->
-                    <div class="submenu" id="accountsSubmenu">
-                        <a href="#">Savings Account</a>
-                        <a href="#">Current Account</a>
-                    </div>
-                    <a href="#" class="submenu-link" id="depositsLink">Deposits</a>
-                    <!-- Submenu for Deposits -->
-                    <div class="submenu" id="depositsSubmenu">
-                        <a href="#">Fixed Deposit</a>
-                        <a href="#">Recurring Deposit</a>
-                    </div>
-                    <a href="#">Loans</a> <!-- Loans added without submenu -->
-                </div>
+            <li><a href="#">Dashboard</a></li>
+            <li>
+                <span>Accounts</span>
+                <span class="dropdown-arrow" onclick="toggleDropdown(this)">▼</span>
+                <ul class="dropdown-content">
+                    <li><a href="{% url 'savings_account' %}">Savings Account</a></li>
+                    <li><a href="#">Current Account</a></li>
+                </ul>
             </li>
-            <li><a href="#">Micro-Banking</a></li>
-            <li><a href="#">Interest Rates</a></li>
-            <li><a href="#">Apply Now</a></li>
+            <li><a href="#">Transactions</a></li>
+            <li><a href="#">Loans</a></li>
+            <li>
+                <span>Deposits</span>
+                <span class="dropdown-arrow" onclick="toggleDropdown(this)">▼</span>
+                <ul class="dropdown-content">
+                    <li><a href="#">Fixed Deposits</a></li>
+                    <li><a href="#">Recurring Deposits</a></li>
+                </ul>
+            </li>    
             <li><a href="#">NW Beyond Banking</a></li>
         </ul>
-    </nav>
+    </div>
 
-    <!-- Dashboard Content -->
-    <div class="dashboard-container">
+    <!-- Main Content -->
+    <div class="content">
         <div class="welcome-message">
-            Welcome, {{ user.username }}!
+            Welcome, {{ user.customer_name }}!
         </div>
-
-        <!-- Rectangle image below welcome message -->
         <img src="{% static 'images/customerdashboard.jpg' %}" alt="Dashboard Image" class="dashboard-image">
-        
-        <!-- Add your dashboard widgets or content here -->
     </div>
 
     <script>
-        // Toggle the dropdown content for "Products"
-        const productsDropdown = document.getElementById('productsDropdown');
-        const accountsSubmenu = document.getElementById('accountsSubmenu');
-        const accountsLink = document.getElementById('accountsLink');
-        const depositsSubmenu = document.getElementById('depositsSubmenu');
-        const depositsLink = document.getElementById('depositsLink');
-
-        productsDropdown.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default action of anchor
-            const dropdownContent = this.nextElementSibling;
-            dropdownContent.classList.toggle('show'); // Show/Hide the dropdown
-        });
-
-        // Toggle the submenu for "Accounts" on click
-        accountsLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default action of anchor
-            accountsSubmenu.classList.toggle('show'); // Show/Hide the submenu
-        });
-
-        // Toggle the submenu for "Deposits" on click
-        depositsLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default action of anchor
-            depositsSubmenu.classList.toggle('show'); // Show/Hide the submenu
-        });
+        function toggleDropdown(arrow) {
+            const dropdownContent = arrow.parentElement.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+            arrow.classList.toggle('rotate'); // Rotate arrow on click
+        }
     </script>
+
 </body>
 </html>

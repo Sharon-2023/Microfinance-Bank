@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts</title>
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: #2e7e3c;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo-container img {
+            max-width: 50px;
+            margin-right: 15px;
+        }
+
+        .navbar .logo-container h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .user-info img {
+            max-width: 40px;
+            border-radius: 50%;
+            margin-left: 0px;
+        }
+
+        .navbar .user-info span {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 200px;
+            position: fixed;
+            top: 90px; /* Below the navbar */
+            left: 0;
+            background-color: #f7d668;
+            height: calc(100% - 60px); /* Full height minus navbar */
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #000;
+            font-size: 20px;
+        }
+
+        /* Styling the Savings Account heading */
+        .sidebar ul li a.savings-heading {
+            color: #ff5733; /* Change this to your desired color */
+            font-weight: bold;
+        }
+
+        .sidebar ul li a.savings-heading:hover {
+            color: #ff7f50; /* Optional: change the color on hover */
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            display: none; /* Hidden by default */
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 5px 0;
+            font-size: 18px;
+            color: #ffffff; /* Text color for the sub-list */
+            background-color: #f7d668; /* Background color for the sub-list */
+            border-radius: 5px;
+        }
+
+        .dropdown a:hover {
+            background-color: #ffc301fc; /* Lighter shade for hover */
+            text-decoration: none;
+        }
+
+        /* Arrow Styles */
+        .arrow {
+            margin-left: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Content Styles */
+        .content {
+            margin-left: 220px; /* Space for the sidebar */
+            padding: 20px;
+        }
+
+        /* Container styles for the sub-menu details */
+        .details-container {
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin-bottom: 20px;
+            background-color: #f4f4f4;
+            display: none; /* Hidden by default */
+        }
+
+        h2 {
+            color: #2c622b;
+            font-family: 'Calibri';
+            font-size: xx-large;
+        }
+
+        p {
+            color: #4d2b62;
+            font-family: 'Calibri';
+            font-style: normal;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .terms-button {
+            background-color: #2e7e3c; /* Green color */
+            color: white; /* White text */
+            padding: 10px 20px; /* Padding */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-top: 10px; /* Margin on top */
+        }
+
+        .terms-button:hover {
+            background-color: #1c5e28; /* Darker green on hover */
+        }
+
+        .table-container {
+            margin-top: 20px; /* Gap between the button and the table */
+            text-align: center; /* Centering the table container content */
+        }
+
+        table {
+            margin: 0 auto; /* Center the table horizontally */
+            border-collapse: collapse; /* To make sure there are no gaps between borders */
+        }
+
+        thead th {
+            color: green; /* Green color for table heading */
+            font-weight: bolder; /* Bold text */
+            font-size: 20px; /* Slightly bigger font size */
+        }
+
+        tbody td {
+            color: #4d2b62; /* Purple color for table data */
+            font-size: 16px; /* Regular size for table data */
+        }
+
+        .action-button {
+            background-color: #2e7e3c; /* Green color */
+            color: white; /* White text */
+            padding: 10px 20px; /* Padding */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-right: 10px; /* Margin between buttons */
+        }
+
+        .action-button:hover {
+            background-color: #1c5e28; /* Darker green on hover */
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
+            <h1>NanoWealth Bank</h1>
+        </div>
+        <div class="user-info">
+            <span>{{ user.customer_name }}</span>
+            <img src="{% static 'images/profile-icon.png' %}" alt="Profile Icon">
+            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+        </div>
+    </div>
+
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <ul>
+            <li>
+                <a href="javascript:void(0)" onclick="toggleDropdown('savingsDropdown')">Savings Account<span class="arrow">▼</span></a>
+                <div class="dropdown" id="savingsDropdown">
+                    <a href="javascript:void(0)" onclick="showDetails('student')">Student</a>
+                    <a href="javascript:void(0)" onclick="showDetails('mahilaSree')">Mahila Sree</a>
+                    <a href="javascript:void(0)" onclick="showDetails('zeroBalance')">Zero Balance</a>
+                </div>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="toggleDropdown('currentDropdown')">Current Account<span class="arrow">▼</span></a>
+                <div class="dropdown" id="currentDropdown">
+                    <a href="#">Classic</a>
+                    <a href="#">Premium</a>   
+                </div>
+            </li>
+
+            <li><a href="#">Loans</a></li>
+            <li><a href="#">Deposits</a></li>
+            <li><a href="#">NW Beyond Banking</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h2>Savings Account</h2>
+        <p>We offer the finest savings accounts for all categories of customers. The customized options can ideally serve the needs of the end customers. With user-friendly online banking features, accessing your Savings Account could not get any better.</p>
+        
+        <!-- Button to show terms and conditions -->
+        <button class="terms-button" onclick="showModal()">View Terms and Conditions</button>
+
+        <!-- Details containers for each savings account type -->
+        <div id="student" class="details-container">
+            <h2>Student Savings Account</h2>
+            <p>To inculcate Savings habit among children and initiate them to the whole array of Banking Services.</p>
+
+            <!-- Read More Button -->
+        <button class="terms-button" onclick="readMore('studentTable')">Read More</button>
+    
+        <!-- Hidden table for Student Savings Account -->
+        <div id="studentTable" class="table-container" style="display: none;">
+            <table border="1" cellpadding="10" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Features</th>
+                        <th>Student</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Free transactions at ESAF Bank ATMs</td>
+                        <td>Free Unlimited Transactions</td>
+                    </tr>
+                    <tr>
+                        <td>Debit Card</td>
+                        <td>Rupay Classic</td>
+                    </tr>
+                    <tr>
+                        <td>ATM cash withdrawal / per day</td>
+                        <td>Classic: Rs. 5000/-</td>
+                    </tr>
+                    <tr>
+                        <td>Anywhere Banking</td>
+                        <td>Unlimited Non-Cash Transactions</td>
+                    </tr>
+                    <tr>
+                        <td>Cash deposit charges at home/ non-home branch</td>
+                        <td>Nil</td>
+                    </tr>
+                    <tr>
+                        <td>Cash withdrawal charges at home/non-home branch</td>
+                        <td>Nil</td>
+                    </tr>
+                    <tr>
+                        <td>Free cheque leaves per half year</td>
+                        <td>Nil</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile/Internet Banking</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Average Balance (MAB)</td>
+                        <td>Rs. 1000</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Buttons -->
+            <div style="margin-top: 20px;">
+                <button class="terms-button" onclick="applyOnline()">Apply Online</button>
+<button class="terms-button" onclick="showInterestRate()">Interest Rate</button>
+
+            </div>
+            
+    </div>
+    
+
+        <div id="mahilaSree" class="details-container">
+            <h2>Mahila Sree Savings Account</h2>
+            <p>An account tailored exclusively for empowered women. An account to save your hard earned money and reap higher benefits.</p>
+        </div>
+
+        <div id="zeroBalance" class="details-container">
+            <h2>Zero Balance Savings Account</h2>
+            <p>An account to the layer of customers who enjoys the asset portfolio with our bank. A unique product with no AMB and Rupay Classic Card.</p>
+        </div>
+    </div>
+
+    <!-- Modal for Terms and Conditions -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Terms and Conditions</h2>
+            <p>1. These terms and conditions govern your use of our services.</p>
+            <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
+            <p>3. The bank reserves the right to amend these terms at any time.</p>
+            <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
+            <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
+                A Savings Bank Account may also be opened in
+                the single name of a minor aged 10 years or more to be operated upon by the minor.
+                the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
+                the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
+            <p>6. There is no limit to the maximum balance in accounts</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function showDetails(accountType) {
+            const containers = document.querySelectorAll('.details-container');
+            containers.forEach(container => {
+                container.style.display = 'none'; // Hide all containers
+            });
+            document.getElementById(accountType).style.display = 'block'; // Show selected account type
+        }
+
+        function showModal() {
+            document.getElementById('termsModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('termsModal').style.display = 'none';
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('termsModal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function readMore(id) {
+            const moreContent = document.getElementById(id);
+            // Toggle display style
+            moreContent.style.display = moreContent.style.display === "none" ? "block" : "none";
+        }
+
+
+        function applyOnline() {
+            window.location.href = "{% url 'savings_application' %}";
+        }
+
+
+        function showInterestRate() {
+            alert("Interest rate is 4.5% per annum.");
+    // You can replace this alert with a modal or another method to display rates
+        }
+
+    </script>
+</body>
+</html>

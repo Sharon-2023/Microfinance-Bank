@@ -137,12 +137,12 @@
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" name="dob" required>
         
-        <label for="mobilenum">Mobile Number (with country code):</label>
+        <label for="mobilenum">Mobile Number:</label>
         <input type="text" id="mobilenum" name="mobilenum" required placeholder="+1 1234567890">
-        <div id="phoneError" class="error-message" style="display: none;">Please enter a valid mobile number (numbers only, no letters or symbols).</div>
+        <div id="phoneError" class="error-message" style="display: none;">Please enter a valid mobile number.</div>
 
         <label for="name">Customer Name</label>
-        <input type="text" id="customername" name="customername" required placeholder="First Middle Last">
+        <input type="text" id="customername" name="customername" required placeholder="Customer Name">
         <div id="nameError" class="error-message" style="display: none;">Name must start with a capital letter for each part and contain only letters (e.g., John Doe).</div>
 
         <button type="button" onclick="nextStep()">Proceed</button>
@@ -162,7 +162,7 @@
       <div class="step-content" id="step-3">
         <h3>User Details</h3>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required placeholder="Alphanumeric only">
+        <input type="text" id="username" name="username" required placeholder="Username">
         <div id="usernameError" class="error-message" style="display: none;">Username must be alphanumeric.</div>
 
         <label for="password">Password:</label>

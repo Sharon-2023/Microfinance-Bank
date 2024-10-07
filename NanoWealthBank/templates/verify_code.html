@@ -59,18 +59,37 @@
         button:hover {
             background-color: green;
         }
+        .info-message {
+            font-size: 14px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Verify PIN</h2>
+        
+        <!-- Message indicating the PIN has been sent -->
+        <div class="info-message">
+            A 4-digit PIN code has been sent to your registered email address. Please check your inbox.
+        </div>
+        
+        <!-- Display success/error messages -->
+        {% if messages %}
+          <div class="alert alert-info">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
         <form method="POST" action="{% url 'verify_code' email %}">
             {% csrf_token %}
             <label for="pin">Enter the 4-digit PIN:</label>
             <input type="text" name="pin" id="pin" required placeholder="Enter 4-digit PIN" maxlength="4" pattern="\d{4}">
             <button type="submit">Submit</button>
         </form>
-        
     </div>
 </body>
 </html>

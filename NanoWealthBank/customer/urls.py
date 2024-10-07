@@ -3,7 +3,9 @@ from . import views
 from django.contrib.auth import views as auth_views
 from django.urls import reverse
 from django.shortcuts import redirect
-
+from django.contrib.auth.views import LogoutView
+from .views import LogoutView 
+from .views import savings_account
 
 
 urlpatterns = [
@@ -12,13 +14,12 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('login/', views.login, name='login'),  # Ensure this matches your custom login view
     path('userdashboard/', views.dashboard, name='userdashboard'),
 
     path('personal_banking/', views.personal_banking, name='personal_banking'),
     path('business_banking/', views.business_banking, name='business_banking'),
     path('signup/', views.signup, name='signup'),
-
+    
     # Password reset URLs
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
@@ -27,7 +28,7 @@ urlpatterns = [
 
     # Forgot password view
     path('forgot_password/', views.forgot_password, name='forgot_password'),
-    path('verify_code/<str:email>/',views.verifycode,name="verify_code"),
+    path('verify_code/<str:email>/', views.verify_code, name='verify_code'),
     path('reset_password/<str:email>/', views.reset_password, name='reset_password'), 
     path('verify_forgotcode/<str:email>/',views.verifyforgotcode,name="verify_forgotcode"),
     path('admin_dashboard/', views.admin_dashboard, name='admindashboard'),
@@ -35,4 +36,14 @@ urlpatterns = [
     path('view/<int:id>/', views.view_customer, name='view_customer'),
     path('edit/<int:id>/', views.edit_customer, name='edit_customer'),
     path('block/<int:id>/', views.block_customer, name='block_customer'),
+
+    path('login/', views.login, name='login'), 
+    path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    #path('login/', auth_views.LoginView.as_view(), name='login'),
+    #path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
+
+    path('savings-account/', savings_account, name='savings_account'),
+    path('savings_application/', views.savings_application, name='savings_application'),
+    path('submit_registration/', views.submit_registration, name='submit_registration'),
+
 ]
