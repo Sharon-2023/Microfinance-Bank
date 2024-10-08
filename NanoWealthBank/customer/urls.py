@@ -64,5 +64,8 @@ urlpatterns = [
     path('savings_interest/', views.savings_interest, name='savings_interest'),
     
     path('logout_view/', views.logout_view, name='logout_view'),
+
+    #path('transactions/', views.transactions_view, name='transactions'),
+    path('transactions/', views.transaction_view, name='transaction_view'),
 ]
 

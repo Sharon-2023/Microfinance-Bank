@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: #2e7e3c;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo-container img {
+            max-width: 50px;
+            margin-right: 25px;
+        }
+
+        .navbar .logo-container h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .navbar .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+
+        .navbar .user-info img {
+            max-width: 40px;
+            border-radius: 50%;
+            margin-left: 30px;
+        }
+
+        .navbar .user-info span {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        /* General Body Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex; /* Layout for sidebar and content */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background-color: #f0f0f0;
+            padding: 20px;
+            width: 250px;
+            margin-top: 70px; /* Ensure it starts after the navbar */
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%; /* Sidebar should fill the remaining height */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #ddd;
+        }
+
+        /* Content Wrapper */
+        .content {
+            margin-left: 300px; /* Align content after the sidebar */
+            padding: 20px;
+            width: 100%;
+            padding-top: 100px; /* Add space for the fixed navbar */
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        .form-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-container input[type="text"], .form-container input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Logout Button Styles */
+        .logout-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-right: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.png' %}" alt="Bank Logo">
+            <h1>NanoWealth Bank</h1>
+        </div>
+        <div class="user-info">
+            <img src="{% static 'images/profile-icon.png' %}" alt="Profile Icon">
+            <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Transactions</h2>
+        <ul>
+            <li><a href="#" onclick="showForm('deposits-form')">Deposits</a></li>
+            <li><a href="#" onclick="showForm('withdrawals-form')">Withdrawals</a></li>
+            <li><a href="#" onclick="showTable()">Current Balance</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="welcome-message">
+            Transaction Details
+        </div>
+
+        <!-- Success/Error Messages -->
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li style="color: green;">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Deposits Form -->
+        <div id="deposits-form" class="form-container" style="display:none;">
+            <form action="{% url 'transaction_view' %}" method="POST">
+                {% csrf_token %}
+                <label for="deposit-amount">Deposit Amount:</label>
+                <input type="number" id="deposit-amount" name="deposit-amount" placeholder="Enter deposit amount" required>
+                <input type="submit" value="Submit Deposit">
+            </form>
+        </div>
+
+        <!-- Withdrawals Form -->
+        <div id="withdrawals-form" class="form-container" style="display:none;">
+            <form action="{% url 'transaction_view' %}" method="POST">
+                {% csrf_token %}
+                <label for="withdrawal-amount">Withdrawal Amount:</label>
+                <input type="number" id="withdrawal-amount" name="withdrawal-amount" placeholder="Enter withdrawal amount" required>
+                <input type="submit" value="Submit Withdrawal">
+            </form>
+        </div>
+
+        <!-- Transaction Table (Initially hidden) -->
+        <div id="transaction-table" style="display:none;">
+            <h3>Transaction History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Current Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr>
+                            <td>{{ transaction.date }}</td>
+                            <td>{{ transaction.type }}</td>
+                            <td>{{ transaction.amount }}</td>
+                            <td>{{ transaction.balance }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        function showForm(formId) {
+            // Hide all forms and the table
+            document.getElementById('deposits-form').style.display = 'none';
+            document.getElementById('withdrawals-form').style.display = 'none';
+            document.getElementById('transaction-table').style.display = 'none';
+
+            // Show the selected form
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        function showTable() {
+            // Hide all forms
+            document.getElementById('deposits-form').style.display = 'none';
+            document.getElementById('withdrawals-form').style.display = 'none';
+
+            // Show the transaction table
+            document.getElementById('transaction-table').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

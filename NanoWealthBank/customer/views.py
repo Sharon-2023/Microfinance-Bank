@@ -17,6 +17,7 @@ import random
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
+from datetime import datetime
 
 
 def home(request):
@@ -526,3 +527,52 @@ def logout_view(request):
     else:
         # Optionally, you can also handle a GET request
         return redirect('login')  # Redirect to login page
+
+def transaction_view(request):
+    # Initialize balance and transaction history in the session if they don't exist
+    if 'balance' not in request.session:
+        request.session['balance'] = 0
+    if 'transactions' not in request.session:
+        request.session['transactions'] = []
+
+    # Handle POST requests for deposit or withdrawal
+    if request.method == 'POST':
+        if 'deposit-amount' in request.POST:
+            # Process deposit
+            deposit_amount = float(request.POST.get('deposit-amount'))
+            request.session['balance'] += deposit_amount
+
+            # Store the transaction in session
+            request.session['transactions'].append({
+                'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'type': 'Deposit',
+                'amount': deposit_amount,
+                'balance': request.session['balance']
+            })
+            request.session.modified = True
+            messages.success(request, f'Amount {deposit_amount} has been deposited successfully!')
+
+        elif 'withdrawal-amount' in request.POST:
+            # Process withdrawal
+            withdrawal_amount = float(request.POST.get('withdrawal-amount'))
+            if withdrawal_amount <= request.session['balance']:
+                request.session['balance'] -= withdrawal_amount
+
+                # Store the transaction in session
+                request.session['transactions'].append({
+                    'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'type': 'Withdrawal',
+                    'amount': withdrawal_amount,
+                    'balance': request.session['balance']
+                })
+                request.session.modified = True
+                messages.success(request, f'Amount {withdrawal_amount} has been withdrawn successfully!')
+            else:
+                messages.error(request, 'Insufficient balance for the withdrawal!')
+
+    # Render the template with the current balance and transaction history
+    context = {
+        'balance': request.session['balance'],
+        'transactions': request.session['transactions'],
+    }
+    return render(request, 'transactions.html', context)

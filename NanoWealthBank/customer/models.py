@@ -18,13 +18,11 @@ class Admin(models.Model):
      password = models.CharField(max_length=100)
 
 class Savings(models.Model):
-    customer_name = models.CharField(max_length=100)
-    mobile_number = models.CharField(max_length=15)
-    email = models.EmailField(unique=True)
+    name = models.ForeignKey(Customer, on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
-    city = models.CharField(max_length=100) 
+    city = models.CharField(max_length=100)
     pincode = models.CharField(max_length=100)
-    state  = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
     account_type = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
@@ -32,7 +30,7 @@ class Savings(models.Model):
     is_blocked = models.BooleanField(default=False)   # Admin block status
 
     def __str__(self):
-        return self.customer_name
+        return self.customer.customer_name
 
 class Current(models.Model):
     customer_name = models.CharField(max_length=100)
@@ -75,10 +73,10 @@ class SavingsAccountRequest(models.Model):
         ('Rejected', 'Rejected'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     account_type = models.CharField(max_length=100, default="Savings")
     request_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
 
     def __str__(self):
-        return f"{self.user.username} - {self.status}"
+        return f"{self.customer.username} - {self.status}"
