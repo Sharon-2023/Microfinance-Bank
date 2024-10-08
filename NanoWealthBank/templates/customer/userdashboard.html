@@ -36,7 +36,7 @@
 
         .navbar .logo-container img {
             max-width: 50px;
-            margin-right: 15px;
+            margin-right: 25px;
         }
 
         .navbar .logo-container h1 {
@@ -47,6 +47,8 @@
         .navbar .user-info {
             display: flex;
             align-items: center;
+            margin-left: 20px; /* Add some left margin */
+ 
         }
 
         .navbar .user-info img {
@@ -158,6 +160,9 @@
             font-size: 16px;
             margin-left: 15px;
             text-decoration: none;
+            margin-left: 40px;
+            margin-right: 50px;
+
         }
 
         /* Adjust Savings Account Details Styles */
@@ -189,9 +194,8 @@
             <h1>NanoWealth Bank</h1>
         </div>
         <div class="user-info">
-            <span>{{ user.customer_name }}</span>
             <img src="{% static 'images/profile-icon.png' %}" alt="Profile Icon">
-            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+            <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
         </div>
     </div>
 
@@ -206,6 +210,9 @@
                 <ul class="dropdown-content">
                     <li><a href="{% url 'savings_account' %}">Savings Account</a></li>
                     <li><a href="#">Current Account</a></li>
+                    <li><a href="#">View Profile</a></li>
+
+
                 </ul>
             </li>
             <li><a href="#">Transactions</a></li>
@@ -225,8 +232,9 @@
     <!-- Main Content -->
     <div class="content">
         <div class="welcome-message">
-            Welcome, {{ user.customer_name }}!
-        </div>
+            Welcome {{ request.session.username }}
+        </div>        
+                
         <img src="{% static 'images/customerdashboard.jpg' %}" alt="Dashboard Image" class="dashboard-image">
     </div>
 

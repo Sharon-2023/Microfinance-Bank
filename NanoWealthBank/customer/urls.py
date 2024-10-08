@@ -6,6 +6,11 @@ from django.shortcuts import redirect
 from django.contrib.auth.views import LogoutView
 from .views import LogoutView 
 from .views import savings_account
+from .views import logout_view
+from django.urls import path
+from .views import logout_view
+
+
 
 
 urlpatterns = [
@@ -46,4 +51,18 @@ urlpatterns = [
     path('savings_application/', views.savings_application, name='savings_application'),
     path('submit_registration/', views.submit_registration, name='submit_registration'),
 
+    #path('savings_requests/', views.savings_requests, name='savings_requests'),
+    #path('approve_account/<int:account_id>/', views.approve_account, name='approve_account'),
+    #path('block_account/<int:account_id>/', views.block_account, name='block_account'),
+
+    path('admin_dashboard/', views.customer_login_requests, name='customer_login_requests'),
+    path('approve_customer/<int:customer_id>/', views.approve_customer, name='approve_customer'),
+    path('customer_list/', views.customer_list, name='customer_list'),
+    path('block_customer/<int:customer_id>/', views.block_customer, name='block_customer'),
+
+    path('account-approval/', views.account_approval_view, name='account_approval'),
+    path('savings_interest/', views.savings_interest, name='savings_interest'),
+    
+    path('logout_view/', views.logout_view, name='logout_view'),
 ]
+

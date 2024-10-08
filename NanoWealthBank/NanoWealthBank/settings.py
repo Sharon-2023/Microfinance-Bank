@@ -150,3 +150,5 @@ DEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'
 
 SESSION_COOKIE_AGE = 3600  # Session expires in 1 hour
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed
+
+LOGIN_URL = '/login/' 

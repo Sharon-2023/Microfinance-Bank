@@ -131,6 +131,7 @@
         .section {
             display: none;
         }
+
     </style>
 </head>
 <body>
@@ -148,7 +149,9 @@
                 <li><a href="#">Transaction Monitoring</a></li>
                 <li><a href="#">Loan Management</a></li>
                 <li><a href="#">Deposits & Withdrawal Requests</a></li>
-                <li><a href="#">Account Approval & Verification</a></li>
+                <li>
+                    <a href="{% url 'account_approval' %}" id="account-approval-link">Account Approval & Verification</a>
+                </li>
                 <li><a href="#">Reports & Analytics</a></li>
                 <li><a href="#">Audit Logs</a></li>
             </ul>
@@ -192,6 +195,10 @@
                 </table>
             </div>
 
+            <!-- Approve Accounts and Verification Section -->
+            
+            
+
             <!-- List of Customers Section -->
             <div class="section" id="customer-list-section">
                 <h2>Customer List</h2>
@@ -233,20 +240,28 @@
     </div>
 
     <script>
-        // Get the menu item and sections
+        // Get the menu items and sections
         const customerRequestsLink = document.getElementById('customer-requests-link');
         const customerRequestsSection = document.getElementById('customer-requests-section');
         const customerListSection = document.getElementById('customer-list-section');
+        const accountApprovalLink = document.getElementById('account-approval-link');
+        const accountApprovalSection = document.getElementById('account-approval-section');
 
-        // Add click event to the Customer Login Requests menu item
+        // Show the customer requests and customer list sections
         customerRequestsLink.addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default behavior of anchor
-
-            // Show the customer requests and customer list sections
             customerRequestsSection.style.display = 'block';
             customerListSection.style.display = 'block';
+            accountApprovalSection.style.display = 'none'; // Hide account approval section
+        });
+
+        // Show the account approval section and customer list section
+        accountApprovalLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default behavior of anchor
+            accountApprovalSection.style.display = 'block'; // Show account approval section
+            customerListSection.style.display = 'block'; // Show customer list section
+            customerRequestsSection.style.display = 'none'; // Hide customer requests section
         });
     </script>
-
 </body>
 </html>

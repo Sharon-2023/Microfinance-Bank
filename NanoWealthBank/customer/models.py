@@ -27,7 +27,58 @@ class Savings(models.Model):
     state  = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
     account_type = models.CharField(max_length=100)
-    is_active=models.BooleanField(default=False)
-    
+    is_active = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)  # Admin approval status
+    is_blocked = models.BooleanField(default=False)   # Admin block status
+
     def __str__(self):
         return self.customer_name
+
+class Current(models.Model):
+    customer_name = models.CharField(max_length=100)
+    mobile_number = models.CharField(max_length=15)
+    email = models.EmailField(unique=True)
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=100) 
+    pincode = models.CharField(max_length=100)
+    state  = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    account_type = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)  # Admin approval status
+    is_blocked = models.BooleanField(default=False)   # Admin block status
+
+    def __str__(self):
+        return self.customer_name
+
+class Fixed(models.Model):
+    customer_name = models.CharField(max_length=100)
+    mobile_number = models.CharField(max_length=15)
+    email = models.EmailField(unique=True)
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=100) 
+    pincode = models.CharField(max_length=100)
+    state  = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    account_type = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)  # Admin approval status
+    is_blocked = models.BooleanField(default=False)   # Admin block status
+
+    def __str__(self):
+        return self.customer_name
+    
+class SavingsAccountRequest(models.Model):
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    account_type = models.CharField(max_length=100, default="Savings")
+    request_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.status}"

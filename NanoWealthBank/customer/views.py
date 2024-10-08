@@ -39,15 +39,25 @@ from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from .models import Customer, Admin
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .models import Admin, Customer  # Import your models
+
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        
+
+        # Check if the user is an Admin first
         try:
-            # Check if the user is an Admin first
             admin = Admin.objects.get(email=email)
             if admin.password == password:
+                # Store admin data in session
+                request.session['user_id'] = admin.id
+                request.session['user_email'] = admin.email
+                request.session['user_role'] = 'admin'  # Set role as admin
+                request.session['username'] = admin.username
+
                 return redirect('admindashboard')
             else:
                 messages.error(request, "Invalid admin credentials.")
@@ -56,9 +66,15 @@ def login(request):
         except Admin.DoesNotExist:
             # Admin not found, proceed to check for Customer
             try:
-                user = Customer.objects.get(email=email)
-                if user.password == password:
-                    if user.is_active:
+                customer = Customer.objects.get(email=email)
+                if customer.password == password:
+                    if customer.is_active:
+                        # Store customer data in session
+                        request.session['user_id'] = customer.id
+                        request.session['user_email'] = customer.email
+                        request.session['user_role'] = 'customer'  # Set role as customer
+                        request.session['username'] = customer.username
+
                         return redirect('userdashboard')
                     else:
                         messages.error(request, "Customer Not Approved Yet.")
@@ -74,13 +90,18 @@ def login(request):
     return render(request, 'login.html')
 
 
+
 user_pins={}
+
 
 def dashboard(request):
     context = {
         'user': request.user,
     }
     return render(request, 'customer/userdashboard.html', context)
+
+
+
 
 def personal_banking(request):
     return render(request, 'personal_banking.html')
@@ -172,9 +193,19 @@ def activate(request, uidb64, token):
 #def dashboard(request):
     #return render(request, 'customer/userdashboard.html', {'user': request.user})
 
-def user_dashboard_view(request):
-    # your view logic here
-    return render(request, 'dashboard.html')
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
+  # Redirect to login page if not logged in
+def userdashboard(request):
+    # Your dashboard logic here
+    user = request.session.get('user_id')
+    if user is None:  # Check if user_id is not in the session
+        return redirect('login')  # Redirect to login view instead of rendering it
+    else:
+        return render(request, 'userdashboard.html')
+
  
 
 
@@ -424,3 +455,74 @@ def submit_registration(request):
         # For now, we'll just return a simple response
         return HttpResponse(f"Thank you, {name}. Your application for {account_type} account has been received.")
 
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Customer
+from django.urls import reverse
+
+# View for customer login requests
+def customer_login_requests(request):
+    pending_customers = Customer.objects.filter(is_active=False)
+    return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers})
+
+# Approve customer
+def approve_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    customer.is_active = True
+    customer.save()
+    return redirect(reverse('customer_login_requests'))
+
+# View for customer list
+def customer_list(request):
+    customers = Customer.objects.all()
+    return render(request, 'admin_dashboard.html', {'customers': customers})
+
+# Block/Unblock customer
+def block_customer(request, customer_id):
+    customer = get_object_or_404(Customer, id=customer_id)
+    customer.is_active = not customer.is_active
+    customer.save()
+    return redirect(reverse('customer_list'))
+
+from django.shortcuts import render
+from .models import Savings  # Assuming you have a SavingsAccount model
+
+def account_approval_view(request):
+    pending_accounts = Savings.objects.filter(status='Pending')  # Adjust based on your model's status field
+    return render(request, 'admin_dashboard.html', {'pending_accounts': pending_accounts})
+
+def savings_interest(request):
+    return render(request, 'savings_interest.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import SavingsAccountRequest
+from django.contrib import messages
+
+@login_required
+def create_savings_account(request):
+    if request.method == 'POST':
+        # Create a savings account request and set it as pending
+        account_request = SavingsAccountRequest(user=request.user)
+        account_request.save()
+
+        # Notify the user that their request is pending admin approval
+        messages.success(request, 'Your savings account request has been submitted and is pending approval.')
+
+        return redirect('dashboard')  # Redirect to the user's dashboard or any desired page
+
+    return render(request, 'create_savings_account.html')
+
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    # If the user is authenticated, log them out
+    if request.method == 'POST':
+        request.session.flush() 
+        logout(request)
+        return redirect('login')  # Ensure 'login' matches the name in your URLs
+    else:
+        # Optionally, you can also handle a GET request
+        return redirect('login')  # Redirect to login page
