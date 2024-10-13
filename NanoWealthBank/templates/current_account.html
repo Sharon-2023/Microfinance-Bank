@@ -296,19 +296,19 @@ tbody tr:hover {
 
     <!-- Main Content -->
     <div class="content">
-        <h2>Savings Account</h2>
-        <p>We offer the finest savings accounts for all categories of customers. The customized options can ideally serve the needs of the end customers. With user-friendly online banking features, accessing your Savings Account could not get any better.</p>
+        <h2>Current Account</h2>
+        <p>For business customers across industries, we offer a wide range of Current Account products in a convenient, hassle free manner. Tailor made accounts for entrepreneurs, business men and individual customers are our specialty. Our catalogue of Current Accounts include Classic and Premium categories.</p>
         
         <!-- Button to show terms and conditions -->
         <button class="terms-button" onclick="showModal()">View Terms and Conditions</button>
 
         <!-- Details containers for each savings account type -->
-        <div id="student" class="details-container">
-            <h3>Student Savings Account</h3>
-            <p>To inculcate Savings habit among children and initiate them to the whole array of Banking Services.</p>
+        <div id="classic" class="details-container">
+            <h3>Classic</h3>
+            <p>To offer a perfect business solution for the requirement of an entrepreneur.</p>
 
             <!-- Read More Button -->
-        <button class="terms-button" onclick="readMore('studentTable')">Read More</button>
+        <button class="terms-button" onclick="readMore('classicTable')">Read More</button>
     
         <!-- Hidden table for Student Savings Account -->
         <div id="studentTable" class="table-container" style="display: none;">
@@ -374,11 +374,11 @@ tbody tr:hover {
     </div>
     
 
-        <div id="mahilaSree" class="details-container">
-            <h3>Mahila Sree Savings Account</h3>
+        <div id="premium" class="details-container">
+            <h3>Premium</h3>
             <p>An account tailored exclusively for empowered women. An account to save your hard earned money and reap higher benefits.</p>
                  <!-- Read More Button -->
-                    <button class="terms-button" onclick="readMore('mahilaSreeTable')">Read More</button>
+                    <button class="terms-button" onclick="readMore('premiumTable')">Read More</button>
             
             <!-- Hidden table for Mahila Sree Savings Account -->
     <div id="mahilaSreeTable" class="table-container" style="display: none;">
@@ -431,68 +431,7 @@ tbody tr:hover {
 </div>
         </div>
 
-        <div id="zeroBalance" class="details-container">
-            <h3>Zero Balance Savings Account</h3>
-            <p>An account to the layer of customers who enjoys the asset portfolio with our bank. A unique product with no AMB and Rupay Classic Card.</p>
         
-            <!-- Read More Button -->
-                <button class="terms-button" onclick="readMore('zeroBalanceTable')">Read More</button>
-
-            <!-- Hidden table for Zero Balance Savings Account -->
-    <div id="zeroBalanceTable" class="table-container" style="display: none;">
-        <table border="1" cellpadding="10" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Features</th>
-                    <th>Zero Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Free ATM Transactions</td>
-                    <td>Unlimited Transactions</td>
-                </tr>
-                <tr>
-                    <td>Debit Card</td>
-                    <td>Rupay Classic</td>
-                </tr>
-                <tr>
-                    <td>ATM Cash Withdrawal Limit</td>
-                    <td>Rs. 5,000 per day</td>
-                </tr>
-                <tr>
-                    <td>Internet/Mobile Banking</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <td>Monthly Average Balance (MAB)</td>
-                    <td>None (Zero Balance)</td>
-                </tr>
-                <tr>
-                    <td>Free Cheque Book Leaves</td>
-                    <td>5 per half-year</td>
-                </tr>
-                <tr>
-                    <td>Special Offers</td>
-                    <td>Discounts on selected services</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Buttons -->
-        <div style="margin-top: 20px;">
-            <button class="terms-button">
-                <a href="{% url 'savings_application' %}" style="color: white; text-decoration: none;">Apply Online</a>
-            </button>
-            <button class="terms-button">
-                <a href="{% url 'savings_interest' %}" style="color: white; text-decoration: none;">Interest Rate</a>
-            </button>
-        </div>
-    </div>
-</div>
-        </div>
-    </div>
-
     <!-- Modal for Terms and Conditions -->
     <div id="termsModal" class="modal">
         <div class="modal-content">

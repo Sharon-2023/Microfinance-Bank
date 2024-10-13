@@ -103,12 +103,14 @@ def dashboard(request):
 
 
 
-
 def personal_banking(request):
     return render(request, 'personal_banking.html')
 
 def business_banking(request):
     return render(request, 'business_banking.html')
+
+
+#Sign Up
 import random;
 
 import random
@@ -425,10 +427,12 @@ def send_confirmation_email(user, account_number, password):
     )
     email.send()
 
+
+#Savings Account
 from django.shortcuts import render
 
 def savings_account(request):
-    return render(request, 'savings_account.html')  # Replace with your actual template name
+    return render(request, 'savings_account.html')  
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -486,34 +490,68 @@ def block_customer(request, customer_id):
     customer.save()
     return redirect(reverse('customer_list'))
 
-from django.shortcuts import render
-from .models import Savings  # Assuming you have a SavingsAccount model
+# from django.shortcuts import render
+# from .models import Savings  # Assuming you have a SavingsAccount model
 
-def account_approval_view(request):
-    pending_accounts = Savings.objects.filter(status='Pending')  # Adjust based on your model's status field
-    return render(request, 'admin_dashboard.html', {'pending_accounts': pending_accounts})
+# def account_approval_view(request):
+#     pending_accounts = Savings.objects.filter(is_active='false')  # Adjust based on your model's status field
+#     return render(request, 'admin_dashboard.html', {'pending_accounts': pending_accounts})
 
 def savings_interest(request):
     return render(request, 'savings_interest.html')
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import SavingsAccountRequest
+from .models import Savings
 from django.contrib import messages
 
-@login_required
-def create_savings_account(request):
+# @login_required
+def savings_accounts(request):
+    print("hello")
     if request.method == 'POST':
-        # Create a savings account request and set it as pending
-        account_request = SavingsAccountRequest(user=request.user)
+        # Get the form data from the request
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        pincode = request.POST.get('pincode')
+        state = request.POST.get('state')
+        district = request.POST.get('district')
+        account_type = request.POST.get('account_type')
+
+        
+        print(f"Form Data: Name={name}, Phone={phone}, Email={email}, Address={address}, City={city}, Pincode={pincode}, State={state}, District={district}, Account Type={account_type}")
+
+
+        # Check if all required fields are provided
+        # if name and phone and email and address and city and pincode and state and district and account_type:
+        #     print("condition")
+    # Create a savings account request and set it as pending
+        user=request.session.get('username') 
+        account_request = Savings(
+                                        user=user,  # Get the current authenticated user
+                                        name=name,
+                                        phone=phone,
+                                        email=email,
+                                        address=address,
+                                        city=city,
+                                        pincode=pincode,
+                                        state=state,
+                                        district=district,
+                                        account_type=account_type  # Ensure account_type is properly handled
+                                        )
         account_request.save()
 
-        # Notify the user that their request is pending admin approval
+            # Notify the user that their request is pending admin approval
         messages.success(request, 'Your savings account request has been submitted and is pending approval.')
 
-        return redirect('dashboard')  # Redirect to the user's dashboard or any desired page
-
-    return render(request, 'create_savings_account.html')
+        return render(request, 'customer/userdashboard.html')  # Redirect to the user's dashboard or any desired page
+    else:
+            # If some fields are missing, show an error message
+         messages.error(request, 'Please fill in all required fields.')
+    
+    return render(request, 'savings_application.html')
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -527,8 +565,11 @@ def logout_view(request):
     else:
         # Optionally, you can also handle a GET request
         return redirect('login')  # Redirect to login page
+    
+def transactions(request):
+    return render(request, 'transactions.html')
 
-def transaction_view(request):
+def transactions_view(request):
     # Initialize balance and transaction history in the session if they don't exist
     if 'balance' not in request.session:
         request.session['balance'] = 0
@@ -576,3 +617,42 @@ def transaction_view(request):
         'transactions': request.session['transactions'],
     }
     return render(request, 'transactions.html', context)
+
+
+from .models import Savings  # Make sure to import your model
+
+def account_approval_view(request):
+    # Fetch all pending savings account requests
+    print("hello")
+    pending_requests = Savings.objects.filter(is_active=0)
+    return render(request, 'admin_dashboard.html', {'pending_requests': pending_requests})
+
+
+from django.shortcuts import redirect
+
+def approve_savings_account(request, request_id):
+    savings_account_request = Savings.objects.get(id=request_id)
+    savings_account_request.status = 'approved'
+    savings_account_request.save()
+    return redirect('account_approval')
+
+def reject_savings_account(request, request_id):
+    savings_account_request = Savings.objects.get(id=request_id)
+    savings_account_request.status = 'rejected'
+    savings_account_request.save()
+    return redirect('account_approval')
+
+def pending_savings_account(request, request_id):
+    savings_account_request = Savings.objects.get(id=request_id)
+    savings_account_request.status = 'pending'
+    savings_account_request.save()
+    return redirect('account_approval')
+
+
+#View Profile in dashboard
+def view_profile(request):
+    return render(request, 'view_profile.html')
+
+#Current Account
+def current_account(request):
+    return render(request, 'current_account.html')

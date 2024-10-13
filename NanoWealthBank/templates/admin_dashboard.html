@@ -239,6 +239,49 @@
         </div>
     </div>
 
+    <div class="section" id="account-approval-section">
+        <h2>Account Approval & Verification</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in pending_requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.customer_name }}</td>
+                    <td>{{ request.email }}</td>
+                    <td>{{ request.status }}</td>
+                    <td>
+                        <form method="post" action="{% url 'approve_savings_account' request.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="approve-btn" type="submit">Approve</button>
+                        </form>
+                        <form method="post" action="{% url 'reject_savings_account' request.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="block-btn" type="submit">Reject</button>
+                        </form>
+                        <form method="post" action="{% url 'pending_savings_account' request.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button class="edit-btn" type="submit">Pending</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No pending account requests.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
     <script>
         // Get the menu items and sections
         const customerRequestsLink = document.getElementById('customer-requests-link');

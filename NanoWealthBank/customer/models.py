@@ -18,8 +18,11 @@ class Admin(models.Model):
      password = models.CharField(max_length=100)
 
 class Savings(models.Model):
-    name = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user=models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    phone= models.CharField(max_length=50)
     address = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     city = models.CharField(max_length=100)
     pincode = models.CharField(max_length=100)
     state = models.CharField(max_length=100)

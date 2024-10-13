@@ -187,6 +187,26 @@
             background-color: #f2f2f2;
         }
 
+        /* Back to Dashboard Button Styles */
+.back-to-dashboard-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    z-index: 1001; /* Ensure it stays above other elements */
+}
+
+.back-to-dashboard-button:hover {
+    background-color: #45a049;
+}
+
 
     </style>
 </head>
@@ -203,6 +223,9 @@
             <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
         </div>
     </div>
+
+    <!-- Back to Dashboard Button -->
+    <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button">Back to Dashboard</a>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -231,7 +254,7 @@
 
         <!-- Deposits Form -->
         <div id="deposits-form" class="form-container" style="display:none;">
-            <form action="{% url 'transaction_view' %}" method="POST">
+            <form action="{% url 'transactions_view' %}" method="POST">
                 {% csrf_token %}
                 <label for="deposit-amount">Deposit Amount:</label>
                 <input type="number" id="deposit-amount" name="deposit-amount" placeholder="Enter deposit amount" required>
@@ -241,7 +264,7 @@
 
         <!-- Withdrawals Form -->
         <div id="withdrawals-form" class="form-container" style="display:none;">
-            <form action="{% url 'transaction_view' %}" method="POST">
+            <form action="{% url 'transactions_view' %}" method="POST">
                 {% csrf_token %}
                 <label for="withdrawal-amount">Withdrawal Amount:</label>
                 <input type="number" id="withdrawal-amount" name="withdrawal-amount" placeholder="Enter withdrawal amount" required>
