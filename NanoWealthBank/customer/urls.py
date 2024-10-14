@@ -82,6 +82,6 @@ urlpatterns = [
 
     #customer login requests- admin dashboard
     path('customer-requests/', views.customer_login_requests, name='customer_login_requests'),
-     
+    path('account-approval/', views.account_approval, name='account_approval'),
 ]
 

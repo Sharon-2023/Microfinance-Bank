@@ -20,6 +20,7 @@ from django.template.loader import render_to_string
 from datetime import datetime
 
 
+
 def home(request):
     return render(request,'home.html')
 
@@ -501,6 +502,7 @@ def savings_accounts(request):
     if request.method == 'POST':
         # Get the form data from the request
         name = request.POST.get('name')
+        #user = request.POST.get('user')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
         address = request.POST.get('address')
@@ -514,6 +516,7 @@ def savings_accounts(request):
         print(f"Form Data: Name={name}, Phone={phone}, Email={email}, Address={address}, City={city}, Pincode={pincode}, State={state}, District={district}, Account Type={account_type}")
 
         user=request.session.get('username') 
+        print("check user:",user)
         account_request = Savings(
                                         user=user,  # Get the current authenticated user
                                         name=name,
@@ -641,4 +644,14 @@ def view_profile(request):
 #Current Account
 def current_account(request):
     return render(request, 'current_account.html')
+
+#Account approval and verification- admin dashboard
+def account_approval(request):
+    pending_accounts = Customer.objects.filter(status='pending')  
+
+    context = {
+        'pending_accounts': pending_accounts,
+    }
+
+    return render(request, 'account_approval.html', context)
 
