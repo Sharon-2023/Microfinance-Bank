@@ -73,65 +73,78 @@
             color: #333;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .approve-btn, .view-btn, .edit-btn, .block-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .approve-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .view-btn {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .edit-btn {
-            background-color: #FFC107;
-            color: white;
-        }
-
-        .block-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .approve-btn:hover, .view-btn:hover, .edit-btn:hover, .block-btn:hover {
-            opacity: 0.8;
-        }
-
-        .section {
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
             margin-bottom: 40px;
+            gap: 20px;
         }
 
-        /* Hide sections by default */
-        .section {
-            display: none;
+        /* Style for the total customers box */
+        .stats-box.customers {
+            width: 30%;
+            padding: 20px;
+            background-color: #4CAF50; /* Green color */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
         }
 
+        /* Style for the total savings accounts box */
+        .stats-box.savings {
+            width: 30%;
+            padding: 20px;
+            background-color: #2196F3; /* Blue color */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
+        }
+
+        /* Style for the total current accounts box */
+        .stats-box.current {
+            width: 30%;
+            padding: 20px;
+            background-color: #FFC107; /* Yellow color */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
+        }
+
+        /* Style for the total fixed deposits box */
+        .stats-box.fixed {
+            width: 30%;
+            padding: 20px;
+            background-color: #fd954f; 
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
+        }
+
+        /* Style for the total recurring deposits box */
+        .stats-box.recurring {
+            width: 30%;
+            padding: 20px;
+            background-color: #ff0793; 
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
+        }
+
+        .stats-box h3 {
+            margin: 0 0 10px;
+            font-size: 24px;
+        }
+
+        .stats-box p {
+            font-size: 18px;
+        }
+
+        /* Additional styling for your tables and buttons, if needed */
     </style>
 </head>
 <body>
@@ -144,13 +157,13 @@
         <!-- Left-side Container for Menu -->
         <div class="left-container">
             <ul class="menu-items">
-                <li><a href="#" id="customer-requests-link">Customer Login Requests</a></li>
+                <li><a href="{% url 'customer_login_requests' %}">Customer Login Requests</a></li>
                 <li><a href="#">User & Account Management</a></li>
                 <li><a href="#">Transaction Monitoring</a></li>
                 <li><a href="#">Loan Management</a></li>
                 <li><a href="#">Deposits & Withdrawal Requests</a></li>
                 <li>
-                    <a href="{% url 'account_approval' %}" id="account-approval-link">Account Approval & Verification</a>
+                    <a href="{% url 'account_approval' %}" >Account Approval & Verification</a>
                 </li>
                 <li><a href="#">Reports & Analytics</a></li>
                 <li><a href="#">Audit Logs</a></li>
@@ -159,152 +172,33 @@
 
         <!-- Main Content -->
         <div class="container">
-            <!-- Approve Customer Login Requests Section -->
-            <div class="section" id="customer-requests-section">
-                <h2>Approve Customer Login Requests</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer ID</th>
-                            <th>Customer Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for customer in pending_customers %}
-                        <tr>
-                            <td>{{ customer.id }}</td>
-                            <td>{{ customer.customer_name }}</td>
-                            <td>{{ customer.email }}</td>
-                            <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
-                            <td>
-                                <form method="post" action="{% url 'approve_customer' customer.id %}">
-                                    {% csrf_token %}
-                                    <button class="approve-btn" type="submit">Approve</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5">No pending approval requests.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <!-- Stats Section -->
+            <div class="stats-container">
+                <div class="stats-box customers">
+                    <h3>👥Total Customers</h3>
+                    <p>{{ total_customers }}</p>
+                </div>
+                <div class="stats-box savings">
+                    <h3> Savings Accounts</h3>
+                    <p>{{ total_savings_accounts }}</p>
+                </div>
+                <div class="stats-box current">
+                    <h3> Current Accounts</h3>
+                    <p>{{ total_current_accounts }}</p>
+                </div>
+                <div class="stats-box fixed">
+                    <h3> Fixed Deposits</h3>
+                    <p>{{ total_fixed_deposit }}</p>
+                </div>
+                <div class="stats-box recurring">
+                    <h3> Recurring Deposits</h3>
+                    <p>{{ total_recurring_deposits }}</p>
+                </div>
+                
             </div>
 
-            <!-- Approve Accounts and Verification Section -->
             
-            
-
-            <!-- List of Customers Section -->
-            <div class="section" id="customer-list-section">
-                <h2>Customer List</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer ID</th>
-                            <th>Customer Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for customer in customers %}
-                        <tr>
-                            <td>{{ customer.id }}</td>
-                            <td>{{ customer.customer_name }}</td>
-                            <td>{{ customer.email }}</td>
-                            <td>{{ customer.is_active|yesno:"Active,Blocked" }}</td>
-                            <td>
-                                <a href="{% url 'view_customer' customer.id %}" class="view-btn">View</a>
-                                <a href="{% url 'edit_customer' customer.id %}" class="edit-btn">Edit</a>
-                                <form method="post" action="{% url 'block_customer' customer.id %}" style="display:inline;">
-                                    {% csrf_token %}
-                                    <button class="block-btn" type="submit">{% if customer.is_active %}Block{% else %}Unblock{% endif %}</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5">No customers found.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="section" id="account-approval-section">
-        <h2>Account Approval & Verification</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Request ID</th>
-                    <th>Customer Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for request in pending_requests %}
-                <tr>
-                    <td>{{ request.id }}</td>
-                    <td>{{ request.customer_name }}</td>
-                    <td>{{ request.email }}</td>
-                    <td>{{ request.status }}</td>
-                    <td>
-                        <form method="post" action="{% url 'approve_savings_account' request.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="approve-btn" type="submit">Approve</button>
-                        </form>
-                        <form method="post" action="{% url 'reject_savings_account' request.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="block-btn" type="submit">Reject</button>
-                        </form>
-                        <form method="post" action="{% url 'pending_savings_account' request.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="edit-btn" type="submit">Pending</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">No pending account requests.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-    <script>
-        // Get the menu items and sections
-        const customerRequestsLink = document.getElementById('customer-requests-link');
-        const customerRequestsSection = document.getElementById('customer-requests-section');
-        const customerListSection = document.getElementById('customer-list-section');
-        const accountApprovalLink = document.getElementById('account-approval-link');
-        const accountApprovalSection = document.getElementById('account-approval-section');
-
-        // Show the customer requests and customer list sections
-        customerRequestsLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default behavior of anchor
-            customerRequestsSection.style.display = 'block';
-            customerListSection.style.display = 'block';
-            accountApprovalSection.style.display = 'none'; // Hide account approval section
-        });
-
-        // Show the account approval section and customer list section
-        accountApprovalLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default behavior of anchor
-            accountApprovalSection.style.display = 'block'; // Show account approval section
-            customerListSection.style.display = 'block'; // Show customer list section
-            customerRequestsSection.style.display = 'none'; // Hide customer requests section
-        });
-    </script>
 </body>
 </html>
+
+

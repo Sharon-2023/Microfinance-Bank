@@ -55,7 +55,7 @@ urlpatterns = [
     #path('approve_account/<int:account_id>/', views.approve_account, name='approve_account'),
     #path('block_account/<int:account_id>/', views.block_account, name='block_account'),
 
-    # path('admin_dashboard/', views.customer_login_requests, name='customer_login_requests'),
+    path('admin_dashboard/', views.customer_login_requests, name='customer_login_requests'),
     path('approve_customer/<int:customer_id>/', views.approve_customer, name='approve_customer'),
     path('customer_list/', views.customer_list, name='customer_list'),
     path('block_customer/<int:customer_id>/', views.block_customer, name='block_customer'),
@@ -80,5 +80,8 @@ urlpatterns = [
      #Current account
      path('current_account/', views.current_account, name='current_account'),
 
+    #customer login requests- admin dashboard
+    path('customer-requests/', views.customer_login_requests, name='customer_login_requests'),
+     
 ]
 

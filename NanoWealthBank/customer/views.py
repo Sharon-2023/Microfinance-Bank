@@ -308,6 +308,7 @@ def reset_password(request, email):
     # If the request method is GET, render the reset password form
     return render(request, 'reset_password.html', {'email': email})
 
+#Admin Dashboard
 def admin_dashboard(request):
     pending_customers = Customer.objects.filter(is_active=False)  # Pending approval requests
     customers = Customer.objects.all()
@@ -352,17 +353,6 @@ def edit_customer(request, id):
 
     return render(request, 'edit_customer.html', {'customer': customer})
 
-import random
-import string
-
-def generate_account_number():
-    return ''.join(random.choices(string.digits, k=10))  # 10-digit account number
-
-def generate_user_id():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))  # 8-character user ID
-
-def generate_password():
-    return ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=12))  # 12-character password
 
 
 import random
@@ -466,10 +456,10 @@ from django.http import HttpResponse
 from .models import Customer
 from django.urls import reverse
 
-# View for customer login requests
+# View for customer login requests- admin dashboard
 def customer_login_requests(request):
     pending_customers = Customer.objects.filter(is_active=False)
-    return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers})
+    return render(request, 'customer_login_requests.html', {'pending_customers': pending_customers})
 
 # Approve customer
 def approve_customer(request, customer_id):
@@ -523,11 +513,6 @@ def savings_accounts(request):
         
         print(f"Form Data: Name={name}, Phone={phone}, Email={email}, Address={address}, City={city}, Pincode={pincode}, State={state}, District={district}, Account Type={account_type}")
 
-
-        # Check if all required fields are provided
-        # if name and phone and email and address and city and pincode and state and district and account_type:
-        #     print("condition")
-    # Create a savings account request and set it as pending
         user=request.session.get('username') 
         account_request = Savings(
                                         user=user,  # Get the current authenticated user
@@ -656,3 +641,4 @@ def view_profile(request):
 #Current Account
 def current_account(request):
     return render(request, 'current_account.html')
+
