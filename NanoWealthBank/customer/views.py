@@ -18,6 +18,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from datetime import datetime
+from django.contrib import messages
+from .models import Savings
 
 
 def home(request):
@@ -75,6 +77,7 @@ def login(request):
                         request.session['user_email'] = customer.email
                         request.session['user_role'] = 'customer'  # Set role as customer
                         request.session['username'] = customer.username
+                        request.session['account_number'] = customer.account_number
 
                         return redirect('userdashboard')
                     else:
@@ -122,6 +125,10 @@ from .models import Customer
 user_pin = {}
 user_code = {}
 
+def generate_account_number():
+    """Generates a unique 12-digit account number."""
+    return 'NWB' + str(random.randint(1000000000, 9999999999))  
+
 def signup(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -131,26 +138,34 @@ def signup(request):
         mobile = request.POST.get('mobilenum')
         customer_name = request.POST.get('customername')
 
-        # Create a new user
+        # Generate a unique account number
+        account_number = generate_account_number()
+        
+        # Ensure the account number is unique (in case the random number conflicts with an existing one)
+        while Customer.objects.filter(account_number=account_number).exists():
+            account_number = generate_account_number()
+
+        # Create a new user with the generated account number
         user = Customer(
             username=username,
             password=make_password(password),  # Hash the password for security
             email=email,
             date_of_birth=dob,  # Ensure your model has this field
             mobile_number=mobile,  # Ensure your model has this field
-            customer_name=customer_name  # Ensure your model has this field
+            customer_name=customer_name,  # Ensure your model has this field
+            account_number=account_number  # Add the generated account number
         )
         user.save()
-        
+
         if user:
             # Generate a random 4-digit verification code
             code = random.randint(1000, 9999)
             user_code[email] = code  # Store the code
 
-            # Send email with the code
+            # Send email with the verification code and account number
             send_mail(
-                'Account Verification Code',
-                f'Your verification code is {code}.',
+                'Account Verification Code and Details',
+                f'Hello {customer_name},\n\nYour account number is {account_number}.\nYour verification code is {code}.',
                 settings.EMAIL_HOST_USER,  # Use your configured email host user
                 [email],
                 fail_silently=False,
@@ -159,7 +174,7 @@ def signup(request):
             # After saving, redirect to the verification page
             return redirect('verify_code', email=email)
     
-    return render(request, 'signup.html')  # Render your signup template
+    return render(request, 'signup.html')
 
 
 def verify_email(request, uidb64, token):
@@ -202,12 +217,15 @@ from django.shortcuts import redirect
 
   # Redirect to login page if not logged in
 def userdashboard(request):
-    # Your dashboard logic here
-    user = request.session.get('user_id')
-    if user is None:  # Check if user_id is not in the session
-        return redirect('login')  # Redirect to login view instead of rendering it
-    else:
-        return render(request, 'userdashboard.html')
+    user_id = request.session.get('user_id')
+    if user_id is None:
+        return redirect('login')
+    
+    account_number = request.session.get('account_number')  # Get account number from session
+    return render(request, 'userdashboard.html', {
+        'account_number': account_number,
+    })
+
 
  
 
@@ -267,7 +285,7 @@ def verify_code(request, email):
             # Redirect to reset password page if the code is correct
             return render(request,'signup_confirmation.html')
         else:
-            messages.error(request, 'Invalid code. Please try again.')        # Verification logic here
+            messages.error(request, 'Invalid code. Please try again.')       
     return render(request, 'verify_code.html', {'email': email})
 
 
@@ -382,7 +400,7 @@ def create_user_account(request):
         # Send email
         send_confirmation_email(user, account_number, password)
 
-        return redirect('success')  # Redirect after successful account creation
+        return redirect('success')  
 
     return render(request, 'create_account.html')
 
@@ -641,4 +659,15 @@ def view_profile(request):
 #Current Account
 def current_account(request):
     return render(request, 'current_account.html')
+
+#Account approval and verification
+def account_approval(request):
+    # Fetch data related to customer account approval here
+    pending_accounts = Customer.objects.filter(status='pending')  # Example query
+
+    context = {
+        'pending_accounts': pending_accounts,
+    }
+
+    return render(request, 'account_approval.html', context)
 

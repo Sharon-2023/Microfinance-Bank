@@ -70,9 +70,9 @@ urlpatterns = [
     path('transactions/', views.transactions, name='transactions'),
     
     path('admin/account-approval/', views.account_approval_view, name='account_approval'),
-    path('admin/approve-savings-account/<int:request_id>/', approve_savings_account, name='approve_savings_account'),
-    path('admin/reject-savings-account/<int:request_id>/', reject_savings_account, name='reject_savings_account'),
-    path('admin/pending-savings-account/<int:request_id>/', pending_savings_account, name='pending_savings_account'),
+    #path('admin/approve-savings-account/<int:request_id>/', approve_savings_account, name='approve_savings_account'),
+    #path('admin/reject-savings-account/<int:request_id>/', reject_savings_account, name='reject_savings_account'),
+    #path('admin/pending-savings-account/<int:request_id>/', pending_savings_account, name='pending_savings_account'),
 
      #View Profile
      path('profile/', views.view_profile, name='view_profile'),
@@ -82,6 +82,7 @@ urlpatterns = [
 
     #customer login requests- admin dashboard
     path('customer-requests/', views.customer_login_requests, name='customer_login_requests'),
-     
+    path('account-approval/', views.account_approval, name='account_approval'),
+
 ]
 

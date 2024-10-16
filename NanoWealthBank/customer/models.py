@@ -8,6 +8,7 @@ class Customer(models.Model):
     password = models.CharField(max_length=100)  # Store securely using Django's authentication system
     mobile_number = models.CharField(max_length=15)
     date_of_birth = models.DateField(null=True, blank=True)
+    account_number = models.CharField(max_length=100, unique=True, blank=True, null=True)
     is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.customer_name
@@ -69,17 +70,3 @@ class Fixed(models.Model):
     def __str__(self):
         return self.customer_name
     
-class SavingsAccountRequest(models.Model):
-    STATUS_CHOICES = (
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Rejected', 'Rejected'),
-    )
-
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    account_type = models.CharField(max_length=100, default="Savings")
-    request_date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
-
-    def __str__(self):
-        return f"{self.customer.username} - {self.status}"
