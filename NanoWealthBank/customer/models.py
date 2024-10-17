@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Customer(models.Model):
     customer_name = models.CharField(max_length=100)
@@ -70,3 +71,16 @@ class Fixed(models.Model):
     def __str__(self):
         return self.customer_name
     
+    class AccountStatement(models.Model):
+        date = models.DateTimeField(default=timezone.now)
+        TRANSACTION_TYPES = [
+            ('Deposit', 'Deposit'),
+            ('Withdrawal', 'Withdrawal'),
+        ]
+        type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
+        amount = models.DecimalField(max_digits=10, decimal_places=2)
+        current_balance = models.DecimalField(max_digits=10, decimal_places=2)
+
+        def __str__(self):
+            return f'{self.user.username} - {self.type} - {self.amount} - {self.current_balance}'
+

@@ -42,10 +42,6 @@ from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from .models import Customer, Admin
 
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from .models import Admin, Customer  # Import your models
-
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')

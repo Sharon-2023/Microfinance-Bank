@@ -36,22 +36,7 @@
             margin: 0;
         }
 
-        .navbar .user-info {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-        }
-
-        .navbar .user-info img {
-            max-width: 40px;
-            border-radius: 50%;
-            margin-left: 30px;
-        }
-
-        .navbar .user-info span {
-            font-size: 18px;
-            margin-right: 10px;
-        }
+        
 
         /* General Body Styling */
         body {
@@ -115,6 +100,9 @@
         .welcome-message {
             font-size: 24px;
             margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* Form Styling */
@@ -187,31 +175,35 @@
             background-color: #f2f2f2;
         }
 
-        /* Back to Dashboard Button Styles */
-.back-to-dashboard-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-decoration: none;
-    z-index: 1001; /* Ensure it stays above other elements */
-}
+        .back-to-dashboard-button {
+            
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            float: right; /* Aligns the button to the right within the content area */
+        }
 
-.back-to-dashboard-button:hover {
-    background-color: #45a049;
-}
+        .back-to-dashboard-button:hover {
+             background-color: #45a049;
+        }
 
-.error-message {
-    color: red; 
-    font-weight: bold; 
-}
+        .error-message {
+            color: red; 
+            font-weight: bold; 
+        }
 
+        .account-info {
+            display: flex;
+            justify-content: space-between; /* Align account number to the left and button to the right */
+            align-items: center;
+            margin-top: 10px;
+        }
 
     </style>
 </head>
@@ -224,13 +216,12 @@
             <h1>NanoWealth Bank</h1>
         </div>
         <div class="user-info">
-            <img src="{% static 'images/profile-icon.png' %}" alt="Profile Icon">
+            
             <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
         </div>
     </div>
 
-    <!-- Back to Dashboard Button -->
-    <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button">Back to Dashboard</a>
+    
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -239,6 +230,8 @@
             <li><a href="#" onclick="showForm('deposits-form')">Deposits</a></li>
             <li><a href="#" onclick="showForm('withdrawals-form')">Withdrawals</a></li>
             <li><a href="#" onclick="showTable()">Current Balance</a></li>
+            <!-- Back to Dashboard Button -->
+    <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button">Back to Dashboard</a>
         </ul>
     </div>
 
@@ -246,7 +239,12 @@
     <div class="content">
         <div class="welcome-message">
             Transaction Details
+            <div class="welcome-message">
+                <span style="float: right;">Account Number: {{ request.session.account_number }}</span> 
+            </div>
         </div>
+
+        
 
         <!-- Success/Error Messages -->
         {% if messages %}
