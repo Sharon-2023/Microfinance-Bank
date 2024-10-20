@@ -20,7 +20,11 @@ from django.template.loader import render_to_string
 from datetime import datetime
 from django.contrib import messages
 from .models import Savings
-
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+import json
 
 def home(request):
     return render(request,'home.html')
@@ -121,9 +125,9 @@ from .models import Customer
 user_pin = {}
 user_code = {}
 
-def generate_account_number():
-    """Generates a unique 12-digit account number."""
-    return 'NWB' + str(random.randint(1000000000, 9999999999))  
+#def generate_account_number():
+    #"""Generates a unique 12-digit account number."""
+    #return 'NWB' + str(random.randint(1000000000, 9999999999))  
 
 def signup(request):
     if request.method == 'POST':
@@ -135,11 +139,11 @@ def signup(request):
         customer_name = request.POST.get('customername')
 
         # Generate a unique account number
-        account_number = generate_account_number()
+        #account_number = generate_account_number()
         
         # Ensure the account number is unique (in case the random number conflicts with an existing one)
-        while Customer.objects.filter(account_number=account_number).exists():
-            account_number = generate_account_number()
+        #while Customer.objects.filter(account_number=account_number).exists():
+            #account_number = generate_account_number()
 
         # Create a new user with the generated account number
         user = Customer(
@@ -149,7 +153,7 @@ def signup(request):
             date_of_birth=dob,  # Ensure your model has this field
             mobile_number=mobile,  # Ensure your model has this field
             customer_name=customer_name,  # Ensure your model has this field
-            account_number=account_number  # Add the generated account number
+            #account_number=account_number  # Add the generated account number
         )
         user.save()
 
@@ -161,7 +165,7 @@ def signup(request):
             # Send email with the verification code and account number
             send_mail(
                 'Account Verification Code and Details',
-                f'Hello {customer_name},\n\nYour account number is {account_number}.\nYour verification code is {code}.',
+                f'Hello {customer_name},\nYour verification code is {code}.',
                 settings.EMAIL_HOST_USER,  # Use your configured email host user
                 [email],
                 fail_silently=False,
@@ -441,9 +445,65 @@ def savings_account(request):
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-# View for displaying the Apply Online form
+
+#Savings application email verification
+# Store verification codes temporarily (in a real application, use a more secure method)
+verification_codes = {}
+
 def savings_application(request):
     return render(request, 'savings_application.html')
+
+def send_verification_code(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if email:
+            # Generate a random 6-digit code
+            code = str(random.randint(100000, 999999))
+            verification_codes[email] = code
+
+            # Send email with verification code
+            subject = 'NanoWealthBank - Email Verification'
+            message = f'Your verification code is: {code}'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            
+            try:
+                send_mail(subject, message, from_email, recipient_list)
+                return JsonResponse({'success': True, 'message': 'Verification code sent successfully'})
+            except Exception as e:
+                return JsonResponse({'success': False, 'message': str(e)})
+        else:
+            return JsonResponse({'success': False, 'message': 'Email is required'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def verify_code(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        code = request.POST.get('code')
+        if email and code:
+            stored_code = verification_codes.get(email)
+            if stored_code and stored_code == code:
+                # Remove the used code
+                del verification_codes[email]
+                return JsonResponse({'success': True, 'message': 'Verification successful'})
+            else:
+                return JsonResponse({'success': False, 'message': 'Invalid verification code'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Email and code are required'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def submit_application(request):
+    if request.method == 'POST':
+        # Process the submitted application data
+        # You can access form data using request.POST
+        # Save the data to your database or perform any other required actions
+        
+        # For now, we'll just return a success message
+         # If everything is successful
+        return JsonResponse({'success': True, 'message': 'Application submitted successfully'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
 
 # View for handling form submission
 def submit_registration(request):
@@ -473,7 +533,19 @@ from django.urls import reverse
 # View for customer login requests- admin dashboard
 def customer_login_requests(request):
     pending_customers = Customer.objects.filter(is_active=False)
-    return render(request, 'customer_login_requests.html', {'pending_customers': pending_customers})
+    all_customers = Customer.objects.all()
+    
+    for customer in pending_customers:
+        if customer.document:
+            print(f"Customer {customer.id} document URL: {customer.document.url}")
+        else:
+            print(f"Customer {customer.id} has no document")
+    
+    context = {
+        'pending_customers': pending_customers,
+        'all_customers': all_customers,
+    }
+    return render(request, 'customer_login_requests.html', context)
 
 # Approve customer
 def approve_customer(request, customer_id):
@@ -667,3 +739,4 @@ def account_approval(request):
 
     return render(request, 'account_approval.html', context)
 
+#Savings account email verification

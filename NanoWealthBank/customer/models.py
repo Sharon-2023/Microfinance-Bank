@@ -10,6 +10,7 @@ class Customer(models.Model):
     mobile_number = models.CharField(max_length=15)
     date_of_birth = models.DateField(null=True, blank=True)
     account_number = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    #document = models.FileField(upload_to='customer_documents/', null=True, blank=True)
     is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.customer_name

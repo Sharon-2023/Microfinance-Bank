@@ -50,6 +50,7 @@ urlpatterns = [
     path('savings-accounts/', views.savings_accounts, name='savings_accounts'),
     path('savings_application/', views.savings_application, name='savings_application'),
     path('submit_registration/', views.submit_registration, name='submit_registration'),
+    path('savings-account/apply/', views.savings_application, name='savings_application'),
 
     #path('savings_requests/', views.savings_requests, name='savings_requests'),
     #path('approve_account/<int:account_id>/', views.approve_account, name='approve_account'),
@@ -83,6 +84,13 @@ urlpatterns = [
     #customer login requests- admin dashboard
     path('customer-requests/', views.customer_login_requests, name='customer_login_requests'),
     path('account-approval/', views.account_approval, name='account_approval'),
+
+    #Savings account verification
+    path('savings-application/', views.savings_application, name='savings_application'),
+    path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
+    path('verify-code/', views.verify_code, name='verify_code'),
+    path('submit-application/', views.submit_application, name='submit_application'),
+
 
 ]
 

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Code</title>
+    <style>
+        body {
+            font-family: 'Calibri', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .verification-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #2e7e3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1c5e28;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="verification-container">
+        <h2>Verification</h2>
+        <p>Please enter the verification code sent to your email.</p>
+        <input type="text" id="verificationCode" placeholder="Enter Verification Code" required>
+        <button onclick="verifyCode()">Verify</button>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const expectedCode = urlParams.get('code');
+
+        function verifyCode() {
+            const enteredCode = document.getElementById('verificationCode').value;
+            if (enteredCode === expectedCode) {
+                alert("Verification successful!");
+                // Redirect to a success page or further steps
+                window.location.href = 'success.html'; // Replace with your actual page
+            } else {
+                alert("Invalid verification code. Please try again.");
+            }
+        }
+    </script>
+
+</body>
+</html>
