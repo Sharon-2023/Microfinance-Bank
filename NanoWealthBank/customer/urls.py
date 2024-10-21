@@ -88,9 +88,13 @@ urlpatterns = [
     #Savings account verification
     path('savings-application/', views.savings_application, name='savings_application'),
     path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
-    path('verify-code/', views.verify_code, name='verify_code'),
+    path('verify-codes/', views.verify_codes, name='verify_codes'),
     path('submit-application/', views.submit_application, name='submit_application'),
 
 
+    #Current account application
+    path('current_application/', views.current_application, name='current_application'),
+        #current account interest
+    path('current_interest/', views .current_interest, name='current_interest'),
 ]
 

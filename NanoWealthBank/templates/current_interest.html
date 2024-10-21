@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Rates</title>
+    <style>
+        body {
+            font-family: 'Calibri', sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: xx-large;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead th {
+            color: #2c3e50;
+            font-weight: bold;
+            font-size: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        tbody td {
+            color: #4d2b62;
+            font-size: 16px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .back-button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 300px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #4e667e;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Savings Bank Account - Interest Rates</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Savings Bank Account - Slab</th>
+                <th>Rate of Interest (Effective from 26th March 2024)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Up to and including Rs.1 lakh</td>
+                <td>3.50%</td>
+            </tr>
+            <tr>
+                <td>Above Rs.1 lakh up to and including Rs.5 lakhs</td>
+                <td>6.00%</td>
+            </tr>
+            <tr>
+                <td>Above Rs.5 lakh up to and including Rs.15 Crore</td>
+                <td>7.50%</td>
+            </tr>
+            <tr>
+                <td>Above Rs.15 Crore</td>
+                <td>8.00%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{% url 'savings_account' %}" class="back-button">Back to Accounts</a>
+
+</body>
+</html>

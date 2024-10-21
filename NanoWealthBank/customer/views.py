@@ -25,6 +25,11 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+
+
 
 def home(request):
     return render(request,'home.html')
@@ -137,6 +142,7 @@ def signup(request):
         dob = request.POST.get('dob')
         mobile = request.POST.get('mobilenum')
         customer_name = request.POST.get('customername')
+        document_upload=request.FILES.get('document_upload')
 
         # Generate a unique account number
         #account_number = generate_account_number()
@@ -154,6 +160,7 @@ def signup(request):
             mobile_number=mobile,  # Ensure your model has this field
             customer_name=customer_name,  # Ensure your model has this field
             #account_number=account_number  # Add the generated account number
+            document_upload=document_upload
         )
         user.save()
 
@@ -172,7 +179,7 @@ def signup(request):
             )
         
             # After saving, redirect to the verification page
-            return redirect('verify_code', email=email)
+            return render(request,'verify_code.html', {'email': email})
     
     return render(request, 'signup.html')
 
@@ -227,9 +234,6 @@ def userdashboard(request):
     })
 
 
- 
-
-
 class ForgotPasswordView(TemplateView):
     template_name = 'forgotpassword.html'
 
@@ -275,6 +279,8 @@ def forgot_password(request):
             #return render(request, 'verify_code.html', {'error': 'Invalid verification code.'})
     
     #return render(request, 'verify_code.html')  # Render your verification template 
+
+
 def verify_code(request, email):
     
     if request.method == 'POST':
@@ -286,7 +292,7 @@ def verify_code(request, email):
             return render(request,'signup_confirmation.html')
         else:
             messages.error(request, 'Invalid code. Please try again.')       
-    return render(request, 'verify_code.html', {'email': email})
+    return render(request, 'verify_code.html')
 
 
 def verifyforgotcode(request, email):
@@ -447,7 +453,6 @@ from django.http import HttpResponse
 
 
 #Savings application email verification
-# Store verification codes temporarily (in a real application, use a more secure method)
 verification_codes = {}
 
 def savings_application(request):
@@ -476,7 +481,7 @@ def send_verification_code(request):
             return JsonResponse({'success': False, 'message': 'Email is required'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-def verify_code(request):
+def verify_codes(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         code = request.POST.get('code')
@@ -536,8 +541,8 @@ def customer_login_requests(request):
     all_customers = Customer.objects.all()
     
     for customer in pending_customers:
-        if customer.document:
-            print(f"Customer {customer.id} document URL: {customer.document.url}")
+        if customer.document_upload:
+            print(f"Customer {customer.id} document URL: {customer.document_upload.url}")
         else:
             print(f"Customer {customer.id} has no document")
     
@@ -739,4 +744,13 @@ def account_approval(request):
 
     return render(request, 'account_approval.html', context)
 
-#Savings account email verification
+
+
+
+#Current account application
+def current_application(request):
+    # Add your view logic here
+    return render(request, 'current_application.html')
+
+def current_interest(request):
+    return render(request, 'current_interest.html')

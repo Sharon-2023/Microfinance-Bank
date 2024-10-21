@@ -10,7 +10,7 @@ class Customer(models.Model):
     mobile_number = models.CharField(max_length=15)
     date_of_birth = models.DateField(null=True, blank=True)
     account_number = models.CharField(max_length=100, unique=True, blank=True, null=True)
-    #document = models.FileField(upload_to='customer_documents/', null=True, blank=True)
+    document_upload = models.FileField(upload_to='customer_documents/', null=True, blank=True)
     is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.customer_name
@@ -72,16 +72,3 @@ class Fixed(models.Model):
     def __str__(self):
         return self.customer_name
     
-    class AccountStatement(models.Model):
-        date = models.DateTimeField(default=timezone.now)
-        TRANSACTION_TYPES = [
-            ('Deposit', 'Deposit'),
-            ('Withdrawal', 'Withdrawal'),
-        ]
-        type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
-        amount = models.DecimalField(max_digits=10, decimal_places=2)
-        current_balance = models.DecimalField(max_digits=10, decimal_places=2)
-
-        def __str__(self):
-            return f'{self.user.username} - {self.type} - {self.amount} - {self.current_balance}'
-

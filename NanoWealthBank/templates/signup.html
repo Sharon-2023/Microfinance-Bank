@@ -172,7 +172,7 @@
   <div class="container">
     <h2>New User Sign Up</h2>
 
-    <form id="signupForm" method="POST" action="{% url 'signup' %}">
+    <form id="signupForm" method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="progress-bar">
         <div class="step active" data-step="1">Step 1</div>

@@ -252,6 +252,25 @@ tbody tr:hover {
 .hidden {
     display: none;
 }
+
+.back-to-dashboard-button {
+            
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 20px;
+            float: right; /* Aligns the button to the right within the content area */
+        }
+
+        .back-to-dashboard-button:hover {
+             background-color: #4e667e;
+        }
+
 </style>
 </head>
 <body>
@@ -291,6 +310,7 @@ tbody tr:hover {
             <li><a href="#">Loans</a></li>
             <li><a href="#">Deposits</a></li>
             <li><a href="#">NW Beyond Banking</a></li>
+            <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button">Back to Dashboard</a>
         </ul>
     </div>
 
@@ -431,67 +451,8 @@ tbody tr:hover {
 </div>
         </div>
 
-        <div id="zeroBalance" class="details-container">
-            <h3>Zero Balance Savings Account</h3>
-            <p>An account to the layer of customers who enjoys the asset portfolio with our bank. A unique product with no AMB and Rupay Classic Card.</p>
         
-            <!-- Read More Button -->
-                <button class="terms-button" onclick="readMore('zeroBalanceTable')">Read More</button>
-
-            <!-- Hidden table for Zero Balance Savings Account -->
-    <div id="zeroBalanceTable" class="table-container" style="display: none;">
-        <table border="1" cellpadding="10" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Features</th>
-                    <th>Zero Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Free ATM Transactions</td>
-                    <td>Unlimited Transactions</td>
-                </tr>
-                <tr>
-                    <td>Debit Card</td>
-                    <td>Rupay Classic</td>
-                </tr>
-                <tr>
-                    <td>ATM Cash Withdrawal Limit</td>
-                    <td>Rs. 5,000 per day</td>
-                </tr>
-                <tr>
-                    <td>Internet/Mobile Banking</td>
-                    <td>Yes</td>
-                </tr>
-                <tr>
-                    <td>Monthly Average Balance (MAB)</td>
-                    <td>None (Zero Balance)</td>
-                </tr>
-                <tr>
-                    <td>Free Cheque Book Leaves</td>
-                    <td>5 per half-year</td>
-                </tr>
-                <tr>
-                    <td>Special Offers</td>
-                    <td>Discounts on selected services</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Buttons -->
-        <div style="margin-top: 20px;">
-            <button class="terms-button">
-                <a href="{% url 'savings_application' %}" style="color: white; text-decoration: none;">Apply Online</a>
-            </button>
-            <button class="terms-button">
-                <a href="{% url 'savings_interest' %}" style="color: white; text-decoration: none;">Interest Rate</a>
-            </button>
-        </div>
-    </div>
-</div>
-        </div>
-    </div>
+       
 
     <!-- Modal for Terms and Conditions -->
     <div id="termsModal" class="modal">
