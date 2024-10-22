@@ -31,6 +31,7 @@ class Savings(models.Model):
     state = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
     account_type = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, default='pending') 
     is_active = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)  # Admin approval status
     is_blocked = models.BooleanField(default=False)   # Admin block status

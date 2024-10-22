@@ -85,6 +85,12 @@ urlpatterns = [
     path('customer-requests/', views.customer_login_requests, name='customer_login_requests'),
     path('account-approval/', views.account_approval, name='account_approval'),
 
+
+    #Admin- account approval and verification    
+    path('customer-account-approval/', views.customer_account_approval, name='customer_account_approval'),
+    path('approve-customer-account/<int:account_id>/', views.approve_customer_account, name='approve_customer_account'),
+
+
     #Savings account verification
     path('savings-application/', views.savings_application, name='savings_application'),
     path('send-verification-code/', views.send_verification_code, name='send_verification_code'),

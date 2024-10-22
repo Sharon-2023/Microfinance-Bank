@@ -599,10 +599,25 @@ def block_customer(request, customer_id):
 
 # from django.shortcuts import render
 # from .models import Savings  # Assuming you have a SavingsAccount model
+def customer_account_approval(request):
+    # Fetch data related to customer account approval here
+    pending_accounts = Customer.objects.filter(is_active=False)
 
-# def account_approval_view(request):
-#     pending_accounts = Savings.objects.filter(is_active='false')  # Adjust based on your model's status field
-#     return render(request, 'admin_dashboard.html', {'pending_accounts': pending_accounts})
+    context = {
+        'pending_accounts': pending_accounts,
+    }
+
+    return render(request, 'customer_account_approval.html', context)
+
+def approve_customer_account(request, account_id):
+    if request.method == 'POST':
+        account = get_object_or_404(Customer, id=account_id)
+        account.is_active = True
+        account.save()
+        # You might want to send an email to the customer here
+        return redirect('customer_account_approval')
+
+
 
 def savings_interest(request):
     return render(request, 'savings_interest.html')
