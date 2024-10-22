@@ -177,53 +177,78 @@
         }
 
         function verifyCode() {
-            const email = document.getElementById('email').value;
-            const code = document.getElementById('verificationCode').value;
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const email = document.getElementById('email').value;
+    const code = document.getElementById('verificationCode').value;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            fetch('/verify-code/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrftoken
-                },
-                body: `email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('Verification successful', true);
-                    nextStep(2);
-                } else {
-                    showNotification('Verification failed: ' + data.message, false);
-                }
-            });
+    console.log('Sending verification request with:', { email, code });
+
+    fetch('/code-verify/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrftoken
+        },
+        body: `email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`
+    })
+    .then(response => {
+        console.log('Raw response:', response);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        function submitApplication() {
-            const form = document.getElementById('savingsForm');
-            const formData = new FormData(form);
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            fetch('/submit-application/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrftoken
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('Application submitted successfully', true);
-                    setTimeout(() => {
-                        window.location.href = '/userdashboard/';  
-                    }, 2000);
-                } else {
-                    showNotification('Failed to submit application: ' + data.message, false);
-                }
-            });
+        return response.json();
+    })
+    .then(data => {
+        console.log('Verification response:', data);
+        if (data.success) {
+            console.log('Verification successful, moving to next step');
+            showNotification('Verification successful', true);
+            nextStep(2);
+        } else {
+            console.log('Verification failed');
+            showNotification('Verification failed: ' + (data.message || 'Unknown error'), false);
         }
+    })
+    .catch(error => {
+        console.error('Error during verification:', error);
+        showNotification('An error occurred during verification: ' + error.message, false);
+    });
+}
+
+function submitApplication() {
+    const form = document.getElementById('savingsForm');
+    const formData = new FormData(form);
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    console.log('Submitting application with data:', Object.fromEntries(formData));
+
+    fetch('/submit-application/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log('Raw response:', response);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Submission response:', data);
+        if (data.success) {
+            showNotification('Application submitted successfully', true);
+            setTimeout(() => {
+                window.location.href = '/userdashboard/';  
+            }, 2000);
+        } else {
+            showNotification('Failed to submit application: ' + data.message, false);
+        }
+    })
+    .catch(error => {
+        console.error('Error during submission:', error);
+        showNotification('An error occurred during submission: ' + error.message, false);
+    });
+}
 
         function nextStep(currentStep) {
             document.getElementById(`step${currentStep}`).classList.remove('active');

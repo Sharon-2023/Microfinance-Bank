@@ -26,6 +26,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -481,7 +482,7 @@ def send_verification_code(request):
             return JsonResponse({'success': False, 'message': 'Email is required'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-def verify_codes(request):
+def code_verify(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         code = request.POST.get('code')
@@ -497,15 +498,39 @@ def verify_codes(request):
             return JsonResponse({'success': False, 'message': 'Email and code are required'})
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+@csrf_exempt
 def submit_application(request):
     if request.method == 'POST':
-        # Process the submitted application data
-        # You can access form data using request.POST
-        # Save the data to your database or perform any other required actions
-        
-        # For now, we'll just return a success message
-         # If everything is successful
-        return JsonResponse({'success': True, 'message': 'Application submitted successfully'})
+        try:
+            # Extract data from request.POST
+            user = request.POST.get('user')
+            name = request.POST.get('name')
+            phone = request.POST.get('phone')
+            email= request.POST.get('email')
+            address = request.POST.get('address')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
+            pincode = request.POST.get('pinCode')
+            account_type = request.POST.get('accountType')
+
+            # Create new Savings object
+            savings = Savings(
+                user=user,
+                name=name,
+                phone=phone,
+                email=email,
+                address=address,
+                city=city,
+                state=state,
+                pincode=pincode,
+                account_type=account_type
+            )
+            savings.save()
+
+            return JsonResponse({'success': True, 'message': 'Application submitted successfully'})
+        except Exception as e:
+            print(f"Error saving application: {str(e)}")
+            return JsonResponse({'success': False, 'message': str(e)})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
@@ -551,6 +576,7 @@ def customer_login_requests(request):
         'all_customers': all_customers,
     }
     return render(request, 'customer_login_requests.html', context)
+
 
 # Approve customer
 def approve_customer(request, customer_id):
