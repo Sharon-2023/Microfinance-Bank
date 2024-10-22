@@ -21,7 +21,7 @@ class Admin(models.Model):
      password = models.CharField(max_length=100)
 
 class Savings(models.Model):
-    user=models.CharField(max_length=50)
+    
     name = models.CharField(max_length=50)
     phone= models.CharField(max_length=50)
     address = models.CharField(max_length=100)

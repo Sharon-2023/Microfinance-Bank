@@ -47,7 +47,7 @@ urlpatterns = [
     #path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
 
     path('savings-account/', views.savings_account, name='savings_account'),
-    path('savings-accounts/', views.savings_accounts, name='savings_accounts'),
+    # path('savings-accounts/', views.savings_accounts, name='savings_accounts'),
     path('savings_application/', views.savings_application, name='savings_application'),
     path('submit_registration/', views.submit_registration, name='submit_registration'),
     path('savings-account/apply/', views.savings_application, name='savings_application'),

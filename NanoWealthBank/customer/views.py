@@ -503,8 +503,8 @@ def submit_application(request):
     if request.method == 'POST':
         try:
             # Extract data from request.POST
-            user = request.POST.get('user')
-            name = request.POST.get('name')
+            name = request.POST.get('customerName')
+            print(name)
             phone = request.POST.get('phone')
             email= request.POST.get('email')
             address = request.POST.get('address')
@@ -515,7 +515,6 @@ def submit_application(request):
 
             # Create new Savings object
             savings = Savings(
-                user=user,
                 name=name,
                 phone=phone,
                 email=email,
@@ -601,7 +600,7 @@ def block_customer(request, customer_id):
 # from .models import Savings  # Assuming you have a SavingsAccount model
 def customer_account_approval(request):
     # Fetch data related to customer account approval here
-    pending_accounts = Customer.objects.filter(is_active=False)
+    pending_accounts = Savings.objects.filter(is_active=False)
 
     context = {
         'pending_accounts': pending_accounts,
@@ -628,47 +627,47 @@ from .models import Savings
 from django.contrib import messages
 
 # @login_required
-def savings_accounts(request):
-    print("hello")
-    if request.method == 'POST':
-        # Get the form data from the request
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        pincode = request.POST.get('pincode')
-        state = request.POST.get('state')
-        district = request.POST.get('district')
-        account_type = request.POST.get('account_type')
+# def savings_accounts(request):
+#     print("hello")
+#     if request.method == 'POST':
+    
+#         name = request.POST.get('name')
+#         phone = request.POST.get('phone')
+#         email = request.POST.get('email')
+#         address = request.POST.get('address')
+#         city = request.POST.get('city')
+#         pincode = request.POST.get('pincode')
+#         state = request.POST.get('state')
+#         district = request.POST.get('district')
+#         account_type = request.POST.get('account_type')
 
         
-        print(f"Form Data: Name={name}, Phone={phone}, Email={email}, Address={address}, City={city}, Pincode={pincode}, State={state}, District={district}, Account Type={account_type}")
+#         print(f"Form Data: Name={name}, Phone={phone}, Email={email}, Address={address}, City={city}, Pincode={pincode}, State={state}, District={district}, Account Type={account_type}")
 
-        user=request.session.get('username') 
-        account_request = Savings(
-                                        user=user,  # Get the current authenticated user
-                                        name=name,
-                                        phone=phone,
-                                        email=email,
-                                        address=address,
-                                        city=city,
-                                        pincode=pincode,
-                                        state=state,
-                                        district=district,
-                                        account_type=account_type  # Ensure account_type is properly handled
-                                        )
-        account_request.save()
+#         user=request.session.get('username') 
+#         account_request = Savings(
+#                                         user=user,  
+#                                         name=name,
+#                                         phone=phone,
+#                                         email=email,
+#                                         address=address,
+#                                         city=city,
+#                                         pincode=pincode,
+#                                         state=state,
+#                                         district=district,
+#                                         account_type=account_type  
+#                                         )
+#         account_request.save()
 
-            # Notify the user that their request is pending admin approval
-        messages.success(request, 'Your savings account request has been submitted and is pending approval.')
+            
+#         messages.success(request, 'Your savings account request has been submitted and is pending approval.')
 
-        return render(request, 'customer/userdashboard.html')  # Redirect to the user's dashboard or any desired page
-    else:
-            # If some fields are missing, show an error message
-         messages.error(request, 'Please fill in all required fields.')
+#         return render(request, 'customer/userdashboard.html')  
+#     else:
+           
+#          messages.error(request, 'Please fill in all required fields.')
     
-    return render(request, 'savings_application.html')
+#     return render(request, 'savings_application.html')
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
