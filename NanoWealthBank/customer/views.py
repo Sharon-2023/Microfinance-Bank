@@ -356,8 +356,7 @@ def edit_customer(request, id):
         customer.email = email
         customer.save()
 
-        messages.success(request, f'Customer {
-                         customer.customer_name} has been updated.')
+        messages.success(request, f'Customer {customer.customer_name} has been updated.')
         return redirect('admindashboard')
 
     return render(request, 'edit_customer.html', {'customer': customer})
