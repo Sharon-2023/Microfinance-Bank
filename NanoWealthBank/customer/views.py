@@ -334,8 +334,7 @@ def approve_customer(request, id):
     customer.is_active = True
     customer.save()
     if customer:
-        messages.success(request, f'Customer {
-                         customer.customer_name} has been approved.')
+        messages.success(request, f'Customer {customer.customer_name} has been approved.')
         return redirect('admindashboard')
     return redirect('admin_dashboard')
 
