@@ -752,8 +752,7 @@ def download_statement(request):
     response = HttpResponse(response_buffer, content_type='application/pdf')
     if period != '':
         print("hi")
-        response['Content-Disposition'] = f'attachment; filename="transaction_statement_{
-            period}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="transaction_statement_{period}.pdf"'
     else:
         response['Content-Disposition'] = 'attachment; filename="transaction_statement.pdf"'
 
