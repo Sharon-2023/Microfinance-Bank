@@ -100,8 +100,8 @@ def login(request):
                         request.session['user_email'] = loan_officer.email
                         # Set role as loan officer
                         request.session['user_role'] = 'loan_officer'
-                        request.session['username'] = f"{
-                            loan_officer.first_name} {loan_officer.last_name}"
+                        # request.session['username'] = f"{
+                        #     loan_officer.first_name} {loan_officer.last_name}"
                         return redirect('loanofficerdashboard')
                     else:
                         messages.error(
