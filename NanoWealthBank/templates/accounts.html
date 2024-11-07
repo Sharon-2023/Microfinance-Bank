@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% load static %} 
+{% block title %}Accounts{% endblock %}
+{% block content %}
+<div class="card-container">
+    <!-- First Card -->
+    <div class="card">
+        <h2>Saving Account</h2>
+        <p>This account offers essential features for new users who want to start with basic functionalities.</p>
+                <h3>Terms and Conditions</h3>
+                <p>1. These terms and conditions govern your use of our services.</p>
+                <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
+                <p>3. The bank reserves the right to amend these terms at any time.</p>
+                <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
+                <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
+                    A Savings Bank Account may also be opened in
+                    the single name of a minor aged 10 years or more to be operated upon by the minor.
+                    the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
+                    the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
+                <p>6. There is no limit to the maximum balance in accounts</p>
+        <button ><a href="{% url 'login' %}">Apply</a></button>
+    </div>
+
+    <!-- Second Card -->
+    <div class="card">
+        <h2>Current Account</h2>
+        <p>Unlock advanced features and tools with the premium account, perfect for experienced users.</p>
+        <h3>Terms and Conditions</h3>
+        <p>1. These terms and conditions govern your use of our services.</p>
+        <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
+        <p>3. The bank reserves the right to amend these terms at any time.</p>
+        <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
+        <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
+            A Savings Bank Account may also be opened in
+            the single name of a minor aged 10 years or more to be operated upon by the minor.
+            the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
+            the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
+        <button><a href="{% url 'login' %}">Apply</a></button>
+    </div>
+</div>
+{% endblock %}

@@ -1,243 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Login Requests</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+{% extends 'baseadmin.html' %} {% block title %}Customer Users{% endblock %} 
+{% block content %}
 
-        .navbar {
-            background-color: #232041;
-            color: white;
-            padding: 10px 20px;
-        }
+<div>
+  <!-- Pending Customer Approval Table -->
+  <h2>Pending Customer Login Requests</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Document</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in pending_customers %}
+      <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.customer_name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
+        <td>
+          {% if customer.document_upload %}
+          <button
+            class="view-doc-btn"
+            onclick="viewDocument('{{ customer.document_upload.url }}')"
+          >
+            View Document
+          </button>
+          {% else %} No document {% endif %}
+        </td>
+        <td>
+          <form
+            method="post"
+            action="{% url 'approve_customer' customer.id %}"
+            style="display: inline;background-color:inherit;padding:0"
+          >
+            {% csrf_token %}
+            <button class="approve-btn" type="submit">Approve</button>
+          </form>
+          <form
+            method="post"
+            action="{% url 'block_customer' customer.id %}"
+            style="display: inline;background-color:inherit;padding:0"
+          >
+            {% csrf_token %}
+            <button class="block-btn" type="submit">Block</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No pending approval requests.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-        .navbar h1 {
-            margin: 0;
-        }
+  <!-- Full Customer List Table -->
+  <h2>Customer List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Document</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in all_customers %}
+      <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.customer_name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
+        <td>
+          {% if customer.document_upload %}
+          <button
+            class="view-doc-btn"
+            onclick="viewDocument('{{ customer.document_upload.url }}')"
+          >
+            View Document
+          </button>
+          {% else %}
+          <span>No Document</span>
+          {% endif %}
+        </td>
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
+        <td>
+          <form
+            method="post"
+            action="{% url 'block_customer' customer.id %}"
+            style="display: inline;background-color:inherit;padding:0"
+          >
+            {% csrf_token %}
+            <button class="block-btn" type="submit">Block</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No customers found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+<!-- Modal for document viewing -->
+<div id="documentModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Customer Document</h2>
+    <a id="documentLink" href="" target="_blank">Open Document</a>
+    <!-- The link will open the document -->
+  </div>
+</div>
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
+<script>
+  // Get the modal
+  var modal = document.getElementById("documentModal");
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
 
-        .approve-btn, .block-btn, .view-doc-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: white;
-        }
-
-        .approve-btn {
-            background-color: #4CAF50;
-        }
-
-        .block-btn {
-            background-color: #f44336;
-        }
-
-        .view-doc-btn {
-            background-color: #008CBA;
-        }
-
-        .approve-btn:hover, .block-btn:hover, .view-doc-btn:hover {
-            opacity: 0.8;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar">
-        <h1>Customer Login Requests</h1>
-    </div>
-
-    <div class="container">
-        <!-- Pending Customer Approval Table -->
-        <h2>Pending Customer Login Requests</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Customer Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Document</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in pending_customers %}
-                <tr>
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.customer_name }}</td>
-                    <td>{{ customer.email }}</td>
-                    <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
-                    <td>
-                        {% if customer.document %}
-                        <button class="view-doc-btn" onclick="viewDocument('{{ customer.document.url }}')">View Document</button>
-                    {% else %}
-                        No document
-                    {% endif %}                    
-                </td>
-                    <td>
-                        <form method="post" action="{% url 'approve_customer' customer.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="approve-btn" type="submit">Approve</button>
-                        </form>
-                        <form method="post" action="{% url 'block_customer' customer.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="block-btn" type="submit">Block</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6">No pending approval requests.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Full Customer List Table -->
-        <h2>Customer List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Customer Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Document</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in all_customers %}
-                <tr>
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.customer_name }}</td>
-                    <td>{{ customer.email }}</td>
-                    <td>{{ customer.is_active|yesno:"Approved,Pending" }}</td>
-                    <td>
-                        {% if customer.document_upload %}
-                            <button class="view-doc-btn" onclick="viewDocument('{{ customer.document_upload.url }}')">View Document</button>
-                        {% else %}
-                            <span>No Document</span>
-                        {% endif %}
-                    </td>
-                    
-                    <td>
-                        <form method="post" action="{% url 'block_customer' customer.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button class="block-btn" type="submit">Block</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6">No customers found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Modal for document viewing -->
-    <div id="documentModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Customer Document</h2>
-            <a id="documentLink" href="" target="_blank">Open Document</a> <!-- The link will open the document -->
-        </div>
-    </div>
-    
-
-    <script>
-        // Get the modal
-        var modal = document.getElementById("documentModal");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // Function to open the modal and load the document
-        function viewDocument(url) {
+  // Function to open the modal and load the document
+  function viewDocument(url) {
     console.log("Attempting to view document at URL:", url);
     modal.style.display = "block";
-    document.getElementById("documentViewer").href = url;
-}
+    document.getElementById("documentLink").href = url;
+  }
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+</script>
+{% endblock %}

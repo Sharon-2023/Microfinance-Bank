@@ -1,0 +1,46 @@
+{% extends "loanofficer/base.html" %}
+
+{% block title %}Loan Approval{% endblock %}
+
+{% block body %}
+<h2 class="loan_title">Pending Loan Applications</h2>
+
+{% if loans %}
+<table>
+    <thead>
+        <tr>
+            <th>Applicant Name</th>
+            <th>Loan Type</th>
+            <th>Loan Amount</th>
+            <th>Monthly Income</th>
+            <th>Employment Status</th>
+            <th>Approval</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for loan in loans %}
+        <tr>
+            <td>{{ loan.name }}</td>
+            <td>{{ loan.get_loan_type_display }}</td>
+            <td>{{ loan.loan_amount_required }}</td>
+            <td>{{ loan.monthly_income }}</td>
+            <td>{{ loan.get_employment_status_display }}</td>
+            <td>
+                {% if not loan.is_approved %}
+                <form action="{% url 'approve_loan' loan.id %}" style="box-shadow: none;"  method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="approve-button">Approve</button>
+                </form>
+                {% else %}
+                <span style="color: green;">Approved</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No pending loan applications.</p>
+{% endif %}
+
+{% endblock %}

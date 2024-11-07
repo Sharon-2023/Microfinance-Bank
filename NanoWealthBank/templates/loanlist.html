@@ -1,0 +1,125 @@
+{% extends 'baseadmin.html' %} {% block title %}Savings Account Approval{% endblock %} {% block content %}
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+<h2>Loans Needed to Approved</h2>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead>
+    <tr>
+      <th>ORDER ID</th>
+      <th>OWNER</th>
+      <th>OWNER ADDRESS</th>
+      <th>OWNER EMPLOYMENT STATUS</th>
+      <th>OWNER INCOME CERTIFICATE</th>
+      <th>LOAN AMOUNT</th>
+      <th>LOAN PURPOSE</th>
+      <th>LOAN TYPE</th>
+      <th>STATUS</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for loan in loans %}
+    <tr>
+      <td>{{ loan.id }}</td>
+      <td>{{ loan.name }}</td>
+      <td>
+        {{ loan.address}}
+        &nbsp;{{loan.city}}
+        &nbsp;{{loan.state}}&nbsp;{{loan.pincode}}
+      </td>
+      <td>
+        {{ loan.employment_status }}&nbsp; Income: {{loan.monthly_income}}
+      </td>
+      <td>
+        {% if loan.salary_certificate %}
+        <button
+          class="view-doc-btn"
+          onclick="viewDocument('{{ loan.salary_certificate.url }}')"
+        >
+          View Document
+        </button>
+        {% else %}
+        <span>No Document</span>
+        {% endif %}
+      </td>
+      <td>{{ loan.loan_amount_required }}</td>
+      <td>{{ loan.loan_purpose }}</td>
+      <td>{{ loan.loan_type }}</td>
+
+      <td>
+        {% if loan.is_approved %}
+        <form
+          style="padding: 0; background: none"
+          method="POST"
+          action="{% url 'loan_status_toggle' loan.id %}"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="reject"
+            class="btn btn-danger btn-sm"
+          >
+            Reject
+          </button>
+        </form>
+
+        {% else %}
+        <form
+          style="padding: 0; background: none"
+          method="POST"
+          action="{% url 'loan_status_toggle' loan.id %}"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="approve"
+            class="btn btn-success btn-sm"
+          >
+            Approve
+          </button>
+        </form>
+
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Modal for document viewing -->
+<div id="documentModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Customer Document</h2>
+      <a id="documentLink" href="" target="_blank">Open Document</a>
+      <!-- The link will open the document -->
+    </div>
+  </div>
+<script>
+    // Get the modal
+    var modal = document.getElementById("documentModal");
+  
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+  
+    // Function to open the modal and load the document
+    function viewDocument(url) {
+      console.log("Attempting to view document at URL:", url);
+      modal.style.display = "block";
+      document.getElementById("documentLink").href = url;
+    }
+  
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+  
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+{% endblock %}

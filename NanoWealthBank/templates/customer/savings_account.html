@@ -1,0 +1,191 @@
+{% extends 'customer/base.html' %} {% load static %} {% block title %} Current
+Account{% endblock %} {% block content %}
+<div class="sav-account">
+            <h2>Savings Account</h2>
+            <p>We offer the finest savings accounts for all categories of customers. The customized options can ideally serve the needs of the end customers. With user-friendly online banking features, accessing your Savings Account could not get any better.</p>
+            
+            <!-- Button to show terms and conditions -->
+            <button class="terms-button" onclick="showModal()">View Terms and Conditions</button>
+
+            <!-- Details containers for each savings account type -->
+            <div id="student" class="details-container">
+                <h3>Student Savings Account</h3>
+                <p>To inculcate Savings habit among children and initiate them to the whole array of Banking Services.</p>
+
+                <!-- Read More and Apply Now Buttons -->
+                <div class="button-container">
+                    <button class="terms-button" onclick="showPopup('studentTable')">Read More</button>
+                    <button class="action-button">
+                        <a href="{% url 'savings_application' %}" style="color: white; text-decoration: none;">Apply Now</a>
+                    </button>
+                </div>
+
+                <!-- Popup for Student Savings Account -->
+                <div id="studentTablePopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close" onclick="closePopup('studentTablePopup')">&times;</span>
+                        <h3>Student Savings Account Details</h3>
+                        <div class="table-container">
+                            <table border="1" cellpadding="10" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Features</th>
+                                        <th>Student</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Free transactions through Bank ATMs</td>
+                                        <td>Free Unlimited Transactions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Debit Card</td>
+                                        <td>Rupay Classic</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ATM cash withdrawal / per day</td>
+                                        <td>Classic: Rs. 5000/-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Anywhere Banking</td>
+                                        <td>Unlimited Non-Cash Transactions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cash deposit charges at home/ non-home branch</td>
+                                        <td>Nil</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cash withdrawal charges at home/non-home branch</td>
+                                        <td>Nil</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Free cheque leaves per half year</td>
+                                        <td>Nil</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mobile/Internet Banking</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monthly Average Balance (MAB)</td>
+                                        <td>Rs. 1000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mahilaSree" class="details-container">
+                <h3>Mahila Sree Savings Account</h3>
+                <p>An account tailored exclusively for empowered women. An account to save your hard earned money and reap higher benefits.</p>
+                
+                <!-- Read More and Apply Now Buttons -->
+                <div class="button-container">
+                    <button class="terms-button" onclick="showPopup('mahilaSreeTable')">Read More</button>
+                    <button class="action-button">
+                        <a href="{% url 'savings_application' %}" style="color: white; text-decoration: none;">Apply Now</a>
+                    </button>
+                </div>
+
+                <!-- Popup for Mahila Sree Savings Account -->
+                <div id="mahilaSreeTablePopup" class="popup">
+                    <div class="popup-content">
+                        <span class="close" onclick="closePopup('mahilaSreeTablePopup')">&times;</span>
+                        <h3>Mahila Sree Savings Account Details</h3>
+                        <div class="table-container">
+                            <table border="1" cellpadding="10" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Features</th>
+                                        <th>Mahila Sree</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Free ATM Transactions</td>
+                                        <td>Unlimited Transactions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Debit Card</td>
+                                        <td>Rupay Platinum</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ATM Cash Withdrawal Limit</td>
+                                        <td>Rs. 10,000 per day</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Internet/Mobile Banking</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monthly Average Balance (MAB)</td>
+                                        <td>Rs. 2,500</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nomination Facility </td>
+                                        <td>✔</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Terms and Conditions -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Terms and Conditions</h2>
+            <p>1. These terms and conditions govern your use of our services.</p>
+            <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
+            <p>3. The bank reserves the right to amend these terms at any time.</p>
+            <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
+            <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
+                A Savings Bank Account may also be opened in
+                the single name of a minor aged 10 years or more to be operated upon by the minor.
+                the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
+                the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
+            <p>6. There is no limit to the maximum balance in accounts</p>
+        </div>
+    </div>
+    <script>
+
+        // Function to show the Terms and Conditions modal
+        function showModal() {
+            var modal = document.getElementById('termsModal');
+            modal.style.display = 'block';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            var modal = document.getElementById('termsModal');
+            modal.style.display = 'none';
+        }
+
+        // Function to show popup
+        function showPopup(tableId) {
+            var popup = document.getElementById(tableId + 'Popup');
+            popup.style.display = 'block';
+        }
+
+        // Function to close popup
+        function closePopup(popupId) {
+            var popup = document.getElementById(popupId);
+            popup.style.display = 'none';
+        }
+
+        // Close popup if clicked outside the content
+        window.onclick = function(event) {
+            if (event.target.classList.contains('popup')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% load static %} 
+{% block title %}Services{% endblock %}
+{% block content %}
+<header>
+    <h1>Bank Services</h1>
+    <p>Your one-stop solution for all financial services.</p>
+</header>
+
+<!-- Services Container -->
+<div class="services-container">
+    
+    <!-- Service 1: Checking Accounts -->
+    <div class="service-card">
+        <h3>Checking Accounts</h3>
+        <p>Manage your daily expenses with ease using our flexible checking accounts, designed to meet your financial needs.</p>
+        <a href="{% url 'login' %}">Learn More</a>
+    </div>
+
+    <!-- Service 2: Savings Accounts -->
+    <div class="service-card">
+        <h3>Savings Accounts</h3>
+        <p>Start saving with competitive interest rates, secure accounts, and easy access to your money when you need it.</p>
+        <a href="{% url 'login' %}">Learn More</a>
+    </div>
+
+    <!-- Service 3: Personal Loans -->
+    <div class="service-card">
+        <h3>Personal Loans</h3>
+        <p>Whether you need a loan for personal expenses, home improvements, or debt consolidation, we have options tailored for you.</p>
+        <a href="{% url 'login' %}">Learn More</a>
+    </div>
+
+    <!-- Service 4: Investment Services -->
+    <div class="service-card">
+        <h3>Deposit Services</h3>
+        <p>Plan for your future with our investment services, offering expert advice and a range of investment options.</p>
+        <a href="{% url 'login' %}">Learn More</a>
+    </div>
+
+</div>
+{% endblock %}

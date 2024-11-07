@@ -1,0 +1,374 @@
+body {
+    background-color: #FFFFFF;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    /* Enable smooth scrolling */
+}
+
+.navbar {
+    background-color: #2c3e50;
+    position: fixed;
+    /* Fix the navbar at the top */
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    /* Ensure it stays above other content */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    color: #ecf0f1;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #3498db;
+}
+
+.carousel {
+    width: 100%;
+    height: 80vh;
+    /* Height of the carousel */
+    max-width: 100%;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    /* Ensure the carousel is positioned correctly */
+    margin-top: 80px;
+    /* Adjust margin to account for fixed navbar */
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+    /* Ensure the slides take up the full height of the carousel */
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    /* Ensure each slide takes up the full height of the carousel */
+    display: flex;
+    justify-content: center;
+    /* Center the image inside the slide */
+}
+
+.slide img {
+    width: 100%;
+    border-radius: 10px;
+    height: 100%;
+    /* Maintain the image's aspect ratio */
+    object-fit: cover;
+    /* Ensure the image covers the entire slide area */
+}
+
+.indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.indicator.active {
+    background-color: #ffffff;
+}
+
+.banner-highlights {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.banner-highlights h2 {
+    margin: 0;
+}
+
+.banner-highlights p {
+    margin: 5px 0 0;
+}
+
+/* Add a container for the accounts section to center it */
+.accounts-container {
+    display: flex;
+    justify-content: center;
+    /* Center horizontally */
+    margin-top: 20px;
+}
+
+/* Style for Accounts Section */
+.accounts-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    /* Adjust width as needed */
+    max-width: 600px;
+    /* Set a max-width for larger screens */
+}
+
+.accounts-section h2 {
+    margin-bottom: 20px;
+}
+
+.accounts-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.accounts-section ul li {
+    margin-bottom: 10px;
+}
+
+/* Container styling for the cards */
+.card-container {
+    display: flex;
+    gap: 20px;
+    margin: 200px;
+}
+
+/* Card styling */
+.card {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Title of each card */
+.card h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Description text in the card */
+.card p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Apply button styling */
+.card button {
+    padding: 10px 20px;
+    font-size: 16px;
+
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.card button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.card button:hover {
+    background-color: #0056b3;
+}
+
+/* Header styling */
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin: 70px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* Container for services */
+.services-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual service card */
+.service-card {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+}
+
+.service-card h3 {
+    color: #333;
+    font-size: 22px;
+    margin-top: 0;
+}
+
+.service-card p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Button styling */
+.service-card a {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.service-card a:hover {
+    background-color: #0056b3;
+}
+
+/* Content container */
+.about-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section styling */
+.about-section {
+    margin-bottom: 30px;
+}
+
+.about-section h2 {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.about-section p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Contact info styling */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Contact container */
+.contact-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section styling */
+.contact-section {
+    margin-bottom: 30px;
+}
+
+.contact-section h2 {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* Contact form styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input, textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Submit button styling */
+.contact-section button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.contact-section button:hover {
+    background-color: #0056b3;
+}
+
+/* Contact info styling */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Map section styling */
+.map-container {
+    width: 100%;
+    height: 300px;
+    background-color: #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    line-height: 300px;
+    color: #666;
+    font-size: 16px;
+}

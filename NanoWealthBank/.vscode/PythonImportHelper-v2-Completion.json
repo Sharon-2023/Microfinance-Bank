@@ -1,0 +1,2218 @@
+[
+    {
+        "label": "django.utils.timezone",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.utils.timezone",
+        "description": "django.utils.timezone",
+        "detail": "django.utils.timezone",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "django.db.models.deletion",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "django.db.models.deletion",
+        "description": "django.db.models.deletion",
+        "detail": "django.db.models.deletion",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "messages",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "messages",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "Admin",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Current",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Customer",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "FixedDeposit",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Loan",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "LoanOfficer",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Savings",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Transaction",
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "isExtraImport": true,
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "AppConfig",
+        "importPath": "django.apps",
+        "description": "django.apps",
+        "isExtraImport": true,
+        "detail": "django.apps",
+        "documentation": {}
+    },
+    {
+        "label": "forms",
+        "importPath": "django",
+        "description": "django",
+        "isExtraImport": true,
+        "detail": "django",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
+        "label": "timezone",
+        "importPath": "django.utils",
+        "description": "django.utils",
+        "isExtraImport": true,
+        "detail": "django.utils",
+        "documentation": {}
+    },
+    {
+        "label": "make_password",
+        "importPath": "django.contrib.auth.hashers",
+        "description": "django.contrib.auth.hashers",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.hashers",
+        "documentation": {}
+    },
+    {
+        "label": "check_password",
+        "importPath": "django.contrib.auth.hashers",
+        "description": "django.contrib.auth.hashers",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.hashers",
+        "documentation": {}
+    },
+    {
+        "label": "make_password",
+        "importPath": "django.contrib.auth.hashers",
+        "description": "django.contrib.auth.hashers",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.hashers",
+        "documentation": {}
+    },
+    {
+        "label": "check_password",
+        "importPath": "django.contrib.auth.hashers",
+        "description": "django.contrib.auth.hashers",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.hashers",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
+        "documentation": {}
+    },
+    {
+        "label": "PasswordResetTokenGenerator",
+        "importPath": "django.contrib.auth.tokens",
+        "description": "django.contrib.auth.tokens",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "default_token_generator",
+        "importPath": "django.contrib.auth.tokens",
+        "description": "django.contrib.auth.tokens",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "reverse",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "path",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "include",
+        "importPath": "django.urls",
+        "description": "django.urls",
+        "isExtraImport": true,
+        "detail": "django.urls",
+        "documentation": {}
+    },
+    {
+        "label": "views",
+        "importPath": "django.contrib.auth",
+        "description": "django.contrib.auth",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth",
+        "documentation": {}
+    },
+    {
+        "label": "render",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
+        "label": "redirect",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
+        "label": "get_object_or_404",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
+        "label": "HttpResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "JsonResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
+        "label": "TemplateView",
+        "importPath": "django.views.generic",
+        "description": "django.views.generic",
+        "isExtraImport": true,
+        "detail": "django.views.generic",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "django.contrib.auth.models",
+        "description": "django.contrib.auth.models",
+        "isExtraImport": true,
+        "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "send_mail",
+        "importPath": "django.core.mail",
+        "description": "django.core.mail",
+        "isExtraImport": true,
+        "detail": "django.core.mail",
+        "documentation": {}
+    },
+    {
+        "label": "send_mail",
+        "importPath": "django.core.mail",
+        "description": "django.core.mail",
+        "isExtraImport": true,
+        "detail": "django.core.mail",
+        "documentation": {}
+    },
+    {
+        "label": "urlsafe_base64_decode",
+        "importPath": "django.utils.http",
+        "description": "django.utils.http",
+        "isExtraImport": true,
+        "detail": "django.utils.http",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "csrf_exempt",
+        "importPath": "django.views.decorators.csrf",
+        "description": "django.views.decorators.csrf",
+        "isExtraImport": true,
+        "detail": "django.views.decorators.csrf",
+        "documentation": {}
+    },
+    {
+        "label": "Decimal",
+        "importPath": "decimal",
+        "description": "decimal",
+        "isExtraImport": true,
+        "detail": "decimal",
+        "documentation": {}
+    },
+    {
+        "label": "letter",
+        "importPath": "reportlab.lib.pagesizes",
+        "description": "reportlab.lib.pagesizes",
+        "isExtraImport": true,
+        "detail": "reportlab.lib.pagesizes",
+        "documentation": {}
+    },
+    {
+        "label": "canvas",
+        "importPath": "reportlab.pdfgen",
+        "description": "reportlab.pdfgen",
+        "isExtraImport": true,
+        "detail": "reportlab.pdfgen",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "PdfReader",
+        "importPath": "PyPDF2",
+        "description": "PyPDF2",
+        "isExtraImport": true,
+        "detail": "PyPDF2",
+        "documentation": {}
+    },
+    {
+        "label": "PdfWriter",
+        "importPath": "PyPDF2",
+        "description": "PyPDF2",
+        "isExtraImport": true,
+        "detail": "PyPDF2",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "get_asgi_application",
+        "importPath": "django.core.asgi",
+        "description": "django.core.asgi",
+        "isExtraImport": true,
+        "detail": "django.core.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "views",
+        "importPath": "customer",
+        "description": "customer",
+        "isExtraImport": true,
+        "detail": "customer",
+        "documentation": {}
+    },
+    {
+        "label": "static",
+        "importPath": "django.conf.urls.static",
+        "description": "django.conf.urls.static",
+        "isExtraImport": true,
+        "detail": "django.conf.urls.static",
+        "documentation": {}
+    },
+    {
+        "label": "get_wsgi_application",
+        "importPath": "django.core.wsgi",
+        "description": "django.core.wsgi",
+        "isExtraImport": true,
+        "detail": "django.core.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0001_initial",
+        "description": "customer.migrations.0001_initial",
+        "peekOfCode": "class Migration(migrations.Migration):\n    initial = True\n    dependencies = [\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='AccountStatement',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('date', models.DateTimeField(default=django.utils.timezone.now)),",
+        "detail": "customer.migrations.0001_initial",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0002_savingsaccountapplication_delete_accountstatement_and_more",
+        "description": "customer.migrations.0002_savingsaccountapplication_delete_accountstatement_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0001_initial'),\n        migrations.swappable_dependency(settings.AUTH_USER_MODEL),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='SavingsAccountApplication',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),",
+        "detail": "customer.migrations.0002_savingsaccountapplication_delete_accountstatement_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0003_rename_document_customer_document_upload",
+        "description": "customer.migrations.0003_rename_document_customer_document_upload",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0002_savingsaccountapplication_delete_accountstatement_and_more'),\n    ]\n    operations = [\n        migrations.RenameField(\n            model_name='customer',\n            old_name='document',\n            new_name='document_upload',\n        ),",
+        "detail": "customer.migrations.0003_rename_document_customer_document_upload",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0004_delete_savingsaccountapplication",
+        "description": "customer.migrations.0004_delete_savingsaccountapplication",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0003_rename_document_customer_document_upload'),\n    ]\n    operations = [\n        migrations.DeleteModel(\n            name='SavingsAccountApplication',\n        ),\n    ]",
+        "detail": "customer.migrations.0004_delete_savingsaccountapplication",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0005_savings_status",
+        "description": "customer.migrations.0005_savings_status",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0004_delete_savingsaccountapplication'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='savings',\n            name='status',\n            field=models.CharField(default='pending', max_length=20),\n        ),",
+        "detail": "customer.migrations.0005_savings_status",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0006_customer_status",
+        "description": "customer.migrations.0006_customer_status",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0005_savings_status'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='customer',\n            name='status',\n            field=models.CharField(default='pending', max_length=20),\n        ),",
+        "detail": "customer.migrations.0006_customer_status",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0007_remove_customer_status",
+        "description": "customer.migrations.0007_remove_customer_status",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0006_customer_status'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='customer',\n            name='status',\n        ),\n    ]",
+        "detail": "customer.migrations.0007_remove_customer_status",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0008_remove_savings_user",
+        "description": "customer.migrations.0008_remove_savings_user",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0007_remove_customer_status'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='savings',\n            name='user',\n        ),\n    ]",
+        "detail": "customer.migrations.0008_remove_savings_user",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0009_savings_account_number",
+        "description": "customer.migrations.0009_savings_account_number",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0008_remove_savings_user'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='savings',\n            name='account_number',\n            field=models.CharField(blank=True, max_length=100, null=True, unique=True),\n        ),",
+        "detail": "customer.migrations.0009_savings_account_number",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0010_remove_current_district",
+        "description": "customer.migrations.0010_remove_current_district",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0009_savings_account_number'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='current',\n            name='district',\n        ),\n    ]",
+        "detail": "customer.migrations.0010_remove_current_district",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0011_customer_balance_transaction",
+        "description": "customer.migrations.0011_customer_balance_transaction",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0010_remove_current_district'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='customer',\n            name='balance',\n            field=models.DecimalField(decimal_places=2, default=0, max_digits=10),\n        ),",
+        "detail": "customer.migrations.0011_customer_balance_transaction",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0012_customer_pin",
+        "description": "customer.migrations.0012_customer_pin",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0011_customer_balance_transaction'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='customer',\n            name='pin',\n            field=models.CharField(blank=True, max_length=6, null=True),\n        ),",
+        "detail": "customer.migrations.0012_customer_pin",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0013_remove_customer_pin_customer_pin_hash",
+        "description": "customer.migrations.0013_remove_customer_pin_customer_pin_hash",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0012_customer_pin'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='customer',\n            name='pin',\n        ),\n        migrations.AddField(",
+        "detail": "customer.migrations.0013_remove_customer_pin_customer_pin_hash",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0014_loanofficer",
+        "description": "customer.migrations.0014_loanofficer",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0013_remove_customer_pin_customer_pin_hash'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='LoanOfficer',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('first_name', models.CharField(max_length=100)),",
+        "detail": "customer.migrations.0014_loanofficer",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0015_remove_customer_account_number_and_more",
+        "description": "customer.migrations.0015_remove_customer_account_number_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0014_loanofficer'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='customer',\n            name='account_number',\n        ),\n        migrations.AddField(",
+        "detail": "customer.migrations.0015_remove_customer_account_number_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0016_alter_savings_account_number",
+        "description": "customer.migrations.0016_alter_savings_account_number",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0015_remove_customer_account_number_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='savings',\n            name='account_number',\n            field=models.CharField(blank=True, max_length=20, null=True, unique=True),\n        ),",
+        "detail": "customer.migrations.0016_alter_savings_account_number",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0017_savings_balance",
+        "description": "customer.migrations.0017_savings_balance",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0016_alter_savings_account_number'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='savings',\n            name='balance',\n            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=10),\n        ),",
+        "detail": "customer.migrations.0017_savings_balance",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0018_loan",
+        "description": "customer.migrations.0018_loan",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0017_savings_balance'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='Loan',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('user_id', models.CharField(blank=True, max_length=50, null=True)),",
+        "detail": "customer.migrations.0018_loan",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0019_loan_balance_due_loan_created_at_and_more",
+        "description": "customer.migrations.0019_loan_balance_due_loan_created_at_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0018_loan'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='loan',\n            name='balance_due',\n            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=12),\n        ),",
+        "detail": "customer.migrations.0019_loan_balance_due_loan_created_at_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0020_remove_transaction_amount_and_more",
+        "description": "customer.migrations.0020_remove_transaction_amount_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0019_loan_balance_due_loan_created_at_and_more'),\n    ]\n    operations = [\n        migrations.RemoveField(\n            model_name='transaction',\n            name='amount',\n        ),\n        migrations.RemoveField(",
+        "detail": "customer.migrations.0020_remove_transaction_amount_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0021_alter_transaction_purpose",
+        "description": "customer.migrations.0021_alter_transaction_purpose",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0020_remove_transaction_amount_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='transaction',\n            name='purpose',\n            field=models.TextField(blank=True, null=True, verbose_name='Purpose of Transfer'),\n        ),",
+        "detail": "customer.migrations.0021_alter_transaction_purpose",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0022_transaction_user_id",
+        "description": "customer.migrations.0022_transaction_user_id",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0021_alter_transaction_purpose'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='transaction',\n            name='user_id',\n            field=models.CharField(blank=True, max_length=50, null=True),\n        ),",
+        "detail": "customer.migrations.0022_transaction_user_id",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0023_current_balance_transaction_amount",
+        "description": "customer.migrations.0023_current_balance_transaction_amount",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0022_transaction_user_id'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='current',\n            name='balance',\n            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=10),\n        ),",
+        "detail": "customer.migrations.0023_current_balance_transaction_amount",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0024_transaction_owner_account_number_and_more",
+        "description": "customer.migrations.0024_transaction_owner_account_number_and_more",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0023_current_balance_transaction_amount'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='transaction',\n            name='owner_account_number',\n            field=models.DecimalField(decimal_places=2, default=0, max_digits=10),\n            preserve_default=False,",
+        "detail": "customer.migrations.0024_transaction_owner_account_number_and_more",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0025_alter_transaction_owner_account_number",
+        "description": "customer.migrations.0025_alter_transaction_owner_account_number",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0024_transaction_owner_account_number_and_more'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='transaction',\n            name='owner_account_number',\n            field=models.CharField(max_length=20, verbose_name=\"Customer's Account Number\"),\n        ),",
+        "detail": "customer.migrations.0025_alter_transaction_owner_account_number",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0026_transaction_is_approved",
+        "description": "customer.migrations.0026_transaction_is_approved",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0025_alter_transaction_owner_account_number'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='transaction',\n            name='is_approved',\n            field=models.BooleanField(default=False),\n        ),",
+        "detail": "customer.migrations.0026_transaction_is_approved",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "customer.migrations.0027_fixeddeposit_delete_fixed",
+        "description": "customer.migrations.0027_fixeddeposit_delete_fixed",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('customer', '0026_transaction_is_approved'),\n    ]\n    operations = [\n        migrations.CreateModel(\n            name='FixedDeposit',\n            fields=[\n                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),\n                ('user_id', models.CharField(blank=True, max_length=50, null=True)),",
+        "detail": "customer.migrations.0027_fixeddeposit_delete_fixed",
+        "documentation": {}
+    },
+    {
+        "label": "CustomerConfig",
+        "kind": 6,
+        "importPath": "customer.apps",
+        "description": "customer.apps",
+        "peekOfCode": "class CustomerConfig(AppConfig):\n    default_auto_field = 'django.db.models.BigAutoField'\n    name = 'customer'",
+        "detail": "customer.apps",
+        "documentation": {}
+    },
+    {
+        "label": "EmailForm",
+        "kind": 6,
+        "importPath": "customer.forms",
+        "description": "customer.forms",
+        "peekOfCode": "class EmailForm(forms.Form):\n    email = forms.EmailField(label='Enter your email')\nclass VerificationForm(forms.Form):\n    code = forms.CharField(label='Enter verification code', max_length=10)",
+        "detail": "customer.forms",
+        "documentation": {}
+    },
+    {
+        "label": "VerificationForm",
+        "kind": 6,
+        "importPath": "customer.forms",
+        "description": "customer.forms",
+        "peekOfCode": "class VerificationForm(forms.Form):\n    code = forms.CharField(label='Enter verification code', max_length=10)",
+        "detail": "customer.forms",
+        "documentation": {}
+    },
+    {
+        "label": "Customer",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Customer(models.Model):\n    customer_name = models.CharField(max_length=100)\n    username = models.CharField(max_length=50, unique=True)\n    email = models.EmailField(unique=True)\n    # Store securely using Django's authentication system\n    password = models.CharField(max_length=100)\n    mobile_number = models.CharField(max_length=15)\n    date_of_birth = models.DateField(null=True, blank=True)\n    document_upload = models.FileField(\n        upload_to='customer_documents/', null=True, blank=True)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Admin",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Admin(models.Model):\n    username = models.CharField(max_length=50, unique=True)\n    email = models.EmailField(unique=True)\n    password = models.CharField(max_length=100)\n    def __str__(self):\n        return f\"{self.username} {self.email}\"\nclass LoanOfficer(models.Model):\n    first_name = models.CharField(max_length=100)\n    last_name = models.CharField(max_length=100)\n    email = models.EmailField(unique=True)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "LoanOfficer",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class LoanOfficer(models.Model):\n    first_name = models.CharField(max_length=100)\n    last_name = models.CharField(max_length=100)\n    email = models.EmailField(unique=True)\n    password = models.CharField(max_length=100)\n    def __str__(self):\n        return f\"{self.first_name} {self.last_name}\"\nclass Savings(models.Model):\n    user_id = models.CharField(max_length=50, blank=True, null=True)\n    name = models.CharField(max_length=50)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Savings",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Savings(models.Model):\n    user_id = models.CharField(max_length=50, blank=True, null=True)\n    name = models.CharField(max_length=50)\n    phone = models.CharField(max_length=50)\n    address = models.CharField(max_length=100)\n    email = models.EmailField(max_length=100)\n    city = models.CharField(max_length=100)\n    pincode = models.CharField(max_length=100)\n    state = models.CharField(max_length=100)\n    district = models.CharField(max_length=100)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Current",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Current(models.Model):\n    user_id = models.CharField(max_length=50, blank=True, null=True)\n    customer_name = models.CharField(max_length=100)\n    mobile_number = models.CharField(max_length=15)\n    email = models.EmailField(unique=True)\n    address = models.CharField(max_length=100)\n    city = models.CharField(max_length=100)\n    pincode = models.CharField(max_length=100)\n    state = models.CharField(max_length=100)\n    account_type = models.CharField(max_length=100)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Loan",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Loan(models.Model):\n    LOAN_TYPES = [\n        ('personal', 'Personal Loan'),\n        ('vehicle', 'Vehicle Loan')\n    ]\n    EMPLOYMENT_STATUS = [\n        ('employed', 'Employed'),\n        ('unemployed', 'Unemployed')\n    ]\n    user_id = models.CharField(max_length=50, blank=True, null=True)",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "Transaction",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class Transaction(models.Model):\n    ACCOUNT_TYPE_CHOICES = [\n        ('SAVINGS', 'Savings'),\n        ('CURRENT', 'Current'),\n    ]\n    user_id = models.CharField(max_length=50, blank=True, null=True)\n    owner_name = models.CharField(max_length=200, blank=True, null=True)\n    owner_account_number = models.CharField(\n        max_length=20, verbose_name=\"Customer's Account Number\")\n    receiver_name = models.CharField(",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "FixedDeposit",
+        "kind": 6,
+        "importPath": "customer.models",
+        "description": "customer.models",
+        "peekOfCode": "class FixedDeposit(models.Model):\n    user_id = models.CharField(max_length=50, blank=True, null=True)\n    customer_name = models.CharField(max_length=100)\n    deposit_amount = models.DecimalField(max_digits=10, decimal_places=2)\n    interest_rate = models.DecimalField(max_digits=5, decimal_places=2)  # in percentage\n    duration_months = models.PositiveIntegerField()  # Duration in months\n    start_date = models.DateField(default=timezone.now)\n    maturity_date = models.DateField(editable=False)\n    maturity_amount = models.DecimalField(max_digits=10, decimal_places=2, editable=False)\n    def save(self, *args, **kwargs):",
+        "detail": "customer.models",
+        "documentation": {}
+    },
+    {
+        "label": "AccountActivationTokenGenerator",
+        "kind": 6,
+        "importPath": "customer.tokens",
+        "description": "customer.tokens",
+        "peekOfCode": "class AccountActivationTokenGenerator(PasswordResetTokenGenerator):\n    def _make_hash_value(self, user, timestamp):\n        return str(user.pk) + str(timestamp) + str(user.is_active)\naccount_activation_token = AccountActivationTokenGenerator()",
+        "detail": "customer.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "account_activation_token",
+        "kind": 5,
+        "importPath": "customer.tokens",
+        "description": "customer.tokens",
+        "peekOfCode": "account_activation_token = AccountActivationTokenGenerator()",
+        "detail": "customer.tokens",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "customer.urls",
+        "description": "customer.urls",
+        "peekOfCode": "urlpatterns = [\n    path('', views.home, name='home'),\n    path('accounts/', views.accounts, name='accounts'),\n    path('services/', views.services, name='services'),\n    path('about/', views.about, name='about'),\n    path('contact/', views.contact, name='contact'),\n    path('userdashboard/', views.dashboard, name='userdashboard'),\n    path('personal_banking/', views.personal_banking, name='personal_banking'),\n    path('business_banking/', views.business_banking, name='business_banking'),\n    path('signup/', views.signup, name='signup'),",
+        "detail": "customer.urls",
+        "documentation": {}
+    },
+    {
+        "label": "ForgotPasswordView",
+        "kind": 6,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "class ForgotPasswordView(TemplateView):\n    template_name = 'forgotpassword.html'\ndef forgot_password(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        # Check if the customer exists in the database\n        try:\n            check = Customer.objects.get(email=email)\n            if check:\n                # Generate a random 4-digit verification code",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "home",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def home(request):\n    return render(request, 'home.html')\ndef accounts(request):\n    return render(request, 'accounts.html')\ndef services(request):\n    return render(request, 'services.html')\ndef about(request):\n    return render(request, 'about.html')\ndef contact(request):\n    return render(request, 'contact.html')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "accounts",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def accounts(request):\n    return render(request, 'accounts.html')\ndef services(request):\n    return render(request, 'services.html')\ndef about(request):\n    return render(request, 'about.html')\ndef contact(request):\n    return render(request, 'contact.html')\ndef login(request):\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "services",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def services(request):\n    return render(request, 'services.html')\ndef about(request):\n    return render(request, 'about.html')\ndef contact(request):\n    return render(request, 'contact.html')\ndef login(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        password = request.POST.get('password')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "about",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def about(request):\n    return render(request, 'about.html')\ndef contact(request):\n    return render(request, 'contact.html')\ndef login(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        password = request.POST.get('password')\n        # Check if the user is an Admin first\n        try:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "contact",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def contact(request):\n    return render(request, 'contact.html')\ndef login(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        password = request.POST.get('password')\n        # Check if the user is an Admin first\n        try:\n            admin = Admin.objects.get(email=email)\n            if admin.password == password:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def login(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        password = request.POST.get('password')\n        # Check if the user is an Admin first\n        try:\n            admin = Admin.objects.get(email=email)\n            if admin.password == password:\n                # Store admin data in session\n                request.session['user_id'] = admin.id",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "dashboard",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def dashboard(request):\n    user_id = request.session.get('user_id')\n    account_number = 0\n    saving_account = Savings.objects.filter(user_id=user_id).first()\n    current_account = Current.objects.filter(user_id=user_id).first()\n    if saving_account:\n        account_number = saving_account.account_number\n    if current_account:\n        account_number = current_account.account_number\n    context = {",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "personal_banking",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def personal_banking(request):\n    return render(request, 'personal_banking.html')\ndef business_banking(request):\n    return render(request, 'business_banking.html')\nuser_pin = {}\nuser_code = {}\ndef signup(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        username = request.POST.get('username')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "business_banking",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def business_banking(request):\n    return render(request, 'business_banking.html')\nuser_pin = {}\nuser_code = {}\ndef signup(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        username = request.POST.get('username')\n        password = request.POST.get('password')\n        dob = request.POST.get('dob')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "signup",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def signup(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        username = request.POST.get('username')\n        password = request.POST.get('password')\n        dob = request.POST.get('dob')\n        mobile = request.POST.get('mobilenum')\n        customer_name = request.POST.get('customername')\n        document_upload = request.FILES.get('document_upload')\n        # Create a new user with the generated account number",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "verify_email",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def verify_email(request, uidb64, token):\n    try:\n        uid = urlsafe_base64_decode(uidb64).decode()\n        user = User.objects.get(pk=uid)\n    except (TypeError, ValueError, OverflowError, User.DoesNotExist):\n        user = None\n    if user is not None and default_token_generator.check_token(user, token):\n        user.is_active = True\n        user.save()\n        # Redirect to login after successful verification",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "activate",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def activate(request, uidb64, token):\n    try:\n        uid = urlsafe_base64_decode(uidb64).decode()\n        user = User.objects.get(pk=uid)\n    except (TypeError, ValueError, OverflowError, User.DoesNotExist):\n        user = None\n    if user is not None and default_token_generator.check_token(user, token):\n        user.is_active = True\n        user.save()\n        messages.success(",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "userdashboard",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def userdashboard(request):\n    user_id = request.session.get('user_id')\n    if user_id is None:\n        return redirect('login')\n    # account_number = request.session.get('account_number')\n    account = Savings.objects.filter(user_id=user_id, is_approved=True).first()\n    account_number = account.account_number if account else None\n    return render(request, 'customer/userdashboard.html', {\n        'account_number': account_number,\n    })",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "forgot_password",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def forgot_password(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        # Check if the customer exists in the database\n        try:\n            check = Customer.objects.get(email=email)\n            if check:\n                # Generate a random 4-digit verification code\n                code = random.randint(1000, 9999)\n                user_pin[email] = code  # Store the code",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "verify_code",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def verify_code(request, email):\n    if request.method == 'POST':\n        entered_code = request.POST.get('pin')\n        correct_code = user_code.get(email)\n        if correct_code and str(entered_code) == str(correct_code):\n            # Redirect to reset password page if the code is correct\n            return render(request, 'signup_confirmation.html')\n        else:\n            messages.error(request, 'Invalid code. Please try again.')\n    return render(request, 'verify_code.html')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "verifyforgotcode",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def verifyforgotcode(request, email):\n    if request.method == 'POST':\n        entered_code = request.POST.get('pin')\n        correct_code = user_pin.get(email)\n        if correct_code and str(entered_code) == str(correct_code):\n            # Redirect to reset password page if the code is correct\n            return redirect('reset_password', email=email)\n        else:\n            messages.error(request, 'Invalid code. Please try again.')\n    # For GET requests or after an unsuccessful POST, render the verification page",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "reset_password",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def reset_password(request, email):\n    if request.method == 'POST':\n        new_password1 = request.POST.get('new_password')\n        new_password2 = request.POST.get('confirm_password')\n        if new_password1 == new_password2:\n            try:\n                user = Customer.objects.get(email=email)\n                user.password = new_password1  # Use set_password to hash the password correctly\n                user.save()  # Save the changes to the database\n                messages.success(",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_customer",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_customer(request, id):\n    customer = get_object_or_404(Customer, id=id)\n    customer.is_active = True\n    customer.save()\n    if customer:\n        messages.success(request, f'Customer {\n                         customer.customer_name} has been approved.')\n        return redirect('admindashboard')\n    return redirect('admin_dashboard')\ndef view_customer(request, id):",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "view_customer",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def view_customer(request, id):\n    customer = get_object_or_404(Customer, id=id)\n    return render(request, 'view_customer.html', {'customer': customer})\ndef edit_customer(request, id):\n    customer = get_object_or_404(Customer, id=id)\n    if request.method == 'POST':\n        name = request.POST.get('name')\n        email = request.POST.get('email')\n        # Validate or apply any logic here (e.g., email validation)\n        customer.customer_name = name",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "edit_customer",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def edit_customer(request, id):\n    customer = get_object_or_404(Customer, id=id)\n    if request.method == 'POST':\n        name = request.POST.get('name')\n        email = request.POST.get('email')\n        # Validate or apply any logic here (e.g., email validation)\n        customer.customer_name = name\n        customer.email = email\n        customer.save()\n        messages.success(request, f'Customer {",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "apply_for_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def apply_for_account(request):\n    if request.method == 'POST':\n        if Savings.objects.filter(user=request.user).exists() or Current.objects.filter(user=request.user).exists():\n            return render(request, 'error.html', {'message': 'You already have an account.'})\n        account_type = request.POST.get('account_type')\n        if account_type == 'savings':\n            Savings.objects.create(user=request.user)\n        elif account_type == 'current':\n            Current.objects.create(user=request.user)\n        return redirect('success_page')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "view_profile",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def view_profile(request):\n    # Get the user ID from the session\n    user_id = request.session.get('user_id')\n    user = Customer.objects.get(id=user_id)\n    # Get savings and current account details\n    saving_bank = Savings.objects.filter(user_id=user.id).first()\n    current_bank = Current.objects.filter(user_id=user.id).first()\n    # Set not approved message if accounts are not approved\n    not_approved_message = None\n    if saving_bank and not saving_bank.is_approved:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "savings_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def savings_account(request):\n    return render(request, 'customer/savings_account.html')\ndef savings_application(request):\n    user = request.session.get('user_id')\n    user_details = Customer.objects.get(id=user)\n    return render(request, 'customer/savings_application.html', {'user': user_details})\n# Savings application email verification\nverification_codes = {}\ndef send_verification_code(request):\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "savings_application",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def savings_application(request):\n    user = request.session.get('user_id')\n    user_details = Customer.objects.get(id=user)\n    return render(request, 'customer/savings_application.html', {'user': user_details})\n# Savings application email verification\nverification_codes = {}\ndef send_verification_code(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        if email:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "send_verification_code",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def send_verification_code(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        if email:\n            # Generate a random 6-digit code\n            code = str(random.randint(100000, 999999))\n            print(code)\n            verification_codes[email] = code\n            # Send email with verification code\n            subject = 'NanoWealthBank - Email Verification'",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "code_verify",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def code_verify(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        code = request.POST.get('code')\n        if email and code:\n            stored_code = verification_codes.get(email)\n            if stored_code and stored_code == code:\n                # Remove the used code\n                del verification_codes[email]\n                return JsonResponse({'success': True, 'message': 'Verification successful'})",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "submit_application",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def submit_application(request):\n    if request.method == 'POST':\n        try:\n            # Extract data from request.POST\n            name = request.POST.get('customerName')\n            phone = request.POST.get('phone')\n            email = request.POST.get('email')\n            address = request.POST.get('address')\n            city = request.POST.get('city')\n            state = request.POST.get('state')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "current_application",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def current_application(request):\n    user = request.session.get('user_id')\n    user_details = Customer.objects.get(id=user)\n    return render(request, 'customer/current_application.html')\n@csrf_exempt\ndef submit_application_current(request):\n    if request.method == 'POST':\n        try:\n            # Extract data from request.POST\n            name = request.POST.get('customerName')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "submit_application_current",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def submit_application_current(request):\n    if request.method == 'POST':\n        try:\n            # Extract data from request.POST\n            name = request.POST.get('customerName')\n            print(name)\n            phone = request.POST.get('phone')\n            email = request.POST.get('email')\n            address = request.POST.get('address')\n            city = request.POST.get('city')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "topup_balance",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def topup_balance(request):\n    user = request.session.get('user_id')\n    account = {}\n    saving_account = Savings.objects.filter(user_id=user).first()\n    curr_account = Current.objects.filter(user_id=user).first()\n    if saving_account:\n        account = saving_account\n    if curr_account:\n        account = curr_account\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "transactions",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def transactions(request):\n    user = request.session.get('user_id')\n    account_number = 0\n    balance = 0\n    saving_account = Savings.objects.filter(user_id=user).first()\n    curr_account = Current.objects.filter(user_id=user).first()\n    if saving_account:\n        account_number = saving_account.account_number\n        balance = saving_account.balance\n    if curr_account:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "download_statement",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def download_statement(request):\n    period = request.GET.get('period')\n    month = request.GET.get('month')\n    user = request.session.get('user_id')\n    account_number = 0\n    userdata = Customer.objects.filter(id=user).first()\n    saving_account = Savings.objects.filter(user_id=user).first()\n    curr_account = Current.objects.filter(user_id=user).first()\n    if saving_account:\n        account_number = saving_account.account_number",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "list_deposits",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def list_deposits(request):\n    user = request.session.get('user_id')\n    deposits = FixedDeposit.objects.filter(user_id=user)\n    saving_account = Savings.objects.filter(user_id=user).first()\n    curr_account = Current.objects.filter(user_id=user).first()\n    if saving_account:\n        account_number = saving_account.account_number\n    if curr_account:\n        account_number = curr_account.account_number\n    return render(request, 'customer/deposits_list.html', {'deposits': deposits})",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "add_deposit",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def add_deposit(request):\n    user = request.session.get('user_id')\n    saving_account = Savings.objects.filter(user_id=user).first()\n    curr_account = Current.objects.filter(user_id=user).first()\n    userdata = Customer.objects.filter(id=user).first()\n    if saving_account:\n        account_number = saving_account.account_number\n    if curr_account:\n        account_number = curr_account.account_number\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "internet_banking",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def internet_banking(request):\n    user = request.session.get('user_id')\n    customer = {}\n    saving_acc = Savings.objects.filter(user_id=user).first()\n    current_acc = Current.objects.filter(user_id=user).first()\n    if saving_acc:\n        customer = saving_acc\n    if current_acc:\n        customer = current_acc\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "admin_dashboard",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def admin_dashboard(request):\n    pending_customers = Customer.objects.filter(\n        is_active=False)  # Pending approval requests\n    customers = Customer.objects.all()\n    savings = Savings.objects.all()\n    currents = Current.objects.all()\n    loans = Loan.objects.all()\n    return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers, 'total_customers': customers.count(), 'total_savings_accounts': savings.count(), 'total_current_accounts': currents.count(), 'total_loans': loans.count()})\ndef customer_list(request):\n    pending_customers = Customer.objects.filter(is_active=False)",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "customer_list",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def customer_list(request):\n    pending_customers = Customer.objects.filter(is_active=False)\n    all_customers = Customer.objects.all()\n    for customer in pending_customers:\n        if customer.document_upload:\n            print(f\"Customer {customer.id} document URL: {\n                  customer.document_upload.url}\")\n        else:\n            print(f\"Customer {customer.id} has no document\")\n    context = {",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_customer",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_customer(request, customer_id):\n    customer = get_object_or_404(Customer, id=customer_id)\n    customer.is_active = True\n    customer.save()\n    return redirect('customer_list')\n# Block/Unblock customer\ndef block_customer(request, customer_id):\n    customer = get_object_or_404(Customer, id=customer_id)\n    customer.is_active = False\n    customer.save()",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "block_customer",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def block_customer(request, customer_id):\n    customer = get_object_or_404(Customer, id=customer_id)\n    customer.is_active = False\n    customer.save()\n    return redirect('customer_list')\ndef loanofficer_list(request):\n    users = LoanOfficer.objects.all()\n    return render(request, 'loanofficer/loanoffecer.html', {\"users\": users})\ndef add_loanOfficer_user(request):\n    if request.method == \"POST\":",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loanofficer_list",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loanofficer_list(request):\n    users = LoanOfficer.objects.all()\n    return render(request, 'loanofficer/loanoffecer.html', {\"users\": users})\ndef add_loanOfficer_user(request):\n    if request.method == \"POST\":\n        first_name = request.POST.get('first_name', '').strip()\n        last_name = request.POST.get('last_name', '').strip()\n        email = request.POST.get('email', '').strip()\n        password = request.POST.get('password', '').strip()\n        errors = []",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "add_loanOfficer_user",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def add_loanOfficer_user(request):\n    if request.method == \"POST\":\n        first_name = request.POST.get('first_name', '').strip()\n        last_name = request.POST.get('last_name', '').strip()\n        email = request.POST.get('email', '').strip()\n        password = request.POST.get('password', '').strip()\n        errors = []\n        # Validation checks\n        if not first_name:\n            errors.append(\"First name is required.\")",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loan_list",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loan_list(request):\n    loans_list = Loan.objects.all()\n    return render(request, 'loanlist.html', {'loans': loans_list})\ndef loan_status_toggle(request, loan_id):\n    if request.method == 'POST':\n        loan = get_object_or_404(Loan, id=loan_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            loan.is_approved = True\n            loan.balance_due += loan.loan_amount_required",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loan_status_toggle",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loan_status_toggle(request, loan_id):\n    if request.method == 'POST':\n        loan = get_object_or_404(Loan, id=loan_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            loan.is_approved = True\n            loan.balance_due += loan.loan_amount_required\n            loan.save()\n        elif action == 'reject':\n            loan.is_approved = False",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "transactions_list",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def transactions_list(request):\n    transcations = Transaction.objects.all()\n    return render(request, 'transcation_list.html', {'transcations': transcations})\ndef transaction_cancel_or_approve(request, transaction_id):\n    if request.method == 'POST':\n        transaction = get_object_or_404(Transaction, id=transaction_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            transaction.is_approved = True\n            transaction.save()",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "transaction_cancel_or_approve",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def transaction_cancel_or_approve(request, transaction_id):\n    if request.method == 'POST':\n        transaction = get_object_or_404(Transaction, id=transaction_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            transaction.is_approved = True\n            transaction.save()\n        elif action == 'Cancel':\n            transaction.is_approved = False\n            transaction.save()",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "savings_account_approval",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def savings_account_approval(request):\n    pending_accounts = Savings.objects.filter(\n        is_approved=False, is_active=False)\n    return render(request, 'savings_account_approval.html', {'pending_accounts': pending_accounts})\n# Admin- Fixed acoount approval\ndef loanofficerdashboard(request):\n    return render(request, 'loanofficer/loanofficerdashboard.html')\ndef profile_edit(request):\n    # Retrieve user_id from session\n    user_id = request.session.get('user_id')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loanofficerdashboard",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loanofficerdashboard(request):\n    return render(request, 'loanofficer/loanofficerdashboard.html')\ndef profile_edit(request):\n    # Retrieve user_id from session\n    user_id = request.session.get('user_id')\n    if not user_id:\n        messages.error(request, 'You must be logged in to edit your profile.')\n        # Redirect to login if user_id is not in session\n        return redirect('login')\n    # Fetch the user profile or return 404 if not found",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "profile_edit",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def profile_edit(request):\n    # Retrieve user_id from session\n    user_id = request.session.get('user_id')\n    if not user_id:\n        messages.error(request, 'You must be logged in to edit your profile.')\n        # Redirect to login if user_id is not in session\n        return redirect('login')\n    # Fetch the user profile or return 404 if not found\n    user = get_object_or_404(LoanOfficer, id=user_id)\n    if request.method == 'POST':",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loan_to_be_approved",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loan_to_be_approved(request):\n    loans = Loan.objects.filter(is_approved=False)\n    return render(request, 'loanofficer/loans.html', {'loans': loans})\n# View to approve a specific loan\ndef approve_loan(request, loan_id):\n    loan = get_object_or_404(Loan, id=loan_id)\n    if request.method == \"POST\":\n        loan.is_approved = True\n        loan.save()\n        messages.success(request, f\"Loan for {loan.name} has been approved.\")",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_loan",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_loan(request, loan_id):\n    loan = get_object_or_404(Loan, id=loan_id)\n    if request.method == \"POST\":\n        loan.is_approved = True\n        loan.save()\n        messages.success(request, f\"Loan for {loan.name} has been approved.\")\n    return redirect(reverse('loan_to_be_approved'))\ndef approve_savings_account(request, request_id):\n    if request.method == 'POST':\n        user_id = request.session.get('user_id')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_savings_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_savings_account(request, request_id):\n    if request.method == 'POST':\n        user_id = request.session.get('user_id')\n        account = get_object_or_404(Savings, id=request_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            # Generate a unique account number\n            while True:\n                if account.user_id:\n                    account_number = f\"NWB{random.randint(100000, 999999)}00{",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_customer_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_customer_account(request, account_id):\n    if request.method == 'POST':\n        account = get_object_or_404(Customer, id=account_id)\n        account.is_active = True\n        account.save()\n        return redirect('savings_account_approval')\ndef current_account_approval(request):\n    pending_accounts = Current.objects.filter(is_active=False)\n    context = {\n        'pending_accounts': pending_accounts,",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "current_account_approval",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def current_account_approval(request):\n    pending_accounts = Current.objects.filter(is_active=False)\n    context = {\n        'pending_accounts': pending_accounts,\n    }\n    return render(request, 'current_account_approval.html', context)\ndef approve_current_account(request, account_id):\n    if request.method == 'POST':\n        account = get_object_or_404(Current, id=account_id)\n        action = request.POST.get('action')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "approve_current_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def approve_current_account(request, account_id):\n    if request.method == 'POST':\n        account = get_object_or_404(Current, id=account_id)\n        action = request.POST.get('action')\n        if action == 'approve':\n            # Generate a unique account number\n            while True:\n                if account.user_id:\n                    account_number = f\"NWB{random.randint(1000000, 9999999)}00{\n                        account.user_id}\"",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "send_verificationcurrent_code",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def send_verificationcurrent_code(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        if email:\n            # Generate a random 6-digit code\n            code = str(random.randint(100000, 999999))\n            verification_codes[email] = code\n            # Send email with verification code\n            subject = 'NanoWealthBank - Email Verification'\n            message = f'Your verification code is: {code}'",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "currentcode_verify",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def currentcode_verify(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        code = request.POST.get('code')\n        if email and code:\n            stored_code = verification_codes.get(email)\n            if stored_code and stored_code == code:\n                # Remove the used code\n                del verification_codes[email]\n                return JsonResponse({'success': True, 'message': 'Verification successful'})",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "personal_loan",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def personal_loan(request):\n    user_id = request.session.get('user_id')\n    ongoing_loans = Loan.objects.filter(user_id=user_id)\n    return render(request, 'customer/personal_loan.html', {'ongoing_loans': ongoing_loans})\ndef loan_application(request):\n    user = request.session.get('user_id')\n    if request.method == 'POST':\n        # Get form data\n        applicant_name = request.POST.get('applicantName')\n        nationality = request.POST.get('nationality')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "loan_application",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def loan_application(request):\n    user = request.session.get('user_id')\n    if request.method == 'POST':\n        # Get form data\n        applicant_name = request.POST.get('applicantName')\n        nationality = request.POST.get('nationality')\n        gender = request.POST.get('gender')\n        address = request.POST.get('address')\n        city = request.POST.get('city')\n        state = request.POST.get('state')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "logout_view",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def logout_view(request):\n    request.session.flush()\n    # Ensure 'login' matches the name in your URLs\n    return redirect('login')\ndef transactions_view(request):\n    user = request.user\n    user_id = request.session.get('user_id')\n    customer = Customer.objects.get(id=user_id)\n    if request.method == 'POST':\n        if 'deposit-amount' in request.POST:",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "transactions_view",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def transactions_view(request):\n    user = request.user\n    user_id = request.session.get('user_id')\n    customer = Customer.objects.get(id=user_id)\n    if request.method == 'POST':\n        if 'deposit-amount' in request.POST:\n            # Process deposit\n            deposit_amount = Decimal(request.POST.get('deposit-amount'))\n            if deposit_amount >= 1000:\n                customer.balance += deposit_amount",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "account_approval_view",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def account_approval_view(request):\n    # Fetch all pending savings account requests\n    pending_requests = Savings.objects.filter(is_active=0)\n    return render(request, 'admin_dashboard.html', {'pending_requests': pending_requests})\n# Current Account\ndef current_account(request):\n    return render(request, 'customer/current_account.html')\n# Account approval and verification\ndef account_approval(request):\n    # Fetch data related to customer account approval here",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "current_account",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def current_account(request):\n    return render(request, 'customer/current_account.html')\n# Account approval and verification\ndef account_approval(request):\n    # Fetch data related to customer account approval here\n    pending_accounts = Customer.objects.filter(\n        status='pending')  # Example query\n    context = {\n        'pending_accounts': pending_accounts,\n    }",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "account_approval",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def account_approval(request):\n    # Fetch data related to customer account approval here\n    pending_accounts = Customer.objects.filter(\n        status='pending')  # Example query\n    context = {\n        'pending_accounts': pending_accounts,\n    }\n    return render(request, 'account_approval.html', context)\ndef current_interest(request):\n    return render(request, 'current_interest.html')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "current_interest",
+        "kind": 2,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "def current_interest(request):\n    return render(request, 'current_interest.html')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "user_pins",
+        "kind": 5,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "user_pins = {}\ndef dashboard(request):\n    user_id = request.session.get('user_id')\n    account_number = 0\n    saving_account = Savings.objects.filter(user_id=user_id).first()\n    current_account = Current.objects.filter(user_id=user_id).first()\n    if saving_account:\n        account_number = saving_account.account_number\n    if current_account:\n        account_number = current_account.account_number",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "user_pin",
+        "kind": 5,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "user_pin = {}\nuser_code = {}\ndef signup(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        username = request.POST.get('username')\n        password = request.POST.get('password')\n        dob = request.POST.get('dob')\n        mobile = request.POST.get('mobilenum')\n        customer_name = request.POST.get('customername')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "user_code",
+        "kind": 5,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "user_code = {}\ndef signup(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        username = request.POST.get('username')\n        password = request.POST.get('password')\n        dob = request.POST.get('dob')\n        mobile = request.POST.get('mobilenum')\n        customer_name = request.POST.get('customername')\n        document_upload = request.FILES.get('document_upload')",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "verification_codes",
+        "kind": 5,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "verification_codes = {}\ndef send_verification_code(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        if email:\n            # Generate a random 6-digit code\n            code = str(random.randint(100000, 999999))\n            print(code)\n            verification_codes[email] = code\n            # Send email with verification code",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "verification_codes",
+        "kind": 5,
+        "importPath": "customer.views",
+        "description": "customer.views",
+        "peekOfCode": "verification_codes = {}\ndef send_verificationcurrent_code(request):\n    if request.method == 'POST':\n        email = request.POST.get('email')\n        if email:\n            # Generate a random 6-digit code\n            code = str(random.randint(100000, 999999))\n            verification_codes[email] = code\n            # Send email with verification code\n            subject = 'NanoWealthBank - Email Verification'",
+        "detail": "customer.views",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "NanoWealthBank.asgi",
+        "description": "NanoWealthBank.asgi",
+        "peekOfCode": "application = get_asgi_application()",
+        "detail": "NanoWealthBank.asgi",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\n# Quick-start development settings - unsuitable for production\n# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/\n# SECURITY WARNING: keep the secret key used in production secret!\nSECRET_KEY = 'django-insecure-+ca17s%jqtcm*hlp=$8^5b#*8j%4)j51+e*b45^7315^b47=$+'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SECRET_KEY",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "SECRET_KEY = 'django-insecure-+ca17s%jqtcm*hlp=$8^5b#*8j%4)j51+e*b45^7315^b47=$+'\n# SECURITY WARNING: don't run with debug turned on in production!\nDEBUG = True\nALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [\n    'customer',\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEBUG",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "DEBUG = True\nALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [\n    'customer',\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ALLOWED_HOSTS",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "ALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [\n    'customer',\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "INSTALLED_APPS",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "INSTALLED_APPS = [\n    'customer',\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n]\nMIDDLEWARE = [",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MIDDLEWARE",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "MIDDLEWARE = [\n    'django.middleware.security.SecurityMiddleware',\n    'django.contrib.sessions.middleware.SessionMiddleware',\n    'django.middleware.common.CommonMiddleware',\n    'django.middleware.csrf.CsrfViewMiddleware',\n    'django.contrib.auth.middleware.AuthenticationMiddleware',\n    'django.contrib.messages.middleware.MessageMiddleware',\n    'django.middleware.clickjacking.XFrameOptionsMiddleware',\n]\nROOT_URLCONF = 'NanoWealthBank.urls'",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "ROOT_URLCONF",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "ROOT_URLCONF = 'NanoWealthBank.urls'\nTEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [BASE_DIR / 'templates'],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TEMPLATES",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "TEMPLATES = [\n    {\n        'BACKEND': 'django.template.backends.django.DjangoTemplates',\n        'DIRS': [BASE_DIR / 'templates'],\n        'APP_DIRS': True,\n        'OPTIONS': {\n            'context_processors': [\n                'django.template.context_processors.debug',\n                'django.template.context_processors.request',\n                'django.contrib.auth.context_processors.auth',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WSGI_APPLICATION",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "WSGI_APPLICATION = 'NanoWealthBank.wsgi.application'\n# Database\n# https://docs.djangoproject.com/en/5.1/ref/settings/#databases\n# DATABASES = {\n#     'default': {\n#         'ENGINE': 'django.db.backends.mysql',\n#         'NAME': 'nanowealth',\n#         'USER': 'root',\n#         'PASSWORD': '',\n#         'HOST': 'localhost',",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DATABASES",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "DATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.sqlite3',\n        'NAME': BASE_DIR / 'db.sqlite3',\n    }\n}\n# Password validation\n# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators\nAUTH_PASSWORD_VALIDATORS = [\n    {",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "AUTH_PASSWORD_VALIDATORS",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "AUTH_PASSWORD_VALIDATORS = [\n    {\n        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',\n    },\n    {\n        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',\n    },\n    {\n        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',\n    },",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LANGUAGE_CODE",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "LANGUAGE_CODE = 'en-us'\nTIME_ZONE = 'UTC'\nUSE_I18N = True\nUSE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS=[\n    os.path.join(BASE_DIR,'static')\n]",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "TIME_ZONE",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "TIME_ZONE = 'UTC'\nUSE_I18N = True\nUSE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS=[\n    os.path.join(BASE_DIR,'static')\n]\nSITE_DOMAIN = '127.0.0.1:8000'  # Or your actual domain like 'mywebsite.com'",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_I18N",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS=[\n    os.path.join(BASE_DIR,'static')\n]\nSITE_DOMAIN = '127.0.0.1:8000'  # Or your actual domain like 'mywebsite.com'\n# Default primary key field type",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "USE_TZ",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "USE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.1/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS=[\n    os.path.join(BASE_DIR,'static')\n]\nSITE_DOMAIN = '127.0.0.1:8000'  # Or your actual domain like 'mywebsite.com'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "STATIC_URL",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "STATIC_URL = 'static/'\nSTATICFILES_DIRS=[\n    os.path.join(BASE_DIR,'static')\n]\nSITE_DOMAIN = '127.0.0.1:8000'  # Or your actual domain like 'mywebsite.com'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# Email configuration for password reset\nEMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SITE_DOMAIN",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "SITE_DOMAIN = '127.0.0.1:8000'  # Or your actual domain like 'mywebsite.com'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# Email configuration for password reset\nEMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'\nEMAIL_HOST = 'smtp.gmail.com'  # Replace with your email provider's SMTP server\nEMAIL_PORT = 587\nEMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_AUTO_FIELD",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\n# Email configuration for password reset\nEMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'\nEMAIL_HOST = 'smtp.gmail.com'  # Replace with your email provider's SMTP server\nEMAIL_PORT = 587\nEMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_BACKEND",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'\nEMAIL_HOST = 'smtp.gmail.com'  # Replace with your email provider's SMTP server\nEMAIL_PORT = 587\nEMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' ",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_HOST",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_HOST = 'smtp.gmail.com'  # Replace with your email provider's SMTP server\nEMAIL_PORT = 587\nEMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_PORT",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_PORT = 587\nEMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_USE_TLS",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_USE_TLS = True\nEMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_HOST_USER",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_HOST_USER = 'sharonmariamabraham2025@mca.ajce.in'  # Replace with your email address\nEMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "EMAIL_HOST_PASSWORD",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "EMAIL_HOST_PASSWORD = 'Zoom#2023'  # Replace with your email password\nDEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_FROM_EMAIL",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "DEFAULT_FROM_EMAIL = 'sharonmariamabraham2025@mca.ajce.in'\nSESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SESSION_COOKIE_AGE",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "SESSION_COOKIE_AGE = 3600  # Session expires in 1 hour\nSESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "SESSION_EXPIRE_AT_BROWSER_CLOSE",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when the browser is closed\nLOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "LOGIN_URL",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "LOGIN_URL = '/login/' \nMEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_URL",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "MEDIA_URL = '/media/'\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_ROOT",
+        "kind": 5,
+        "importPath": "NanoWealthBank.settings",
+        "description": "NanoWealthBank.settings",
+        "peekOfCode": "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
+        "detail": "NanoWealthBank.settings",
+        "documentation": {}
+    },
+    {
+        "label": "urlpatterns",
+        "kind": 5,
+        "importPath": "NanoWealthBank.urls",
+        "description": "NanoWealthBank.urls",
+        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('customer.urls')),\n    path('', views.home, name='home'),\n    path('verify/<str:uidb64>/<str:token>/', views.activate, name='activate'),  \n    path('userdashboard/', views.dashboard, name='userdashboard'),  \n]\nif settings.DEBUG:\n    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)",
+        "detail": "NanoWealthBank.urls",
+        "documentation": {}
+    },
+    {
+        "label": "application",
+        "kind": 5,
+        "importPath": "NanoWealthBank.wsgi",
+        "description": "NanoWealthBank.wsgi",
+        "peekOfCode": "application = get_wsgi_application()",
+        "detail": "NanoWealthBank.wsgi",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "manage",
+        "description": "manage",
+        "peekOfCode": "def main():\n    \"\"\"Run administrative tasks.\"\"\"\n    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NanoWealthBank.settings')\n    try:\n        from django.core.management import execute_from_command_line\n    except ImportError as exc:\n        raise ImportError(\n            \"Couldn't import Django. Are you sure it's installed and \"\n            \"available on your PYTHONPATH environment variable? Did you \"\n            \"forget to activate a virtual environment?\"",
+        "detail": "manage",
+        "documentation": {}
+    }
+]

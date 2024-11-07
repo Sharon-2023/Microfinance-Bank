@@ -1,201 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            background-color: #333;
-            padding: 15px;
-            color: white;
-            text-align: center;
-        }
-
-        .navbar h1 {
-            margin: 0;
-        }
-
-        .dashboard {
-            display: flex;
-        }
-
-        .left-container {
-            width: 20%;
-            background-color: #001f3f; /* Navy blue color */
-            padding: 20px;
-            border-right: 1px solid #ddd;
-            height: 100vh; /* Full height of the viewport */
-        }
-
-        .left-container .menu-items {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .left-container .menu-items li {
-            margin-bottom: 15px;
-        }
-
-        .left-container .menu-items li a {
-            text-decoration: none;
-            font-size: 16px;
-            color: white; /* White text color for contrast */
-            font-weight: bold;
-            padding: 10px 0;
-            display: block;
-            transition: color 0.3s;
-        }
-
-        .left-container .menu-items li a:hover {
-            color: #ffcc00; /* Change text color on hover */
-        }
-
-        .container {
-            width: 80%;
-            background-color: white;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        .stats-container {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 40px;
-            gap: 20px;
-        }
-
-        /* Style for the total customers box */
-        .stats-box.customers {
-            width: 30%;
-            padding: 20px;
-            background-color: #4CAF50; /* Green color */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: white;
-        }
-
-        /* Style for the total savings accounts box */
-        .stats-box.savings {
-            width: 30%;
-            padding: 20px;
-            background-color: #2196F3; /* Blue color */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: white;
-        }
-
-        /* Style for the total current accounts box */
-        .stats-box.current {
-            width: 30%;
-            padding: 20px;
-            background-color: #FFC107; /* Yellow color */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: white;
-        }
-
-        /* Style for the total fixed deposits box */
-        .stats-box.fixed {
-            width: 30%;
-            padding: 20px;
-            background-color: #fd954f; 
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: white;
-        }
-
-        /* Style for the total recurring deposits box */
-        .stats-box.recurring {
-            width: 30%;
-            padding: 20px;
-            background-color: #ff0793; 
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            color: white;
-        }
-
-        .stats-box h3 {
-            margin: 0 0 10px;
-            font-size: 24px;
-        }
-
-        .stats-box p {
-            font-size: 18px;
-        }
-
-        /* Additional styling for your tables and buttons, if needed */
-    </style>
-</head>
-<body>
-
-    <div class="navbar">
-        <h1>Admin Dashboard</h1>
+{% extends 'baseadmin.html' %} {% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div >
+  <!-- Stats Section -->
+  <div class="stats-container">
+    <div class="stats-box customers">
+      <h3>👥Total Customers</h3>
+      <p>{{ total_customers }}</p>
     </div>
-
-    <div class="dashboard">
-        <!-- Left-side Container for Menu -->
-        <div class="left-container">
-            <ul class="menu-items">
-                <li><a href="{% url 'customer_login_requests' %}">Customer Login Requests</a></li>
-                <li><a href="#">User & Account Management</a></li>
-                <li><a href="#">Transaction Monitoring</a></li>
-                <li><a href="#">Loan Management</a></li>
-                <li>
-                    <a href="{% url 'customer_account_approval' %}" >Account Approval & Verification</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="container">
-            <!-- Stats Section -->
-            <div class="stats-container">
-                <div class="stats-box customers">
-                    <h3>👥Total Customers</h3>
-                    <p>{{ total_customers }}</p>
-                </div>
-                <div class="stats-box savings">
-                    <h3> Savings Accounts</h3>
-                    <p>{{ total_savings_accounts }}</p>
-                </div>
-                <div class="stats-box current">
-                    <h3> Current Accounts</h3>
-                    <p>{{ total_current_accounts }}</p>
-                </div>
-                <div class="stats-box fixed">
-                    <h3> Fixed Deposits</h3>
-                    <p>{{ total_fixed_deposit }}</p>
-                </div>
-                <div class="stats-box recurring">
-                    <h3> Recurring Deposits</h3>
-                    <p>{{ total_recurring_deposits }}</p>
-                </div>
-                
-            </div>
-
-            
-</body>
-</html>
-
-
+    <div class="stats-box savings">
+      <h3>Savings Accounts</h3>
+      <p>{{ total_savings_accounts }}</p>
+    </div>
+    <div class="stats-box current">
+      <h3>Current Accounts</h3>
+      <p>{{ total_current_accounts }}</p>
+    </div>
+    <div class="stats-box fixed">
+      <h3>Fixed Deposits</h3>
+      <p>{{ total_fixed_deposit }}</p>
+    </div>
+    <div class="stats-box recurring">
+      <h3>Loan Management</h3>
+      <p>{{ total_loans }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

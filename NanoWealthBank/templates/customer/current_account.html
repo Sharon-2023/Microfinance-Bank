@@ -1,0 +1,102 @@
+{% extends 'customer/base.html' %} {% load static %} {% block title %} Current
+Account{% endblock %} {% block content %}
+<div class="current-container">
+  <h2>Current Account</h2>
+  <p>
+    We offer the finest current accounts for all categories of customers. The
+    customized options can ideally serve the needs of the end customers. With
+    user-friendly online banking features, accessing your Current Account could
+    not get any better.
+  </p>
+
+  <!-- Button to show terms and conditions -->
+  <button class="terms-button" onclick="showModal()">
+    View Terms and Conditions
+  </button>
+
+  <!-- Classic Account Section -->
+  <div id="classic" class="details-container" style="display: block">
+    <h3>Classic</h3>
+    <p>
+      To offer a perfect business solution for the requirement of an
+      entrepreneur.
+    </p>
+
+    <!-- Read More Button -->
+    <button class="terms-button" onclick="showModal('classicModal')">
+      Read More
+    </button>
+    <button class="action-button">
+      <a href="{% url 'current_application' %}" style="color: white; text-decoration: none;">Apply Now</a>
+  </button>
+  </div>
+
+  <!-- Premium Account Section -->
+  <div id="premium" class="details-container" style="display: block">
+    <h3>Premium</h3>
+    <p>
+      An account tailored exclusively for businesses with higher transaction
+      needs.
+    </p>
+    <!-- Read More Button -->
+    <button class="terms-button" onclick="showModal('premiumModal')">
+      Read More
+    </button>
+    <button class="action-button">
+      <a href="{% url 'current_application' %}" style="color: white; text-decoration: none;">Apply Now</a>
+  </button>
+  </div>
+
+  <!-- Modal for Classic Account Features -->
+  <div id="classicModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('classicModal')">&times;</span>
+      <h4>Classic Account Features</h4>
+      <ul>
+        <li>Free Unlimited Cash Withdrawal Transactions.</li>
+        <li>120 Free Cheque leaves every half year</li>
+        <li>Debit Card: Rupay Classic.</li>
+        <li>Free Unlimited transactions through bank's ATM.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal for Premium Account Features -->
+  <div id="premiumModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('premiumModal')">&times;</span>
+      <h4>Premium Account Features</h4>
+      <ul>
+        <li>Higher transaction limits for cash deposits and withdrawals.</li>
+        <li>250 Free Cheque leaves every half year</li>
+        <li>Debit Card: Rupay Platinum.</li>
+        <li>Free Unlimited transactions through all bank ATMs.</li>
+        <li>Dedicated Relationship Manager</li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    // Function to show the modal
+    function showModal(modalId) {
+      var modal = document.getElementById(modalId);
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal
+    function closeModal(modalId) {
+      var modal = document.getElementById(modalId);
+      modal.style.display = "none";
+    }
+
+    // Close the modal if the user clicks outside of it
+    window.onclick = function (event) {
+      var modals = document.getElementsByClassName("modal");
+      for (var i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+          modals[i].style.display = "none";
+        }
+      }
+    };
+  </script>
+  {% endblock %}
+</div>

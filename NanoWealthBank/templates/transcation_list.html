@@ -1,0 +1,69 @@
+{% extends 'baseadmin.html' %} {% block title %}Savings Account Approval{% endblock %} 
+{% block content %}
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+<h2>Accounts Transcations</h2>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Transaction ID</th>
+      <th>From</th>
+      <th>Sender Account</th>
+      <th>To</th>
+      <th>Receive Account</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Transfer</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transcation in transcations %}
+    <tr>
+      <td>{{ transcation.id }}</td>
+      <td>{{ transcation.owner_name }}</td>
+      <td>{{transcation.owner_account_number}}</td>
+      <td>{{ transcation.receiver_name }}</td>
+      <td>{{transcation.receiver_account_number}}</td>
+      <td>{{ transcation.amount }}</td>
+      <td>{{transcation.created_at }}</td>
+      <td>{% if transcation.is_approved %}
+        <form
+          style="padding: 0; background: none"
+          method="POST"
+          action="{% url 'transaction_cancel_or_approve' transcation.id %}"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="Cancel"
+            class="btn btn-danger btn-sm"
+          >
+          Cancel
+          </button>
+        </form>
+
+        {% else %}
+        <form
+          style="padding: 0; background: none"
+          method="POST"
+          action="{% url 'transaction_cancel_or_approve' transcation.id %}"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="approve"
+            class="btn btn-success btn-sm"
+          >
+            Approve
+          </button>
+        </form>
+
+        {% endif %}
+    </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

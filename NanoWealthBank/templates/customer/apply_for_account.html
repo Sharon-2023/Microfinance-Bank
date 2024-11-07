@@ -1,0 +1,15 @@
+<!-- apply_for_account.html -->
+<form method="post">
+    {% csrf_token %}
+    <label for="account_type">Choose account type:</label>
+    <select name="account_type" id="account_type">
+        <option value="savings">Savings</option>
+        <option value="current">Current</option>
+    </select>
+    <button type="submit">Apply</button>
+</form>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+

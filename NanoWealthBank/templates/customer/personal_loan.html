@@ -1,0 +1,92 @@
+{% extends 'customer/base.html' %} {% load static %} {% block title %}Loan
+Application - NanoWealth Bank{% endblock %} {% block content %}
+
+<div class="trans-container">
+  <div class="page-title">
+    <h1>Personal Loans</h1>
+  </div>
+
+  <!-- Personal Loan Information -->
+  <div class="loan-info">
+    <h2>Understanding Personal Loans</h2>
+    <p>
+      A personal loan from NanoWealth Bank is an unsecured loan that provides
+      you with a lump sum of money to use for various purposes. Whether you're
+      consolidating debt, financing a major purchase, or covering unexpected
+      expenses, our personal loans offer a flexible financial solution.
+    </p>
+
+    <div class="key-features">
+      <h3>Key Features:</h3>
+      <ul>
+        <li>Borrow from $1,000 to $50,000</li>
+        <li>Competitive interest rates starting at 5.99% APR</li>
+        <li>Flexible repayment terms from 12 to 60 months</li>
+        <li>No collateral required</li>
+        <li>Quick online application and fast approval process</li>
+      </ul>
+    </div>
+
+    <p>
+      With a personal loan, you receive the entire loan amount upfront and repay
+      it in fixed monthly installments over the agreed term. This makes
+      budgeting easier and provides a clear path to becoming debt-free.
+    </p>
+
+    <p>
+      Ready to take control of your finances? Apply for a NanoWealth Bank
+      personal loan today and take the first step towards achieving your
+      financial goals.
+    </p>
+  </div>
+  <!-- Apply for New Loan Button -->
+  <a href="{% url 'loan_application' %}" class="apply-loan-btn">Apply for a New Loan</a>
+  <!-- Ongoing Loans Section -->
+  <div class="ongoing-loans">
+    <h2>Your Current Loans</h2>
+    {% if ongoing_loans %}
+    <table class="loan-table">
+      <thead>
+        <tr>
+          <th>Loan ID</th>
+          <th>Loan Owner</th>
+          <th>Amount</th>
+          <th>Interest Rate</th>
+          <th>Monthly Payment</th>
+          <th>Loan Type</th>
+          <th>Loan Purpose</th>
+          <th>Next Payment Date</th>
+          <th>Loan Approved</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for loan in ongoing_loans %}
+        <tr>
+          <td>{{ loan.id }}</td>
+          <td>{{ loan.name }}</td>
+          <td>${{ loan.loan_amount_required }}</td>
+          <td>10%</td>
+          <td>2500</td>
+          <td>{{ loan.loan_type }}</td>
+          <td>{{ loan.loan_purpose }}</td>
+          <td>{{ loan.next_payment_date }}</td>
+          <td class="{% if loan.is_approved %}approved{% else %}not-approved{% endif %}">
+            {% if loan.is_approved %}
+                Approved
+            {% else %}
+                Not Approved
+            {% endif %}
+        </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>You have no ongoing personal loans.</p>
+    {% endif %}
+  </div>
+
+
+</div>
+
+{% endblock %}

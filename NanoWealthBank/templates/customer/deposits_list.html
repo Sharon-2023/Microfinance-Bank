@@ -1,0 +1,43 @@
+{% extends 'customer/base.html' %}
+{% load static %} 
+
+{% block title %}Deposit Details{% endblock %}
+
+{% block content %}
+<div class="fixed-deposit-container">
+    <h1>Fixed Deposit List</h1>
+    <div class="add-deposit">
+
+        <button  type="submit"><a href="{% url 'add_deposit' %}" style="text-decoration: none;color:inherit">Add New Deposit</a></button>
+    </div>
+    <table class="loan-table">
+        <thead>
+
+            <tr>
+                <th>Customer Name</th>
+                <th>Deposit Amount</th>
+                <th>Interest Rate (%)</th>
+                <th>Duration (Months)</th>
+                <th>Start Date</th>
+                <th>Maturity Date</th>
+                <th>Maturity Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for deposit in deposits %}
+        <tr>
+            <td>{{ deposit.customer_name }}</td>
+            <td>{{ deposit.deposit_amount }}</td>
+            <td>{{ deposit.interest_rate }}</td>
+            <td>{{ deposit.duration_months }}</td>
+            <td>{{ deposit.start_date }}</td>
+            <td>{{ deposit.maturity_date }}</td>
+            <td>{{ deposit.maturity_amount }}</td>
+        </tr>
+    </tbody>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

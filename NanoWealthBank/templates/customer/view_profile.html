@@ -1,0 +1,87 @@
+{% extends 'customer/base.html' %} {% load static %} {% block title %}Edit User
+Profile{% endblock %} {% block content %}
+<div class="profile-section">
+  <div class="profile-details">
+    <h1>Edit User Profile</h1>
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li style="color: green">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <label for="customer_name">Name:</label>
+      <input
+        type="text"
+        id="customer_name"
+        name="customer_name"
+        value="{{ customer.customer_name }}"
+        required
+      />
+
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value="{{ customer.username }}"
+        readonly
+      />
+
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value="{{ customer.email }}"
+        required
+      />
+
+      <label for="mobile_number">Mobile Number:</label>
+      <input
+        type="text"
+        id="mobile_number"
+        name="mobile_number"
+        value="{{ customer.mobile_number }}"
+        required
+      />
+
+      <label for="date_of_birth">Date of Birth:</label>
+      <input type="date" id="date_of_birth" name="date_of_birth" value="{{customer.date_of_birth|date:"Y-m-d" }}"> 
+      <h2 style="margin-top: 10px">Your Account Details</h2>
+      
+      {% if savings_account %}
+      
+      {% if not_approved_message %}
+      <p style="color: red"><em>{{ not_approved_message }}</em></p>
+      {% endif %}
+      <p><strong>Account Type:</strong> {{ savings_account.account_type }}</p>
+      <p>
+        <strong>Account Number:</strong> {{ savings_account.account_number }}
+      </p>
+      <p><strong>IFSC Code:</strong> NB00345</p>
+      <p><strong>Balance:</strong> ${{ savings_account.balance }}</p>
+      <p><strong>Status:</strong> {{ savings_account.status }}</p>
+     
+      {% else %}
+      <p><strong>Account Type:</strong> {{ current_bank.account_type }}</p>
+      <p>
+        <strong>Account Number:</strong> {{ current_bank.account_number }}
+      </p>
+      <p><strong>IFSC Code:</strong> NB00345</p>
+      <p><strong>Balance:</strong> ${{ current_bank.balance }}</p>
+      <p><strong>Status:</strong> {{ current_bank.is_approved }}</p>
+      {% endif %}
+
+      <button type="submit" class="save-button">Save Changes</button>
+    </form>
+  </div>
+  <img
+    style="max-width: 120px; border-radius: 10%"
+    src="{% static 'images/profileicon.png' %}"
+    alt="Customer Profile Picture"
+  />
+</div>
+{% endblock %}

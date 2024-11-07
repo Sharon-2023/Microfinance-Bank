@@ -1,0 +1,35 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% block title %}Add Deposit{% endblock %}
+{% block content %}
+
+<div class="fixed-deposit-container">
+    <h1>Add New Fixed Deposit</h1>
+    <form method="post" action="{% url 'add_deposit' %}">
+        {% csrf_token %}
+        
+        <label for="customer_name">Customer Name:</label>
+        <input type="text" id="customer_name" name="customer_name" value="{{userdata.customer_name}}" readonly >
+        <br><br>
+
+        <label for="deposit_amount">Deposit Amount:</label>
+        <input type="number" id="deposit_amount" name="deposit_amount" step="0.01" required>
+        <br><br>
+
+        <label for="interest_rate">Interest Rate (%):</label>
+        <input type="number" id="interest_rate" name="interest_rate" step="0.01" value="10" readonly>
+        <br><br>
+
+        <label for="duration_months">Duration (Months):</label>
+        <input type="number" id="duration_months" name="duration_months" required>
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <div style="margin: 10px;padding:5px">
+
+        <a  href="{% url 'list_deposits' %}">Back to Deposit List</a>
+    </div>
+</div>
+
+{% endblock %}

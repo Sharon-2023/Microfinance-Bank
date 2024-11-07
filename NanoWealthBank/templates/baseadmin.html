@@ -1,0 +1,41 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/adminpanel.css' %}" />
+  </head>
+  <body>
+    <div class="navbar">
+      <h1>Admin Dashboard</h1>
+    </div>
+
+    <div class="dashboard">
+      <!-- Left-side Container for Menu -->
+      <div class="left-container">
+        <ul class="menu-items">
+          <li>
+            <a href="{% url 'admindashboard' %}">Dashboard</a
+          </li>
+          <li>
+            <a href="{% url 'customer_list' %}">Customer Login Requests</a>
+          </li>
+          <li><a href="{% url 'loanofficer_list' %}">Loan OFficer List</a></li>
+          <li><a href="{% url 'transactions_list' %}">Transaction Monitoring</a></li>
+          <li><a href="{% url 'loan_list' %}">Loan Management</a></li>
+          <li>
+            <a href="{% url 'savings_account_approval' %}">Savings Account</a>
+          </li>
+          <li>
+            <a href="{%url 'current_account_approval' %}"> Current Account</a>
+          </li>
+          <li>
+            <a href="{%url 'logout_view' %}"> Logout</a>
+          </li>
+        </ul>
+      </div>
+      <main class="container">{% block content %} {% endblock %}</main>
+    </div>
+  </body>
+</html>

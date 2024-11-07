@@ -1,0 +1,222 @@
+{% extends 'customer/base.html' %} {% load static %} {% block title %} Current
+Account Application{% endblock %} {% block content %}
+
+<div class="current_container">
+  <h2>Current Account Application</h2>
+  <div id="notification" class="notification"></div>
+  <form id="currentForm">
+    {% csrf_token %}
+    <div class="step active" id="step1">
+      <h3>Step 1: Personal Information</h3>
+      <label for="customerName">Customer Name:</label>
+      <input type="text" id="customerName" name="customerName" value="{{user_details.customer_name}}" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" value="{{user_details.email}}" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" value="{{user_details.mobile_number}}" required />
+
+      <button type="button" onclick="sendVerificationCode()">Next</button>
+    </div>
+
+    <div class="step" id="step2">
+      <h3>Email Verification</h3>
+      <p>
+        A verification code has been sent to your email. Please enter it below.
+      </p>
+      <label for="verificationCode">Verification Code:</label>
+      <input
+        type="text"
+        id="verificationCode"
+        name="verificationCode"
+        required
+      />
+
+      <button type="button" onclick="verifyCode()">Verify</button>
+      <button type="button" onclick="sendVerificationCode()">
+        Resend Code
+      </button>
+    </div>
+
+    <div class="step" id="step3">
+      <h3>Step 2: Address Information</h3>
+      <label for="address">Street Address:</label>
+      <input type="text" id="address" name="address" required />
+
+      <label for="city">City:</label>
+      <input type="text" id="city" name="city" required />
+
+      <label for="state">State:</label>
+      <input type="text" id="state" name="state" required />
+
+      <label for="pinCode">Pin Code:</label>
+      <input type="text" id="pinCode" name="pinCode" required />
+
+      <button type="button" onclick="prevStep(3)">Previous</button>
+      <button type="button" onclick="nextStep(3)">Next</button>
+    </div>
+
+    <div class="step" id="step4">
+      <h3>Step 3: Account Details</h3>
+      <label for="accountType">Account Type:</label>
+      <select id="accountType" name="accountType" required>
+        <option value="">Select Account Type</option>
+        <option value="classic">Classic</option>
+        <option value="premium">Premium</option>
+      </select>
+
+      <button type="button" onclick="prevStep(4)">Previous</button>
+      <button type="button" onclick="submitApplication()">
+        Submit Application
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function showNotification(message, isSuccess) {
+    const notification = document.getElementById("notification");
+    notification.textContent = message;
+    notification.className = `notification ${isSuccess ? "success" : "error"}`;
+    notification.style.display = "block";
+    setTimeout(() => {
+      notification.style.display = "none";
+    }, 5000); // Hide after 5 seconds
+  }
+
+  function sendVerificationCode() {
+    const email = document.getElementById("email").value;
+    const csrftoken = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    fetch("/send-verification-code/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": csrftoken,
+      },
+      body: `email=${encodeURIComponent(email)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          showNotification("Verification code sent successfully", true);
+          nextStep(1);
+        } else {
+          showNotification(
+            "Failed to send verification code: " + data.message,
+            false
+          );
+        }
+      });
+  }
+
+  function verifyCode() {
+    const email = document.getElementById("email").value;
+    const code = document.getElementById("verificationCode").value;
+    const csrftoken = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    console.log("Sending verification request with:", { email, code });
+
+    fetch("/code-verify/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": csrftoken,
+      },
+      body: `email=${encodeURIComponent(email)}&code=${encodeURIComponent(
+        code
+      )}`,
+    })
+      .then((response) => {
+        console.log("Raw response:", response);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Verification response:", data);
+        if (data.success) {
+          console.log("Verification successful, moving to next step");
+          showNotification("Verification successful", true);
+          nextStep(2);
+        } else {
+          console.log("Verification failed");
+          showNotification(
+            "Verification failed: " + (data.message || "Unknown error"),
+            false
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error during verification:", error);
+        showNotification(
+          "An error occurred during verification: " + error.message,
+          false
+        );
+      });
+  }
+
+  function submitApplication() {
+    const form = document.getElementById("currentForm");
+    const formData = new FormData(form);
+    const csrftoken = document.querySelector(
+      "[name=csrfmiddlewaretoken]"
+    ).value;
+
+    console.log(
+      "Submitting application with data:",
+      Object.fromEntries(formData)
+    );
+
+    fetch("/submit-application-current/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      body: formData,
+    })
+      .then((response) => {
+        console.log("Raw response:", response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Submission response:", data);
+        if (data.success) {
+          showNotification("Application submitted successfully", true);
+          setTimeout(() => {
+            window.location.href = "/userdashboard/";
+          }, 2000);
+        } else {
+          showNotification(
+            "Failed to submit application: " + data.message,
+            false
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Error during submission:", error);
+        showNotification(
+          "An error occurred during submission: " + error.message,
+          false
+        );
+      });
+  }
+
+  function nextStep(currentStep) {
+    document.getElementById(`step${currentStep}`).classList.remove("active");
+    document.getElementById(`step${currentStep + 1}`).classList.add("active");
+  }
+
+  function prevStep(currentStep) {
+    document.getElementById(`step${currentStep}`).classList.remove("active");
+    document.getElementById(`step${currentStep - 1}`).classList.add("active");
+  }
+</script>
+
+{% endblock %}

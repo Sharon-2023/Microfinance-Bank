@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/loanofficer.css' %}"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">My Dashboard</div>
+        <div class="navbar-logout">
+            <a href="{% url 'logout_view' %}">Logout</a> <!-- Link to Django logout view -->
+        </div>
+    </nav>
+
+   
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'loanofficerdashboard' %}">Home</a></li>
+                <li><a href="{% url 'profile_edit' %}">Profile</a></li>
+                <li><a href="{% url 'loan_to_be_approved' %}">Loans</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% block body %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <script src="script.js"></script> <!-- Link to JavaScript file if needed -->
+</body>
+</html>

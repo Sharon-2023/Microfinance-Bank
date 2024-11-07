@@ -1,0 +1,92 @@
+{% extends 'customer/base.html' %}
+{% load static %} 
+
+{% block title %}Transaction Details{% endblock %}
+
+{% block content %}
+
+<div class="transaction-message">
+  Transaction Details
+  <div class="transaction-message">
+    <span style="float: right">
+      Account Number: {% if account_number %}{{ account_number }}
+      <p><strong>IFSC Code:</strong> NB00345 </p>
+      {% else %}Not added{% endif %}
+    </span>
+  </div>
+</div>
+
+<!-- Success/Error Messages -->
+{% if messages %}
+<ul>
+  {% for message in messages %}
+  <li style="color: green">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<!-- Transaction Download Form -->
+<div class="statement-download">
+  <h3>Download Transaction Statement</h3>
+  <form action="{% url 'download_statement' %}" method="get">
+    {% csrf_token %}
+    <label for="period">Select Period:</label>
+    <select name="period" id="period" required>
+      <option value="last_6_months">Last 6 Months</option>
+      <option value="specific_month">Specific Month</option>
+    </select>
+
+    <div id="month-selection" style="display: none;margin-bottom:5px">
+      <label for="month">Select Month:</label>
+      <input type="month" id="month" name="month">
+    </div>
+
+    <button type="submit">Download Statement</button>
+  </form>
+</div>
+
+<!-- Transaction Table -->
+<div id="transaction-container">
+  <h3>Transaction History</h3>
+  <table class="loan-table">
+    <thead>
+      <tr>
+        <th>To</th>
+        <th>Account Number</th>
+        <th>IFSC</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Current Balance</th>
+        <th>Transfer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transaction in transcations %}
+      <tr>
+        <td>{{ transaction.receiver_name }}</td>
+        <td>{{ transaction.receiver_account_number }}</td>
+        <td>{{ transaction.ifsc_code }}</td>
+        <td>{{ transaction.created_at }}</td>
+        <td>{{ transaction.amount }}</td>
+        <td>{{ balance }}</td>
+        <td>
+          {% if transaction.is_approved %}
+            <span style="color: rgb(112, 179, 11);">Success</span>
+          {% else %}
+            <span style="color: rgb(255, 158, 47);">Failed</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // JavaScript to show/hide month input based on selection
+  document.getElementById('period').addEventListener('change', function() {
+    document.getElementById('month-selection').style.display = this.value === 'specific_month' ? 'block' : 'none';
+  });
+</script>
+
+{% endblock %}

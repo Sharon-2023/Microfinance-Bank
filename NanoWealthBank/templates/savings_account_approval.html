@@ -1,0 +1,77 @@
+{% extends 'baseadmin.html' %} {% block title %}Savings Account Approval{% endblock %} 
+{% block content %}
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+<h2>Savings Account Approval</h2>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Mobile Number</th>
+      <th>Account Type</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for account in pending_accounts %}
+    <tr>
+      <td>{{ account.name }}</td>
+      <td>{{ account.email }}</td>
+      <td>{{ account.phone }}</td>
+      <td>{{ account.account_type }}</td>
+      <td>
+        <form
+          style="padding: 0;background:none"
+          method="POST"
+          action="{% url 'approve_savings_account' account.id %}"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="action"
+            value="approve"
+            class="btn btn-success btn-sm"
+          >
+            Approve
+          </button>
+          <button
+            type="submit"
+            name="action"
+            value="reject"
+            class="btn btn-danger btn-sm"
+          >
+            Reject
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+  function approveAccount(accountId) {
+    const url = `/approve-savings-account/${accountId}/`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken"), // Ensure you include the CSRF token
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ action: "approve" }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        // Handle success
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+</script>
+{% endblock %}

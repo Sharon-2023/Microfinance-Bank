@@ -5,3 +5,4 @@ class EmailForm(forms.Form):
 
 class VerificationForm(forms.Form):
     code = forms.CharField(label='Enter verification code', max_length=10)
+

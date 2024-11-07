@@ -207,43 +207,50 @@
         <button type="button" onclick="cancelSignup()">Cancel</button>
       </div>
 
-      <div class="step-content" id="step-3">
-        <h3>User Details</h3>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required placeholder="Username">
-        <div id="usernameError" class="error-message" style="display: none;">Username must be alphanumeric.</div>
-      
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-      
-        <div class="verification-container">
-          <div class="verification-item">
-            <label for="proof_of_verification">Proof of Verification:</label>
-            <select id="proof_of_verification" name="proof_of_verification" required>
-              <option value="">Select Proof of Verification</option>
-              <option value="aadhar_card">Aadhar Card</option>
-              <option value="pan_card">PAN Card</option>
-              <option value="passport">Passport</option>
-              <option value="utility_bills">Utility Bills</option>
-            </select>
-          </div>
-      
-          <div class="verification-item">
-            <label for="document_upload">Upload Document:</label>
-            <div class="file-upload-container">
-              <input type="file" id="document_upload" name="document_upload" accept=".pdf" required>
-              <button type="button" onclick="uploadDocument()">Upload</button>
-            </div>
-            <div id="documentError" class="error-message" style="display: none;"></div>
-            <div id="documentSuccess" class="success-message" style="display: none;">Document uploaded successfully!</div>
-          </div>
-        </div>
-      
-        <button type="submit">Submit</button>
-        <button type="button" onclick="prevStep()">Back</button>
-        <button type="button" onclick="cancelSignup()">Cancel</button>
+      <!-- Step 3 content -->
+<div class="step-content" id="step-3">
+  <h3>User Details</h3>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required placeholder="Username">
+  <div id="usernameError" class="error-message" style="display: none;">Username must be alphanumeric.</div>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+
+  <div class="verification-container">
+    <div class="verification-item">
+      <label for="proof_of_verification">Proof of Verification:</label>
+      <select id="proof_of_verification" name="proof_of_verification" required>
+        <option value="">Select Proof of Verification</option>
+        <option value="aadhar_card">Aadhar Card</option>
+        <option value="pan_card">PAN Card</option>
+        <option value="passport">Passport</option>
+        <option value="utility_bills">Utility Bills</option>
+      </select>
+    </div>
+
+    <div class="verification-item">
+      <label for="document_upload">Upload Document:</label>
+      <div class="file-upload-container">
+        <input type="file" id="document_upload" name="document_upload" accept=".pdf" required>
+        <button type="button" onclick="uploadDocument()">Upload</button>
       </div>
-      
+      <div id="documentError" class="error-message" style="display: none;"></div>
+      <div id="documentSuccess" class="success-message" style="display: none;">Document uploaded successfully!</div>
+    </div>
+
+    <!-- Checkbox for physical document submission -->
+    <div class="verification-item" style="display: flex;">
+      <input type="checkbox" id="physical_document_acknowledgment" name="physical_document_acknowledgment" style="width:50px;" required>
+      <label for="physical_document_acknowledgment" >I will submit a physical document to the bank</label>
+    </div>
+  </div>
+
+  <button type="submit">Submit</button>
+  <button type="button" onclick="prevStep()">Back</button>
+  <button type="button" onclick="cancelSignup()">Cancel</button>
+</div>
+
 
       <p>Please Note:</p>
       <ul>

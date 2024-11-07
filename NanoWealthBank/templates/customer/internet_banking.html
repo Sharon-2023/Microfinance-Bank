@@ -1,0 +1,105 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+{% block title %} Send Money{% endblock %}
+{% block content %}
+
+<!-- Include Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<div class="internet-banking-container" style="display: flex; gap: 2rem">
+          
+  <!-- Left Card: Customer Information -->
+  <div class="left-card" style="width: 40%; padding: 1rem; border: 1px solid #ccc">
+    <h2>Customer Information</h2>
+    <p><strong>Name:</strong> {{ customer.name }} {{ customer.customer_name }}</p>
+    <p><strong>Phone:</strong> {{ customer.phone }} {{ customer.mobile_number }}</p>
+    <p><strong>Email:</strong> {{ customer.email }}</p>
+    <p><strong>Account Number:</strong> {{ customer.account_number }}</p>
+    <p><strong>Balance:</strong> ${{ customer.balance }}</p>
+    <p>
+      <strong>Address:</strong> {{ customer.address }}, {{ customer.city }}, {{ customer.state }}, {{ customer.pincode }}
+    </p>
+    
+    <!-- Message Area -->
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Right Side: Transaction Form -->
+  <div class="right-form" style="width: 50%; padding: 1rem; border: 1px solid #ccc">
+    <h2>Send Money</h2>
+    <form id="transactionForm">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="receiver_name">Receiver's Full Name</label>
+        <input type="text" id="receiver_name" name="receiver_name" required />
+      </div>
+      <div class="form-group">
+        <label for="receiver_account_number">Receiver's Account Number</label>
+        <input type="text" id="receiver_account_number" name="receiver_account_number" required />
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" step="0.01" id="amount" name="amount" required />
+      </div>
+      <div class="form-group">
+        <label for="receiver_account_type">Receiver's Account Type</label>
+        <select id="receiver_account_type" name="receiver_account_type" required>
+          <option value="SAVINGS">Savings</option>
+          <option value="CURRENT">Current</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ifsc_code">IFSC Code</label>
+        <input type="text" id="ifsc_code" name="ifsc_code" maxlength="11" required />
+      </div>
+      <div class="form-group">
+        <label for="purpose">Purpose of Transfer</label>
+        <textarea id="purpose" name="purpose" rows="3"></textarea>
+      </div>
+      <button type="button" onclick="openRazorpay()">Send Money</button>
+    </form>
+  </div>
+</div>
+
+<!-- JavaScript for Razorpay Integration -->
+<script>
+function openRazorpay() {
+  // Retrieve form data
+  const amount = document.getElementById('amount').value * 100;  // Convert to paise
+  const receiverName = document.getElementById('receiver_name').value;
+
+  // Razorpay options configuration
+  var options = {
+    "key": "YOUR_RAZORPAY_KEY_ID",  // Replace with your Razorpay Key ID
+    "amount": amount,  // Amount is in paise
+    "currency": "INR",
+    "name": "Your Company Name",
+    "description": "Transaction with " + receiverName,
+    "handler": function (response) {
+      alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+      // You could also redirect to a success page or show a success message here.
+    },
+    "prefill": {
+      "name": "{{ customer.name }}",
+      "email": "{{ customer.email }}"
+    },
+    "theme": {
+      "color": "#3399cc"
+    }
+  };
+
+  var rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
+
+{% endblock %}
+  

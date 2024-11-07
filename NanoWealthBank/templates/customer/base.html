@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title> 
+    <link rel="stylesheet" href="{% static 'css/user-dashboard.css' %}" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="logo-container">
+        <img src="{% static 'images/logo.png' %}" alt="Bank Logo" />
+        <h1>NanoWealth Bank</h1>
+      </div>
+      <div class="user-info">
+        <span>Welcome, {{ request.session.username }}</span>
+        <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" />
+        <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul>
+        <li>
+          <span class="sidebar-span" onclick="toggleDropdown(this)">
+            Accounts
+            <span class="dropdown-arrow">▼</span>
+          </span>
+
+          <ul class="dropdown-content">
+            <li>
+              <a
+                href="{% url 'savings_account' %}"
+                class="dropdown-content-link"
+                >Savings Account</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'current_account' %}"
+                class="dropdown-content-link"
+                >Current Account</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="{% url 'view_profile' %}" class="sidebar-link"
+            >View Profile</a
+          >
+        </li>
+        <li>
+          <a href="{% url 'topup_balance' %}" class="sidebar-link" id="addMoneyButton">
+            Add Money
+          </a>
+        </li>
+        
+        <li>
+          <a href="{% url 'transactions' %}" class="sidebar-link"
+            >Transactions</a
+          >
+        </li>
+        <li>
+          <span class="sidebar-span" onclick="toggleDropdown(this)">
+            Deposits
+            <span class="dropdown-arrow">▼</span>
+          </span>
+          <ul class="dropdown-content">
+            <li>
+              <a class="dropdown-content-link" href="{% url 'list_deposits' %}">Fixed Deposits</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span class="sidebar-span" onclick="toggleDropdown(this)">
+            Loans
+            <span class="dropdown-arrow">▼</span>
+          </span>
+          <ul class="dropdown-content">
+            <li>
+              <a class="dropdown-content-link" href="{% url 'personal_loan' %}"
+                >Personal Loan</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="{% url 'internet_banking' %}" class="sidebar-link" id="internet-banking-button">Internet Banking</a>
+        </li>
+      </ul>
+      <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button"
+        >Back to Dashboard</a
+      >
+    </div>
+
+    <!-- Main Content -->
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script>
+      function toggleDropdown(element) {
+        var dropdownContent = element.nextElementSibling;
+        var arrow = element.querySelector(".dropdown-arrow");
+        if (dropdownContent.style.display === "block") {
+          dropdownContent.style.display = "none";
+          arrow.style.transform = "rotate(0deg)";
+        } else {
+          dropdownContent.style.display = "block";
+          arrow.style.transform = "rotate(180deg)";
+        }
+      }
+
+      // Add hover effects
+      var menuItems = document.querySelectorAll(".sidebar a, .sidebar span");
+      menuItems.forEach(function (item) {
+        item.addEventListener("mouseover", function () {
+          this.style.backgroundColor = "#34495e";
+          this.style.paddingLeft = "30px";
+        });
+        item.addEventListener("mouseout", function () {
+          this.style.backgroundColor = "";
+          this.style.paddingLeft = "25px";
+        });
+      });
+    </script>
+  </body>
+</html>

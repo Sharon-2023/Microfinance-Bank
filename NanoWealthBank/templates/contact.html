@@ -1,0 +1,52 @@
+{% extends 'base.html' %} {% load static %} 
+{% block title %}Services{% endblock %}
+{% block content %}
+ <!-- Header Section -->
+ <header>
+    <h1>Contact Us</h1>
+    <p>We’re here to help. Get in touch with us for any questions or assistance.</p>
+</header>
+
+<!-- Contact Content Container -->
+<div class="contact-container">
+    
+    <!-- Contact Form Section -->
+    <div class="contact-section">
+        <h2>Send Us a Message</h2>
+        <form action="/submit-contact-form" method="POST">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Full Name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Your Email Address" required>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Write your message here" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Customer Service Section -->
+    <div class="contact-section">
+        <h2>Customer Service</h2>
+        <div class="contact-info">
+            <p><strong>Phone:</strong> +1 (800) 123-4567</p>
+            <p><strong>Email:</strong> support@bankname.com</p>
+            <p><strong>Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM</p>
+        </div>
+    </div>
+
+    <!-- Location and Map Section -->
+    <div class="contact-section">
+        <h2>Visit Us</h2>
+        <p>Our main branch is located in the heart of the city for easy access.</p>
+        <div class="map-container">
+            <!-- Placeholder for map; you can embed a Google Map iframe here -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d62953.622550359294!2d76.69901665!3d9.54331515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x3b063678244b010b%3A0x3963a18cef4d0da!2zS2FuamlyYXBwYWxseSDgtJXgtL7gtJ7gtY3gtJ7gtL_gtLDgtKrgtY3gtKrgtLPgtY3gtLPgtL8!3m2!1d9.5594567!2d76.78735499999999!4m5!1s0x3b063678244b010b%3A0x3963a18cef4d0da!2sKanjirappally!3m2!1d9.5594567!2d76.78735499999999!5e0!3m2!1sen!2sin!4v1730202659716!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
