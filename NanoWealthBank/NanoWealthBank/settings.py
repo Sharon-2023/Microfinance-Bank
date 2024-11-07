@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+ca17s%jqtcm*hlp=$8^5b#*8j%4)j51+e*b45^7315^b47=$+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,6 +89,7 @@ WSGI_APPLICATION = 'NanoWealthBank.wsgi.application'
 #         }
 #     }
 # }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
