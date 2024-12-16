@@ -78,10 +78,10 @@ function openRazorpay() {
 
   // Razorpay options configuration
   var options = {
-    "key": "YOUR_RAZORPAY_KEY_ID",  // Replace with your Razorpay Key ID
-    "amount": amount,  // Amount is in paise
+    "key": "rzp_test_K3m91dIeZXVDcE",  // Replace with your Razorpay Key ID
+    "amount": "amount",  // Amount is in paise
     "currency": "INR",
-    "name": "Your Company Name",
+    "name": "NanoWealthBank",
     "description": "Transaction with " + receiverName,
     "handler": function (response) {
       alert("Payment successful! Payment ID: " + response.razorpay_payment_id);

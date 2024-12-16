@@ -108,7 +108,15 @@ urlpatterns = [
     path('approve-customer-account/<int:account_id>/', views.approve_customer_account, name='approve_customer_account'),
     
 
-    #Admin- current approval and verification    
+    #Admin- current approval and verification   
+    # 
+
+#razorpay
+path('internet_banking/', views.internet_banking, name='internet_banking'),
+
+#path('send-money/', views.send_money, name='send_money'),
+#path('process-payment/', views.process_payment, name='process_payment'),
+#path('payment-success/', views.payment_success, name='payment_success'), 
 
 ]
 

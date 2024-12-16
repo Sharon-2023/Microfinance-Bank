@@ -8,86 +8,79 @@
   <form id="loanForm">
     {% csrf_token %}
     
-    <!-- Step 1: Personal Information -->
-    <div class="step active" id="step1">
-      <h3>Step 1: Personal Information</h3>
-      <label for="applicantName">Applicant Name:</label>
-      <input type="text" id="applicantName" name="applicantName" required />
+    <!-- Personal Information -->
+    <h3>Personal Information</h3>
+    <label for="applicantName">Applicant Name:</label>
+    <input type="text" id="applicantName" name="applicantName" placeholder="Enter your full name" required />
 
-      <label for="nationality">Nationality:</label>
-      <input type="text" id="nationality" name="nationality" required />
+    <label for="nationality">Nationality:</label>
+    <input type="text" id="nationality" name="nationality" placeholder="Enter your nationality" required />
 
-      <label for="gender">Gender:</label>
-      <select id="gender" name="gender" required>
-        <option value="">Select Gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender" placeholder="Gender"required>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
 
-      <button type="button" onclick="nextStep(1)">Next</button>
-    </div>
+    <!-- Address Information -->
+    <h3>Address Information</h3>
+    <label for="address">Street Address:</label>
+    <input type="text" id="address" name="address" placeholder="Enter your street address" required />
 
-    <!-- Step 2: Address Information -->
-    <div class="step" id="step2">
-      <h3>Step 2: Address Information</h3>
-      <label for="address">Street Address:</label>
-      <input type="text" id="address" name="address" required />
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city" placeholder="Enter your city" required />
 
-      <label for="city">City:</label>
-      <input type="text" id="city" name="city" required />
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state" placeholder="Enter your state" required />
 
-      <label for="state">State:</label>
-      <input type="text" id="state" name="state" required />
+    <label for="pinCode">Pin Code:</label>
+    <input type="text" id="pinCode" name="pinCode" placeholder="Enter your pin code" required />
 
-      <label for="pinCode">Pin Code:</label>
-      <input type="text" id="pinCode" name="pinCode" required />
+    <!-- Employment Information -->
+    <h3>Employment Information</h3>
+    <label for="employmentStatus">Employment Status:</label>
+    <select id="employmentStatus" name="employmentStatus" required>
+      <option value="">Select Employment Status</option>
+      <option value="employed">Employed</option>
+      <option value="unemployed">Unemployed</option>
+    </select>
 
-      <button type="button" onclick="prevStep(2)">Previous</button>
-      <button type="button" onclick="nextStep(2)">Next</button>
-    </div>
+    <label for="monthlyIncome">Monthly Income:</label>
+    <input type="number" id="monthlyIncome" name="monthlyIncome" placeholder="Enter your monthly income" required />
 
-    <!-- Step 3: Employment Information -->
-    <div class="step" id="step3">
-      <h3>Step 3: Employment Information</h3>
-      <label for="employmentStatus">Employment Status:</label>
-      <select id="employmentStatus" name="employmentStatus" required>
-        <option value="">Select Employment Status</option>
-        <option value="employed">Employed</option>
-        <option value="unemployed">Unemployed</option>
-      </select>
-
-      <label for="monthlyIncome">Monthly Income:</label>
-      <input type="number" id="monthlyIncome" name="monthlyIncome" required />
-
+    <div class="file-upload">
       <label for="salaryCertificate">Salary Certificate:</label>
       <input type="file" id="salaryCertificate" name="salaryCertificate" required />
-
-      <button type="button" onclick="prevStep(3)">Previous</button>
-      <button type="button" onclick="nextStep(3)">Next</button>
     </div>
 
-    <!-- Step 4: Loan Details -->
-    <div class="step" id="step4">
-      <h3>Step 4: Loan Details</h3>
-      <label for="loanType">Loan Type:</label>
-      <select id="loanType" name="loanType" required>
-        <option value="">Select Loan Type</option>
-        <option value="personal">Personal Loan</option>
-        <option value="vehicle">Vehicle Loan</option>
-      </select>
+    <!-- Loan Details -->
+    <h3>Loan Details</h3>
+    <label for="loanType">Loan Type:</label>
+    <select id="loanType" name="loanType" required>
+      <option value="personal">Personal Loan</option>
+      <option value="vehicle">Vehicle Loan</option>
+    </select>
 
-      <label for="loanAmount">Loan Amount Required:</label>
-      <input type="number" id="loanAmount" name="loanAmount" required />
+    <label for="loanAmount">Loan Amount Required:</label>
+    <input type="number" id="loanAmount" name="loanAmount" placeholder="Enter the amount" required />
 
-      <label for="loanPurpose">Loan Purpose:</label>
-      <textarea id="loanPurpose" name="loanPurpose" required></textarea>
+    <label for="loanPurpose">Loan Purpose:</label>
+    <textarea id="loanPurpose" name="loanPurpose" placeholder="Describe the purpose of the loan" rows="2" cols="80" required></textarea>
 
-      <button type="button" onclick="prevStep(4)">Previous</button>
-      <button type="button" onclick="submitApplication()">Submit Application</button>
-    </div>
+    <button type="button" class="btn" onclick="submitApplication()">Submit Application</button>
   </form>
 </div>
+<style>
+  .file-upload {
+    display: flex;
+    align-items: center;
+  }
+
+  .file-upload label {
+    margin-right: 10px; 
+  }
+</style>
 <script>
   function showNotification(message, isSuccess) {
     const notification = document.getElementById("notification");
@@ -97,16 +90,6 @@
     setTimeout(() => {
       notification.style.display = "none";
     }, 5000);
-  }
-
-  function nextStep(currentStep) {
-    document.getElementById(`step${currentStep}`).classList.remove("active");
-    document.getElementById(`step${currentStep + 1}`).classList.add("active");
-  }
-
-  function prevStep(currentStep) {
-    document.getElementById(`step${currentStep}`).classList.remove("active");
-    document.getElementById(`step${currentStep - 1}`).classList.add("active");
   }
 
   function submitApplication() {

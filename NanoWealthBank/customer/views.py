@@ -28,6 +28,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
 from PyPDF2 import PdfReader, PdfWriter
+import razorpay
+from datetime import datetime, timedelta
 
 
 def home(request):
@@ -1185,9 +1187,8 @@ def personal_loan(request):
 
 
 def loan_application(request):
-    user = request.session.get('user_id')
     if request.method == 'POST':
-        # Get form data
+        # Extract data from the request
         applicant_name = request.POST.get('applicantName')
         nationality = request.POST.get('nationality')
         gender = request.POST.get('gender')
@@ -1201,41 +1202,43 @@ def loan_application(request):
         loan_amount = request.POST.get('loanAmount')
         loan_purpose = request.POST.get('loanPurpose')
 
-        # Handle the uploaded file
-        salary_certificate = request.FILES.get('salaryCertificate')
-
-        # Check required fields
-        if not all([applicant_name, nationality, gender, address, city, state, pin_code,
-                    employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
+        # Validate required fields
+        if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
             return JsonResponse({'success': False, 'message': 'All fields are required.'})
 
-        # Save the loan application
+        # Create a new loan application
+        loan_application = LoanApplication(
+            applicant_name=applicant_name,
+            nationality=nationality,
+            gender=gender,
+            address=address,
+            city=city,
+            state=state,
+            pin_code=pin_code,
+            employment_status=employment_status,
+            monthly_income=monthly_income,
+            loan_type=loan_type,
+            loan_amount=loan_amount,
+            loan_purpose=loan_purpose,
+            # Assuming you have a field for the current date
+            application_date=datetime.now()
+        )
+        
+        # Save the application
+        loan_application.save()
+
+        # Calculate the next payment date
         try:
-            loan_application = Loan(
-                name=applicant_name,
-                nationality=nationality,
-                gender=gender,
-                address=address,
-                city=city,
-                state=state,
-                pincode=pin_code,
-                employment_status=employment_status,
-                monthly_income=monthly_income,
-                loan_type=loan_type,
-                loan_amount_required=loan_amount,
-                loan_purpose=loan_purpose,
-                salary_certificate=salary_certificate,
-                user_id=user  # Associate the application with the logged-in user
-            )
-            loan_application.save()
-
-            return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
-
+            # Assuming you want to set the next payment date 30 days from the application date
+            next_payment_date = loan_application.application_date + timedelta(days=30)
+            loan_application.next_payment_date = next_payment_date
+            loan_application.save()  # Save the updated loan application with the next payment date
         except Exception as e:
             return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
 
-    return render(request, 'customer/loan_form.html')
+        return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
 
+    return render(request, 'customer/loan_application.html')
 
 # logout
 
