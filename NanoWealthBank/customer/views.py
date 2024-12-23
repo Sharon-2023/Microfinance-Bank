@@ -694,7 +694,7 @@ def download_statement(request):
             created_at__gte=start_date, created_at__lt=end_date
         )
     else:
-        transactions = Transaction.objects.none()
+        transactions= Transaction.objects.none()
 
     # Generate the PDF
     buffer = io.BytesIO()
