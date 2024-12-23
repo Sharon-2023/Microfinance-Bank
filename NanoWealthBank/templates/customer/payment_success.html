@@ -1,0 +1,143 @@
+{% extends 'customer/base.html' %}
+
+{% block extra_styles %}
+<style>
+    /* General Styles */
+    .receipt-container {
+        width: 60%;
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .receipt-header h1 {
+        font-size: 1.8rem;
+        color: #004AAD;
+        margin-bottom: 0.5rem;
+    }
+
+    .receipt-header h3 {
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 0.2rem;
+    }
+
+    .info-table, .transaction-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    .info-table td, .info-table th, .transaction-table td, .transaction-table th {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .transaction-table th {
+        background-color: #f0f8ff;
+        color: #004AAD;
+    }
+
+    .success-text {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .note {
+        font-size: 0.9rem;
+        color: #555;
+        margin-top: 1rem;
+    }
+
+    .help-text {
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: #004AAD;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block sidebar %}{% endblock %} <!-- Remove sidebar for this page -->
+
+{% block content %}
+<div class="receipt-container">
+    <!-- Header Section -->
+    <div class="receipt-header">
+        <h1>Domestic Money Transfer</h1>
+        <h3>{{ current_date }}</h3> <!-- Add current date dynamically -->
+    </div>
+
+    <!-- Transaction Info Table -->
+    <table class="info-table">
+        <tr>
+            <th>Agent Mobile No:</th>
+            <td>{{ customer.mobile_number }}</td>
+        </tr>
+        <tr>
+            <th>Parent Transaction ID:</th>
+            <td>{{ transaction_id }}</td>
+        </tr>
+        <tr>
+            <th>Remitter Name:</th>
+            <td>{{ customer.name }}</td>
+        </tr>
+        <tr>
+            <th>Bank Name:</th>
+            <td>{{ bank_name }}</td>
+        </tr>
+        <tr>
+            <th>Beneficiary A/C:</th>
+            <td>{{ receiver_account_number }}</td>
+        </tr>
+        <tr>
+            <th>Beneficiary Name:</th>
+            <td>{{ receiver_name }}</td>
+        </tr>
+        <tr>
+            <th>Total Transaction Amount:</th>
+            <td>₹{{ total_amount }}</td>
+        </tr>
+    </table>
+
+    <!-- Transaction Details Table -->
+    <table class="transaction-table">
+        <thead>
+            <tr>
+                <th>Transaction RRN</th>
+                <th>Transaction Amount</th>
+                <th>Transaction Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for txn in transactions %}
+            <tr>
+                <td>{{ txn.rrn }}</td>
+                <td>₹{{ txn.amount }}</td>
+                <td class="success-text">Success</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Note Section -->
+    <p class="note">
+        NOTE: Service charge of 1% or ₹10 (whichever is higher) inclusive of GST is applicable. This is a computer-generated receipt and does not require a physical signature.
+    </p>
+
+    <!-- Help Section -->
+    <div class="help-text">
+        <p><strong>Need Help?</strong></p>
+        <p>Call us at 0120 4456 456 or visit <a href="https://www.paytmbank.com">www.paytmbank.com</a></p>
+    </div>
+</div>
+{% endblock %}

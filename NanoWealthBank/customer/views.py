@@ -1,5 +1,5 @@
 from django.urls import reverse
-from .models import FixedDeposit, Loan, Savings  # Make sure to import your model
+from .models import FixedDeposit, LoanApplication, Savings  # Make sure to import your model
 from django.shortcuts import render, redirect, get_object_or_404
 # Import the LoanOfficer model
 from .models import Admin, Customer, LoanOfficer, Transaction
@@ -851,6 +851,20 @@ def internet_banking(request):
         return redirect('internet_banking')
     return render(request, 'customer/internet_banking.html', {'customer': customer})
 
+# def payment_success(request):
+#     payment_id = request.GET.get('payment_id', '')  
+#     return render(request, 'customer/payment_success.html', {'payment_id': payment_id})
+
+def payment_success(request):
+    # Assuming Razorpay sends payment details as GET parameters
+    context = {
+        'payment_id': request.GET.get('payment_id'),
+        'amount': request.GET.get('amount'),
+        'receiver_name': request.GET.get('receiver_name'),
+        'receiver_account_number': request.GET.get('receiver_account_number'),
+    }
+    return render(request, 'customer/payment_success.html', context)
+
 # admin dashboard
 
 
@@ -1186,59 +1200,7 @@ def personal_loan(request):
     return render(request, 'customer/personal_loan.html', {'ongoing_loans': ongoing_loans})
 
 
-def loan_application(request):
-    if request.method == 'POST':
-        # Extract data from the request
-        applicant_name = request.POST.get('applicantName')
-        nationality = request.POST.get('nationality')
-        gender = request.POST.get('gender')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        pin_code = request.POST.get('pinCode')
-        employment_status = request.POST.get('employmentStatus')
-        monthly_income = request.POST.get('monthlyIncome')
-        loan_type = request.POST.get('loanType')
-        loan_amount = request.POST.get('loanAmount')
-        loan_purpose = request.POST.get('loanPurpose')
 
-        # Validate required fields
-        if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
-            return JsonResponse({'success': False, 'message': 'All fields are required.'})
-
-        # Create a new loan application
-        loan_application = LoanApplication(
-            applicant_name=applicant_name,
-            nationality=nationality,
-            gender=gender,
-            address=address,
-            city=city,
-            state=state,
-            pin_code=pin_code,
-            employment_status=employment_status,
-            monthly_income=monthly_income,
-            loan_type=loan_type,
-            loan_amount=loan_amount,
-            loan_purpose=loan_purpose,
-            # Assuming you have a field for the current date
-            application_date=datetime.now()
-        )
-        
-        # Save the application
-        loan_application.save()
-
-        # Calculate the next payment date
-        try:
-            # Assuming you want to set the next payment date 30 days from the application date
-            next_payment_date = loan_application.application_date + timedelta(days=30)
-            loan_application.next_payment_date = next_payment_date
-            loan_application.save()  # Save the updated loan application with the next payment date
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
-
-        return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
-
-    return render(request, 'customer/loan_application.html')
 
 # logout
 

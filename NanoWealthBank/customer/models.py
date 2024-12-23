@@ -94,49 +94,6 @@ class Current(models.Model):
         return self.customer_name
 
 
-class Loan(models.Model):
-    LOAN_TYPES = [
-        ('personal', 'Personal Loan'),
-        ('vehicle', 'Vehicle Loan')
-    ]
-
-    EMPLOYMENT_STATUS = [
-        ('employed', 'Employed'),
-        ('unemployed', 'Unemployed')
-    ]
-
-    user_id = models.CharField(max_length=50, blank=True, null=True)
-    name = models.CharField(max_length=50)
-    nationality = models.CharField(max_length=50)
-    gender = models.CharField(max_length=10)
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    state = models.CharField(max_length=100)
-    pincode = models.CharField(max_length=100)
-    employment_status = models.CharField(
-        max_length=20, choices=EMPLOYMENT_STATUS)
-    monthly_income = models.DecimalField(max_digits=10, decimal_places=2)
-    salary_certificate = models.FileField(
-        upload_to='documents/salary_certificates/')
-    loan_type = models.CharField(max_length=10, choices=LOAN_TYPES)
-    loan_amount_required = models.DecimalField(max_digits=10, decimal_places=2)
-    loan_purpose = models.TextField()
-    is_approved = models.BooleanField(default=False)
-    created_at = models.DateTimeField(
-        auto_now_add=True)  # Set to now when created
-    next_payment_date = models.DateField(
-        default=timezone.now)  # Default value can be changed
-    balance_due = models.DecimalField(
-        max_digits=12, decimal_places=2, default=0.00)
-
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.next_payment_date = self.created_at + \
-                timezone.timedelta(days=30)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.name} - {self.loan_type.capitalize()} Loan"
 
 
 class Transaction(models.Model):

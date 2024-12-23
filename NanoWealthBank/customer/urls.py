@@ -53,7 +53,7 @@ urlpatterns = [
 
     #Personal loan
     path('personal_loan/', views.personal_loan, name='personal_loan'),
-    path('loan_application/', views.loan_application, name='loan_application'),
+    path('loan_application/', views.loan_application_view, name='loan_application'),
 
     # transcations
     path('transactions/', views.transactions, name='transactions'),
@@ -113,10 +113,7 @@ urlpatterns = [
 
 #razorpay
 path('internet_banking/', views.internet_banking, name='internet_banking'),
-
-#path('send-money/', views.send_money, name='send_money'),
-#path('process-payment/', views.process_payment, name='process_payment'),
-#path('payment-success/', views.payment_success, name='payment_success'), 
+path('payment-success/', views.payment_success, name='payment_success'),
 
 ]
 
