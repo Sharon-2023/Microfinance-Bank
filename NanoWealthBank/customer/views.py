@@ -694,7 +694,7 @@ def download_statement(request):
             created_at__gte=start_date, created_at__lt=end_date
         )
     else:
-        transactions= Transaction.objects.none()
+        transactions = Transaction.objects.none()
 
     # Generate the PDF
     buffer = io.BytesIO()
@@ -1196,11 +1196,63 @@ def currentcode_verify(request):
 
 def personal_loan(request):
     user_id = request.session.get('user_id')
-    ongoing_loans = Loan.objects.filter(user_id=user_id)
+    ongoing_loans = LoanApplication.objects.filter(customer_id=user_id)
     return render(request, 'customer/personal_loan.html', {'ongoing_loans': ongoing_loans})
 
 
+def loan_application(request):
+    if request.method == 'POST':
+        # Extract data from the request
+        applicant_name = request.POST.get('applicantName')
+        nationality = request.POST.get('nationality')
+        gender = request.POST.get('gender')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        pin_code = request.POST.get('pinCode')
+        employment_status = request.POST.get('employmentStatus')
+        monthly_income = request.POST.get('monthlyIncome')
+        loan_type = request.POST.get('loanType')
+        loan_amount = request.POST.get('loanAmount')
+        loan_purpose = request.POST.get('loanPurpose')
 
+        # Validate required fields
+        if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
+            return JsonResponse({'success': False, 'message': 'All fields are required.'})
+
+        # Create a new loan application
+        loan_application = loan_application(
+            applicant_name=applicant_name,
+            nationality=nationality,
+            gender=gender,
+            address=address,
+            city=city,
+            state=state,
+            pin_code=pin_code,
+            employment_status=employment_status,
+            monthly_income=monthly_income,
+            loan_type=loan_type,
+            loan_amount=loan_amount,
+            loan_purpose=loan_purpose,
+            # Assuming you have a field for the current date
+            application_date=datetime.now()
+        )
+        
+        # Save the application
+        loan_application.save()
+
+        # Calculate the next payment date
+        try:
+            # Assuming you want to set the next payment date 30 days from the application date
+            next_payment_date = loan_application.application_date + timedelta(days=30)
+            loan_application.next_payment_date = next_payment_date
+            loan_application.save()  # Save the updated loan application with the next payment date
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
+
+        return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
+
+    return render(request, 'customer/loan_application.html')
 
 # logout
 
@@ -1304,3 +1356,39 @@ def account_approval(request):
 
 def current_interest(request):
     return render(request, 'current_interest.html')
+
+def transfer_receipt(request, transaction_id):
+    transaction = get_object_or_404(Transaction, id=transaction_id)
+    context = {
+        'receiver_name': transaction.receiver_name,
+        'receiver_account_type': transaction.get_receiver_account_type_display(),
+        'amount': transaction.amount,
+        'date_time': transaction.created_at,
+    }
+    return render(request, 'transfer_receipt.html', context)
+
+def process_payment(request, transaction_id):
+    # Simulate payment logic
+    transaction = get_object_or_404(Transaction, id=transaction_id)
+
+    # Simulate payment success (replace this with actual payment gateway logic)
+    payment_success = True  # Replace with actual success response from your payment gateway
+    
+    if payment_success:
+        # Mark the transaction as approved
+        transaction.is_approved = True
+        transaction.save()
+
+        # Redirect to the transfer receipt page
+        return redirect('transfer_receipt', transaction_id=transaction.id)
+    else:
+        # Handle payment failure (optional)
+        return HttpResponse("Payment failed. Please try again.")
+    
+def payment_success(request):
+    payment_id = request.GET.get('payment_id')  # Retrieve payment ID from the query parameters
+    context = {
+        'payment_id': payment_id
+    }
+    return render(request, 'customer/payment_success.html', context)
+

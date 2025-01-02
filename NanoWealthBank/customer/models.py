@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import timedelta
 from django.utils import timezone
+from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
 
 
@@ -93,6 +94,38 @@ class Current(models.Model):
     def __str__(self):
         return self.customer_name
 
+class LoanApplication(models.Model):
+    # Applicant information
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    applicant_name = models.CharField(max_length=100)
+    nationality = models.CharField(max_length=50)
+    gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')])
+    address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    pin_code = models.CharField(max_length=10)
+    
+    # Employment and financial details
+    employment_status = models.CharField(max_length=20, choices=[('Employed', 'Employed'), ('Self-Employed', 'Self-Employed'), ('Unemployed', 'Unemployed')])
+    monthly_income = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    # Loan details
+    loan_type = models.CharField(max_length=50, choices=[('Personal', 'Personal'), ('Home', 'Home'), ('Auto', 'Auto'), ('Education', 'Education')])
+    loan_amount = models.DecimalField(max_digits=15, decimal_places=2)
+    loan_purpose = models.CharField(max_length=200)
+    
+    # Additional fields
+    application_date = models.DateTimeField(default=datetime.now)
+    next_payment_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Loan Application for {self.applicant_name} - {self.loan_type}"
+
+    def save(self, *args, **kwargs):
+        # Calculate next payment date as 30 days from application date before saving
+        if not self.next_payment_date:
+            self.next_payment_date = self.application_date + timedelta(days=30)
+        super().save(*args, **kwargs)
 
 
 
@@ -100,6 +133,11 @@ class Transaction(models.Model):
     ACCOUNT_TYPE_CHOICES = [
         ('SAVINGS', 'Savings'),
         ('CURRENT', 'Current'),
+    ]
+    PAYMENT_STATUS_CHOICES = [
+        ('SUCCESS', 'Success'),
+        ('FAILED', 'Failed'),
+        ('PENDING', 'Pending'),
     ]
     user_id = models.CharField(max_length=50, blank=True, null=True)
     owner_name = models.CharField(max_length=200, blank=True, null=True)
@@ -119,6 +157,10 @@ class Transaction(models.Model):
     purpose = models.TextField(
         verbose_name="Purpose of Transfer", null=True, blank=True)
 
+    payment_id = models.CharField(max_length=100, blank=True, null=True, verbose_name="Razorpay Payment ID")
+    payment_status = models.CharField(
+        max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING', verbose_name="Payment Status"
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Transaction Date & Time")
     updated_at = models.DateTimeField(
@@ -158,3 +200,4 @@ class FixedDeposit(models.Model):
 
     def __str__(self):
         return f"{self.customer_name} - Deposit: {self.deposit_amount} - Maturity: {self.maturity_amount}"
+    

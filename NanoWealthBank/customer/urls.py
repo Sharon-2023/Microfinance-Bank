@@ -53,7 +53,7 @@ urlpatterns = [
 
     #Personal loan
     path('personal_loan/', views.personal_loan, name='personal_loan'),
-    path('loan_application/', views.loan_application_view, name='loan_application'),
+    path('loan_application/', views.loan_application, name='loan_application'),
 
     # transcations
     path('transactions/', views.transactions, name='transactions'),
@@ -90,15 +90,6 @@ urlpatterns = [
     # Admin sections
     path('admin/account-approval/', views.account_approval_view, name='account_approval'),
 
-     #View Profile
-
-     #Current account
-
-
-
-   
-
-
     #Current account application
     path('current_interest/', views .current_interest, name='current_interest'),
 
@@ -106,14 +97,11 @@ urlpatterns = [
 
     #Admin- savings approval and verification    
     path('approve-customer-account/<int:account_id>/', views.approve_customer_account, name='approve_customer_account'),
-    
 
-    #Admin- current approval and verification   
-    # 
-
-#razorpay
-path('internet_banking/', views.internet_banking, name='internet_banking'),
-path('payment-success/', views.payment_success, name='payment_success'),
+#transaction receipt
+    path('receipt/<int:transaction_id>/', views.transfer_receipt, name='transfer_receipt'),
+    path('payment/<int:transaction_id>/', views.process_payment, name='process_payment'),
+ path('payment-success/', views.payment_success, name='payment_success'),
 
 ]
 
