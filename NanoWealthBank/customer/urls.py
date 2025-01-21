@@ -39,6 +39,8 @@ urlpatterns = [
 
     # customer
     path('profile/', views.view_profile, name='view_profile'),
+    path('apply-card/', views.apply_card, name='apply_card'),
+
     #Savings account 
     path('savings-account/', views.savings_account, name='savings_account'),
     path('savings-application/', views.savings_application, name='savings_application'),
@@ -101,7 +103,18 @@ urlpatterns = [
 #transaction receipt
     path('receipt/<int:transaction_id>/', views.transfer_receipt, name='transfer_receipt'),
     path('payment/<int:transaction_id>/', views.process_payment, name='process_payment'),
- path('payment-success/', views.payment_success, name='payment_success'),
+    path('payment-success/', views.payment_success, name='payment_success'),
+        # path('payment-success/<str:payment_id>/', views.payment_success, name='payment_success'),
+
+#apply card
+    path('apply-card/', views.apply_card, name='apply_card'),
+#classic card
+    path('classic-card-details/', views.classic_card_details, name='classic_card_details'),  
+    path('apply-classic/', views.apply_classic_card, name='apply_classic_card'),
+#admin card approval
+    path('admin_card_applications/', views.admin_card_applications, name='admin_card_applications'),
+    path('approve-application/<int:application_id>/', views.approve_classiccard_application, name='approve_classiccard_application'),
+    path('reject-application/<int:application_id>/', views.reject_classiccard_application, name='reject_classiccard_application'),
+    path('block-application/<int:application_id>/', views.block_classiccard_application, name='block_classiccard_application'),
 
 ]
-

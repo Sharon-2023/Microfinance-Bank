@@ -1,0 +1,321 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-2">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2 class="text-gradient">Choose Your Perfect Card</h2>
+                <p class="text-muted">Explore our range of premium debit cards designed for your lifestyle</p>
+            </div>
+
+            <div class="d-flex justify-content-center flex-wrap card-container">
+                <!-- First Row - Classic and Platinum side by side -->
+                <div class="row-container">
+                    <!-- Classic Card -->
+                    <div class="card-wrapper">
+                        <div class="card card-gold">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Classic</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-image-wrapper mb-4">
+                                    <img src="{% static 'images/classic_card.jpg' %}" alt="Classic Card" class="img-fluid card-img">
+                                </div>
+                                <div class="features-list">
+                                    <h6 class="text-accent mb-3">Key Benefits</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-star text-warning me-2"></i>ATM Transaction Limit up to Rs.30,000/-*</li>
+                                        <li><i class="fas fa-star text-warning me-2"></i>Free exclusive insurance package*</li>
+                                        <li><i class="fas fa-star text-warning me-2"></i>Lounge Access*</li>
+                                    </ul>
+                                </div>
+                                <p class="text-muted small mt-3">*T&C apply</p>
+                                <a href="{% url 'classic_card_details' %}" class="btn btn-classic btn-gold w-100">
+                                    Learn More <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platinum Card -->
+                    <div class="card-wrapper">
+                        <div class="card card-blue">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Platinum</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-image-wrapper mb-4">
+                                    <img src="{% static 'images/platinum_card.jpg' %}" alt="Platinum Card" class="img-fluid card-img">
+                                </div>
+                                <div class="features-list">
+                                    <h6 class="text-accent mb-3">Key Benefits</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-crown text-primary me-2"></i>ATM Transaction Limit up to Rs.50,000/-*</li>
+                                        <li><i class="fas fa-crown text-primary me-2"></i>Free exclusive insurance package*</li>
+                                        <li><i class="fas fa-crown text-primary me-2"></i>Lounge Access*</li>
+                                    </ul>
+                                </div>
+                                <p class="text-muted small mt-3">*T&C apply</p>
+                                <a href="#" class="btn btn-classic btn-blue w-100">
+                                    Learn More <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row - Signet and Imperio side by side -->
+                <div class="row-container">
+                    <!-- Signet Card -->
+                    <div class="card-wrapper">
+                        <div class="card card-purple">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Signet</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-image-wrapper mb-4">
+                                    <img src="{% static 'images/signet_card.jpg' %}" alt="Signet Card" class="img-fluid card-img">
+                                </div>
+                                <div class="features-list">
+                                    <h6 class="text-accent mb-3">Key Benefits</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-gem text-purple me-2"></i>ATM Transaction Limit up to Rs.75,000/-*</li>
+                                        <li><i class="fas fa-gem text-purple me-2"></i>Premium Banking Services</li>
+                                        <li><i class="fas fa-gem text-purple me-2"></i>Enhanced Security Features</li>
+                                    </ul>
+                                </div>
+                                <p class="text-muted small mt-3">*T&C apply</p>
+                                <a href="#" class="btn btn-classic btn-purple w-100">
+                                    Learn More <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Imperio Card -->
+                    <div class="card-wrapper">
+                        <div class="card card-green">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">Imperio</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-image-wrapper mb-4">
+                                    <img src="{% static 'images/imperio_card.jpg' %}" alt="Imperio Card" class="img-fluid card-img">
+                                </div>
+                                <div class="features-list">
+                                    <h6 class="text-accent mb-3">Key Benefits</h6>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-leaf text-success me-2"></i>ATM Transaction Limit up to Rs.50,000/-*</li>
+                                        <li><i class="fas fa-leaf text-success me-2"></i>Premium Banking Services</li>
+                                        <li><i class="fas fa-leaf text-success me-2"></i>Enhanced Security Features</li>
+                                    </ul>
+                                </div>
+                                <p class="text-muted small mt-3">*T&C apply</p>
+                                <a href="#" class="btn btn-classic btn-green w-100">
+                                    Learn More <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    padding: 30px 50px 0;
+    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+    margin: -15px -15px 30px;
+    padding: 40px;
+    border-radius: 0 0 20px 20px;
+    color: white;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 30px 50px;
+}
+
+.row-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+}
+
+.card-wrapper {
+    flex: 0 0 auto;
+    width: 350px;
+}
+
+.card {
+    border: none;
+    height: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+/* Card Color Variants */
+.card-gold {
+    background: linear-gradient(145deg, #ffffff 0%, #fff9e6 100%);
+}
+.card-blue {
+    background: linear-gradient(145deg, #ffffff 0%, #e6f3ff 100%);
+}
+.card-purple {
+    background: linear-gradient(145deg, #ffffff 0%, #f5e6ff 100%);
+}
+.card-green {
+    background: linear-gradient(145deg, #ffffff 0%, #e6ffe6 100%);
+}
+
+/* Button base style */
+.btn-classic {
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+/* Button color variants */
+.btn-gold {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+}
+
+.btn-blue {
+    background: linear-gradient(45deg, #4B79E4, #2196F3);
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+}
+
+.btn-purple {
+    background: linear-gradient(45deg, #9C27B0, #673AB7);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+}
+
+.btn-green {
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+}
+
+.btn-classic:hover {
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.btn-gold:hover { box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3); }
+.btn-blue:hover { box-shadow: 0 6px 20px rgba(33, 150, 243, 0.3); }
+.btn-purple:hover { box-shadow: 0 6px 20px rgba(156, 39, 176, 0.3); }
+.btn-green:hover { box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3); }
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 1.25rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-image-wrapper {
+    text-align: center;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.7);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    width: auto;
+    height: auto;
+}
+
+.features-list ul li {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .row-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .card-wrapper {
+        width: 100%;
+        max-width: 350px;
+    }
+    
+    .page-header {
+        padding: 30px 20px;
+        text-align: center;
+    }
+    
+    .card-container {
+        padding: 20px;
+    }
+}
+
+/* Style for Terms and Conditions text */
+.text-muted.small {
+    margin-top: 3px;
+    text-align: right;
+    display: block;
+    color: #808080;  /* Grey color */
+    font-style: italic;
+}
+</style>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

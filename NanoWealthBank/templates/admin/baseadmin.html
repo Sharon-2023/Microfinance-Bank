@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="{% url 'admindashboard' %}">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'customer_list' %}">
+                    <i class="fas fa-users"></i> Customers
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'loan_list' %}">
+                    <i class="fas fa-money-bill-wave"></i> Loans
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions_list' %}">
+                    <i class="fas fa-exchange-alt"></i> Transactions
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'savings_account_approval' %}">
+                    <i class="fas fa-piggy-bank"></i> Savings Account
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'current_account_approval' %}">
+                    <i class="fas fa-landmark"></i> Current Account
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_card_applications' %}">
+                    <i class="fas fa-credit-card"></i> Card Applications
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout_view' %}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Add any additional styling if needed -->
+<style>
+    .fa-credit-card {
+        margin-right: 10px;
+        color: #FFD700;
+    }
+</style>
+{% endblock %}

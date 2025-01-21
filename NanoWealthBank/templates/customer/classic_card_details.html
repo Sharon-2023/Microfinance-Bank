@@ -1,0 +1,214 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-2">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2 class="text-gradient">Classic Card Details</h2>
+                <p class="text-muted">Discover the features and benefits of our Classic Card</p>
+            </div>
+
+            <!-- Card Details Section -->
+            <div class="card-details-container">
+                <!-- Card Preview -->
+                <div class="card-preview">
+                    <img src="{% static 'images/classic_card.jpg' %}" alt="Classic Card" class="card-preview-img">
+                </div>
+
+                <!-- Features Section -->
+                <div class="features-section">
+                    <h3>Key Features</h3>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-money-bill-wave feature-icon"></i>
+                            <h4>ATM Withdrawals</h4>
+                            <p>Daily limit up to Rs.30,000/- with no transaction fees</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt feature-icon"></i>
+                            <h4>Insurance Coverage</h4>
+                            <p>Complimentary insurance package worth Rs.2 Lakhs</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-plane feature-icon"></i>
+                            <h4>Airport Lounge Access</h4>
+                            <p>2 complimentary domestic airport lounge visits per quarter</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shopping-cart feature-icon"></i>
+                            <h4>Shopping Benefits</h4>
+                            <p>Exclusive discounts at partner merchants</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eligibility Section -->
+                <div class="eligibility-section">
+                    <h3>Eligibility Criteria</h3>
+                    <ul class="eligibility-list">
+                        <li><i class="fas fa-check"></i> Age: 18 years and above</li>
+                        <li><i class="fas fa-check"></i> Monthly Income: Rs.15,000 or above</li>
+                        <li><i class="fas fa-check"></i> Valid KYC Documents</li>
+                    </ul>
+                </div>
+
+                <!-- Apply Button -->
+                <div class="apply-section">
+                    <a href="{% url 'apply_classic_card' %}" class="btn btn-classic btn-gold">
+                        Apply Now <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-header {
+    padding: 30px 50px 0;
+    background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+    margin: -15px -15px 30px;
+    padding: 40px;
+    border-radius: 0 0 20px 20px;
+    color: white;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.card-details-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-preview {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.card-preview-img {
+    max-width: 400px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.features-section {
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: #FFD700;
+    margin-bottom: 15px;
+}
+
+.feature-item h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.eligibility-section {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+.eligibility-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.eligibility-list li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.eligibility-list li i {
+    color: #4CAF50;
+    margin-right: 10px;
+}
+
+.apply-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.btn-classic {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #fff;
+    padding: 15px 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-classic:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .card-details-container {
+        padding: 15px;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-preview-img {
+        max-width: 100%;
+    }
+    
+    .page-header {
+        padding: 30px 20px;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

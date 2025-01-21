@@ -1,8 +1,7 @@
 from django.urls import reverse
 from .models import FixedDeposit, LoanApplication, Savings  # Make sure to import your model
 from django.shortcuts import render, redirect, get_object_or_404
-# Import the LoanOfficer model
-from .models import Admin, Customer, LoanOfficer, Transaction
+from .models import Admin, Customer, LoanOfficer, Transaction, ClassicCardApplication
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
@@ -28,8 +27,13 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
 from PyPDF2 import PdfReader, PdfWriter
-import razorpay
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
+import os
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
+import os
 
 
 def home(request):
@@ -851,6 +855,8 @@ def internet_banking(request):
         return redirect('internet_banking')
     return render(request, 'customer/internet_banking.html', {'customer': customer})
 
+
+
 # def payment_success(request):
 #     payment_id = request.GET.get('payment_id', '')  
 #     return render(request, 'customer/payment_success.html', {'payment_id': payment_id})
@@ -862,6 +868,8 @@ def payment_success(request):
         'amount': request.GET.get('amount'),
         'receiver_name': request.GET.get('receiver_name'),
         'receiver_account_number': request.GET.get('receiver_account_number'),
+
+                
     }
     return render(request, 'customer/payment_success.html', context)
 
@@ -874,7 +882,7 @@ def admin_dashboard(request):
     customers = Customer.objects.all()
     savings = Savings.objects.all()
     currents = Current.objects.all()
-    loans = Loan.objects.all()
+    loans = LoanApplication.objects.all()
     fixed_deposit = FixedDeposit.objects.all()
     return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers, 'total_customers': customers.count(), 'total_savings_accounts': savings.count(), 'total_current_accounts': currents.count(), 'total_loans': loans.count(),'total_fixed_deposit':fixed_deposit.count()})
 
@@ -962,13 +970,13 @@ def add_loanOfficer_user(request):
 
 
 def loan_list(request):
-    loans_list = Loan.objects.all()
+    loans_list = LoanApplication.objects.all()
     return render(request, 'loanlist.html', {'loans': loans_list})
 
 
 def loan_status_toggle(request, loan_id):
     if request.method == 'POST':
-        loan = get_object_or_404(Loan, id=loan_id)
+        loan = get_object_or_404(LoanApplication, id=loan_id)
         action = request.POST.get('action')
         if action == 'approve':
             loan.is_approved = True
@@ -1049,14 +1057,14 @@ def profile_edit(request):
 
 
 def loan_to_be_approved(request):
-    loans = Loan.objects.filter(is_approved=False)
+    loans = LoanApplication.objects.filter(is_approved=False)
     return render(request, 'loanofficer/loans.html', {'loans': loans})
 
 # View to approve a specific loan
 
 
 def approve_loan(request, loan_id):
-    loan = get_object_or_404(Loan, id=loan_id)
+    loan = get_object_or_404(LoanApplication, id=loan_id)
 
     if request.method == "POST":
         loan.is_approved = True
@@ -1196,61 +1204,63 @@ def currentcode_verify(request):
 
 def personal_loan(request):
     user_id = request.session.get('user_id')
-    ongoing_loans = LoanApplication.objects.filter(customer_id=user_id)
+    ongoing_loans = LoanApplication.objects.filter(customer=user_id)
     return render(request, 'customer/personal_loan.html', {'ongoing_loans': ongoing_loans})
 
 
 def loan_application(request):
     if request.method == 'POST':
-        # Extract data from the request
-        applicant_name = request.POST.get('applicantName')
-        nationality = request.POST.get('nationality')
-        gender = request.POST.get('gender')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        pin_code = request.POST.get('pinCode')
-        employment_status = request.POST.get('employmentStatus')
-        monthly_income = request.POST.get('monthlyIncome')
-        loan_type = request.POST.get('loanType')
-        loan_amount = request.POST.get('loanAmount')
-        loan_purpose = request.POST.get('loanPurpose')
-
-        # Validate required fields
-        if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
-            return JsonResponse({'success': False, 'message': 'All fields are required.'})
-
-        # Create a new loan application
-        loan_application = loan_application(
-            applicant_name=applicant_name,
-            nationality=nationality,
-            gender=gender,
-            address=address,
-            city=city,
-            state=state,
-            pin_code=pin_code,
-            employment_status=employment_status,
-            monthly_income=monthly_income,
-            loan_type=loan_type,
-            loan_amount=loan_amount,
-            loan_purpose=loan_purpose,
-            # Assuming you have a field for the current date
-            application_date=datetime.now()
-        )
-        
-        # Save the application
-        loan_application.save()
-
-        # Calculate the next payment date
         try:
-            # Assuming you want to set the next payment date 30 days from the application date
-            next_payment_date = loan_application.application_date + timedelta(days=30)
-            loan_application.next_payment_date = next_payment_date
-            loan_application.save()  # Save the updated loan application with the next payment date
+            # Get the customer instance using the user_id from session
+            customer = Customer.objects.get(id=request.session.get('user_id'))
+            
+            # Extract data from the request
+            applicant_name = request.POST.get('applicantName')
+            nationality = request.POST.get('nationality')
+            gender = request.POST.get('gender')
+            address = request.POST.get('address')
+            city = request.POST.get('city')
+            state = request.POST.get('state')
+            pin_code = request.POST.get('pinCode')
+            employment_status = request.POST.get('employmentStatus')
+            monthly_income = request.POST.get('monthlyIncome')
+            loan_type = request.POST.get('loanType')
+            loan_amount = request.POST.get('loanAmount')
+            loan_purpose = request.POST.get('loanPurpose')
+
+            # Validate required fields
+            if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
+                return JsonResponse({'success': False, 'message': 'All fields are required.'})
+
+            # Create a new loan application with the customer instance
+            new_loan = LoanApplication.objects.create(
+                customer=customer,  # Set the customer foreign key
+                name=applicant_name,
+                nationality=nationality,
+                gender=gender,
+                address=address,
+                city=city,
+                state=state,
+                pin_code=pin_code,
+                employment_status=employment_status,
+                monthly_income=monthly_income,
+                loan_type=loan_type,
+                loan_amount_required=loan_amount,
+                loan_purpose=loan_purpose,
+                application_date=datetime.now()
+            )
+            
+            # Calculate the next payment date (30 days from application date)
+            next_payment_date = new_loan.application_date + timedelta(days=30)
+            new_loan.next_payment_date = next_payment_date
+            new_loan.save()
+
+            return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
+            
+        except Customer.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Please log in to submit a loan application.'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
-
-        return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
 
     return render(request, 'customer/loan_application.html')
 
@@ -1385,10 +1395,195 @@ def process_payment(request, transaction_id):
         # Handle payment failure (optional)
         return HttpResponse("Payment failed. Please try again.")
     
-def payment_success(request):
-    payment_id = request.GET.get('payment_id')  # Retrieve payment ID from the query parameters
+# def payment_success(request):
+#     # Get the payment_id from the query string
+#     payment_id = request.GET.get('payment_id')
+
+#     # if not payment_id:
+#     #     # Handle the case where payment_id is missing
+#     #     return render(request, '404.html', status=404)
+
+#     # # Fetch the transaction using the payment_id
+#     # transaction = get_object_or_404(Transaction, payment_id=payment_id)
+
+#     # Pass the transaction details to the template
+#     # context = {
+#     #     'payment_id': transaction.payment_id,
+#     #     'beneficiary_name': transaction.receiver_name,
+#     #     'beneficiary_account_number': transaction.receiver_account_number,
+#     #     'amount': transaction.amount,
+#     #     'transaction_date': transaction.created_at.strftime('%d-%m-%Y %H:%M:%S'),
+#     # }
+
+#     transaction = Transaction.objects.filter(payment_id=payment_id).first()
+
+#     if transaction:
+#            # If the transaction already exists, update its payment status
+#            transaction.payment_status = 'SUCCESS'
+#            transaction.save()
+#     else:
+          
+#            transaction = Transaction(
+#                payment_id=transaction.payment_id,
+#                beneficiary_name: transaction.receiver_name,
+#                 beneficiary_account_number: transaction.receiver_account_number,
+#                 amount: transaction.amount,
+#                 transaction_date: transaction.created_at.strftime('%d-%m-%Y %H:%M:%S'),
+               
+#            )
+#            transaction.save()
+
+#     return render(request, 'customer/payment_success.html',)
+
+
+#Apply for card
+
+def apply_card(request):
+    if 'user_id' not in request.session:
+        messages.error(request, 'Please login to access this page')
+        return redirect('login')
+    return render(request, 'customer/apply_card.html')
+
+def classic_card_details(request):
+    if 'user_id' not in request.session:
+        messages.error(request, 'Please login to access this page')
+        return redirect('login')
+    try:
+        return render(request, 'customer/classic_card_details.html')
+    except Exception as e:
+        print(f"Error: {e}")  
+        return render(request, 'customer/error.html', {'error': str(e)})
+
+def apply_classic_card(request):
+    if 'user_id' not in request.session:
+        messages.error(request, 'Please login to access this page')
+        return redirect('login')
+    
+    user_id = request.session.get('user_id')
+    customer = Customer.objects.get(id=user_id)
+    
+    if request.method == 'POST':
+        try:
+            # Create new application
+            application = ClassicCardApplication(
+                customer=customer,
+                full_name=customer.customer_name,
+                email=customer.email,
+                mobile=customer.mobile_number,
+                date_of_birth=customer.date_of_birth,
+                address=request.POST.get('address'),
+                city=request.POST.get('city'),
+                state=request.POST.get('state'),
+                pincode=request.POST.get('pincode')
+            )
+            application.save()
+            
+            # Send email to customer
+            subject = 'Classic Card Application Received - NanoWealth Bank'
+            message = f"""Dear {customer.customer_name},
+
+Thank you for applying for the NanoWealth Bank Classic Card.
+
+Your application has been received and is currently under review. Upon approval, your card will be delivered to your registered address within 7-10 business days.
+
+Application Details:
+- Card Type: Classic Card
+- Delivery Address: {request.POST.get('address')}, {request.POST.get('city')}, {request.POST.get('state')} - {request.POST.get('pincode')}
+
+We will notify you once your card is dispatched.
+
+Best Regards,
+Team NanoWealth Bank"""
+
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    [customer.email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print(f"Error sending email: {e}")
+            
+            messages.success(request, 'Your Classic Card application has been submitted successfully! Please check your email for confirmation.')
+            return redirect('userdashboard')
+            
+        except Exception as e:
+            messages.error(request, 'There was an error submitting your application. Please try again.')
+            print(f"Error saving application: {e}")
+    
     context = {
-        'payment_id': payment_id
+        'customer': customer
     }
-    return render(request, 'customer/payment_success.html', context)
+    return render(request, 'customer/apply_classic_form.html', context)
+
+def admin_card_applications(request):
+    applications = ClassicCardApplication.objects.all().order_by('-application_date')
+    return render(request, 'admin/card_applications.html', {'applications': applications})
+
+def approve_classiccard_application(request, application_id):
+    if request.method == 'POST':
+        application = get_object_or_404(ClassicCardApplication, id=application_id)
+        application.status = 'approved'
+        application.save()
+
+        # Prepare email
+        subject = 'Your Credit Card Application has been Approved!'
+        
+        # Context for email template
+        context = {
+            'name': application.full_name,
+            'card_type': 'Classic Card',
+        }
+        
+        # Render HTML email template
+        html_content = render_to_string('emails/card_approval_email.html', context)
+        
+        # Create email message
+        email = EmailMessage(
+            subject=subject,
+            body=html_content,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[application.email]
+        )
+        
+        # Set email content type to HTML
+        email.content_subtype = "html"
+        
+        # Updated path to card image
+        card_image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'classic_card.png')
+        
+        # Attach card image if it exists
+        if os.path.exists(card_image_path):
+            with open(card_image_path, 'rb') as f:
+                email.attach('classic_card.png', f.read(), 'image/png')
+        else:
+            print(f"Card image not found at: {card_image_path}")
+        
+        # Send email
+        try:
+            email.send()
+            print("Email sent successfully!")
+        except Exception as e:
+            print(f"Error sending email: {str(e)}")
+
+        return redirect('admin_card_applications')
+    return redirect('admin_card_applications')
+
+def reject_classiccard_application(request, application_id):
+    if request.method == 'POST':
+        application = get_object_or_404(ClassicCardApplication, id=application_id)
+        application.status = 'rejected'
+        application.save()
+    return redirect('admin_card_applications')
+
+def block_classiccard_application(request, application_id):
+    if request.method == 'POST':
+        application = get_object_or_404(ClassicCardApplication, id=application_id)
+        application.status = 'blocked'
+        application.save()
+    return redirect('admin_card_applications')
+
+
 

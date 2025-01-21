@@ -16,26 +16,129 @@
       <div class="left-container">
         <ul class="menu-items">
           <li>
-            <a href="{% url 'admindashboard' %}">Dashboard</a
+            <a href="{% url 'admindashboard' %}">Dashboard</a>
           </li>
           <li>
             <a href="{% url 'customer_list' %}">Customer Login Requests</a>
           </li>
-          <li><a href="{% url 'loanofficer_list' %}">Loan OFficer List</a></li>
+          <li><a href="{% url 'loanofficer_list' %}">Loan Officer List</a></li>
           <li><a href="{% url 'transactions_list' %}">Transaction Monitoring</a></li>
           <li><a href="{% url 'loan_list' %}">Loan Management</a></li>
           <li>
             <a href="{% url 'savings_account_approval' %}">Savings Account</a>
           </li>
           <li>
-            <a href="{%url 'current_account_approval' %}"> Current Account</a>
+            <a href="{%url 'current_account_approval' %}">Current Account</a>
           </li>
           <li>
-            <a href="{%url 'logout_view' %}"> Logout</a>
+            <a href="{% url 'admin_card_applications' %}">Card Applications</a>
+          </li>
+          <li>
+            <a href="{%url 'logout_view' %}">Logout</a>
           </li>
         </ul>
       </div>
       <main class="container">{% block content %} {% endblock %}</main>
     </div>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      .dashboard {
+        display: flex;
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+      }
+
+      .left-container {
+        width: 250px;
+        height: calc(100vh - 60px);
+        background-color: #2c3e50;
+        padding: 20px 0;
+        position: fixed;
+        left: 0;
+        top: 60px;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        overflow-y: auto;
+      }
+
+      .container {
+        flex: 1;
+        margin-left: 250px;
+        padding: 15px;
+        overflow-y: auto;
+        height: calc(100vh - 60px);
+      }
+
+      .menu-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .menu-items li {
+        padding: 0;
+        margin: 5px 0;
+      }
+
+      .menu-items a {
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 25px;
+        display: block;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .menu-items a:hover {
+        background-color: #34495e;
+        padding-left: 30px;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background-color: #2c3e50;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+
+      .navbar h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .left-container {
+          width: 60px;
+        }
+
+        .container {
+          margin-left: 60px;
+        }
+
+        .menu-items a {
+          padding: 12px;
+          text-align: center;
+        }
+
+        .menu-items a span {
+          display: none;
+        }
+      }
+    </style>
   </body>
 </html>

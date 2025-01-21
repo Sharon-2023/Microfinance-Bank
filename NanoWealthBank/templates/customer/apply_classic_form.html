@@ -1,0 +1,329 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Classic Card Application Form</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" id="classicCardForm">
+                        {% csrf_token %}
+                        
+                        <!-- Personal Information -->
+                        <div class="section mb-4">
+                            <h5 class="text-primary mb-3">Personal Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" name="full_name" value="{{ customer.customer_name }}" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" name="email" value="{{ customer.email }}" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Mobile Number</label>
+                                    <input type="tel" class="form-control" name="mobile" value="{{ customer.mobile_number }}" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" name="dob" value="{{ customer.date_of_birth|date:'Y-m-d' }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="section mb-4">
+                            <h5 class="text-primary mb-3">Address Information</h5>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Address Line</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">State</label>
+                                    <input type="text" class="form-control" name="state" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">PIN Code</label>
+                                    <input type="text" class="form-control" name="pincode" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Branch Selection -->
+                        <div class="section mb-4">
+                            <h5 class="text-primary mb-3">Branch Selection</h5>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Preferred Branch Location</label>
+                                    <select class="form-select" name="branch_location" required>
+                                        <option value="">Select Branch</option>
+                                        <option value="Ernakulam">Ernakulam Branch</option>
+                                        <option value="Trivandrum">Trivandrum Branch</option>
+                                        <option value="Kottayam">Kottayam Branch</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="mb-4">
+                            <div class="form-check" style="display: inline-flex; align-items: center;">
+                                <input class="form-check-input me-2" type="checkbox" id="terms" required style="margin-top: 0;">
+                                <label class="form-check-label" for="terms" style="white-space: nowrap;">
+                                    I agree to the terms and conditions and authorize the bank to verify my information
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('classicCardForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    // Get form fields
+    const address = document.querySelector('input[name="address"]').value.trim();
+    const city = document.querySelector('input[name="city"]').value.trim();
+    const state = document.querySelector('input[name="state"]').value.trim();
+    const pincode = document.querySelector('input[name="pincode"]').value.trim();
+    const terms = document.getElementById('terms').checked;
+    
+    // Reset error messages
+    clearErrors();
+    
+    let isValid = true;
+
+    // Address validation
+    if (address === '') {
+        showError('address', '* Address is required');
+        isValid = false;
+    } else if (address.length < 5) {
+        showError('address', '* Address must be at least 5 characters long');
+        isValid = false;
+    } else if (!/^[a-zA-Z0-9\s,.-]+$/.test(address)) {
+        showError('address', '* Address contains invalid characters');
+        isValid = false;
+    }
+
+    // City validation
+    if (city === '') {
+        showError('city', '* City is required');
+        isValid = false;
+    } else if (!/^[a-zA-Z\s]+$/.test(city)) {
+        showError('city', '* City should contain only letters');
+        isValid = false;
+    }
+
+    // State validation
+    if (state === '') {
+        showError('state', '* State is required');
+        isValid = false;
+    } else if (!/^[a-zA-Z\s]+$/.test(state)) {
+        showError('state', '* State should contain only letters');
+        isValid = false;
+    }
+
+    // Pincode validation
+    if (pincode === '') {
+        showError('pincode', '* PIN Code is required');
+        isValid = false;
+    } else if (!/^\d{6}$/.test(pincode)) {
+        showError('pincode', '* Please enter a valid 6-digit PIN Code');
+        isValid = false;
+    }
+
+    // Terms validation
+    if (!terms) {
+        showError('terms', '* Please accept the terms and conditions');
+        isValid = false;
+    }
+
+    // If all validations pass, submit the form
+    if (isValid) {
+        this.submit();
+    }
+});
+
+// Function to show error messages
+function showError(fieldName, message) {
+    const field = document.querySelector(`input[name="${fieldName}"]`) || document.getElementById(fieldName);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    
+    // Remove any existing error message
+    const existingError = field.parentElement.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    field.parentElement.appendChild(errorDiv);
+    field.classList.add('is-invalid');
+}
+
+// Function to clear all error messages
+function clearErrors() {
+    const errorMessages = document.querySelectorAll('.error-message');
+    errorMessages.forEach(error => error.remove());
+    
+    const fields = document.querySelectorAll('.form-control');
+    fields.forEach(field => {
+        field.classList.remove('is-invalid');
+    });
+}
+
+// Real-time validation for pincode
+document.querySelector('input[name="pincode"]').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+    if (this.value.length === 6) {
+        clearError(this);
+    }
+});
+
+// Real-time validation for city and state
+document.querySelectorAll('input[name="city"], input[name="state"]').forEach(input => {
+    input.addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        if (this.value.length > 0) {
+            clearError(this);
+        }
+    });
+});
+
+// Clear individual field error
+function clearError(field) {
+    const errorMessage = field.parentElement.querySelector('.error-message');
+    if (errorMessage) {
+        errorMessage.remove();
+    }
+    field.classList.remove('is-invalid');
+}
+</script>
+
+<style>
+.card {
+    margin: 20px;
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0;
+    background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+}
+
+.section {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    border: none;
+    padding: 12px 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #FFA500, #FFD700);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.text-primary {
+    color: #FFA500 !important;
+}
+
+.form-check-input:checked {
+    background-color: #FFA500;
+    border-color: #FFA500;
+}
+
+.error-message {
+    color: #FF0000;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+.is-invalid {
+    border-color: #FF0000 !important;
+}
+
+.is-invalid:focus {
+    border-color: #FF0000 !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+}
+
+.form-check-input.is-invalid {
+    border-color: #FF0000 !important;
+}
+
+.form-check-input.is-invalid:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25) !important;
+}
+
+/* Add some spacing between fields and error messages */
+.form-control {
+    margin-bottom: 0.25rem;
+}
+
+.error-message {
+    margin-bottom: 0.5rem;
+}
+
+/* Add styles for the branch selection */
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.form-select:focus {
+    border-color: #FFD700;
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+</style>
+{% endblock %}

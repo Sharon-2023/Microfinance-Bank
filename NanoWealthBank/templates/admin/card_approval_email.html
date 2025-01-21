@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .content {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .card-preview {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        .important-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Congratulations!</h1>
+        <p>Your Credit Card Application is Approved</p>
+    </div>
+    
+    <div class="content">
+        <p>Dear {{ name }},</p>
+        
+        <p>We are pleased to inform you that your application for the {{ card_type }} has been approved! Your new credit card will be delivered to your registered address within 7-10 business days.</p>
+        
+        <div class="card-preview">
+            <h3>Your New Credit Card</h3>
+            <p>Here's a preview of your card:</p>
+            <img src="cid:classic_card.png" alt="Classic Card" style="max-width: 100%; height: auto;">
+        </div>
+        
+        <div class="important-info">
+            <h4>Important Information:</h4>
+            <ul>
+                <li>Your card will arrive in a sealed envelope</li>
+                <li>You must activate your card before using it</li>
+                <li>PIN will be sent separately for security reasons</li>
+                <li>Keep your card details confidential</li>
+            </ul>
+        </div>
+        
+        <p>For security reasons, please verify the following upon receiving your card:</p>
+        <ul>
+            <li>Check if the envelope is properly sealed</li>
+            <li>Verify your name on the card</li>
+            <li>Sign on the signature panel immediately</li>
+        </ul>
+        
+        <p>If you have any questions or concerns, please don't hesitate to contact our customer service:</p>
+        <ul>
+            <li>Phone: 1800-XXX-XXXX</li>
+            <li>Email: support@nanowealthbank.com</li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p>This is an automated message. Please do not reply to this email.</p>
+        <p>© 2024 NanoWealth Bank. All rights reserved.</p>
+        <small>This email contains confidential information. If you are not the intended recipient, please delete it.</small>
+    </div>
+</body>
+</html>

@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('verify/<str:uidb64>/<str:token>/', views.activate, name='activate'),  
     path('userdashboard/', views.dashboard, name='userdashboard'),  
+   
 ]
 
 if settings.DEBUG:
