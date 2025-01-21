@@ -222,14 +222,9 @@ class FixedDeposit(models.Model):
 
 class ClassicCardApplication(models.Model):
     BRANCH_CHOICES = [
-        ('Mumbai Main', 'Mumbai Main Branch'),
-        ('Delhi Central', 'Delhi Central Branch'),
-        ('Bangalore Tech', 'Bangalore Tech Park Branch'),
-        ('Chennai CBD', 'Chennai CBD Branch'),
-        ('Kolkata North', 'Kolkata North Branch'),
-        ('Hyderabad Cyber', 'Hyderabad Cyber City Branch'),
-        ('Pune West', 'Pune West Branch'),
-        ('Ahmedabad City', 'Ahmedabad City Branch'),
+        ('Ernakulam', 'Ernakulam Branch'),
+        ('Trivandrum', 'Trivandrum Branch'),
+        ('Kottayam', 'Kottayam Branch'),
     ]
 
     STATUS_CHOICES = [
@@ -248,7 +243,7 @@ class ClassicCardApplication(models.Model):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     pincode = models.CharField(max_length=6)
-    branch_location = models.CharField(max_length=50, choices=BRANCH_CHOICES, default='Mumbai Main')
+    branch_location = models.CharField(max_length=50, choices=BRANCH_CHOICES, default='Ernakulam')
     application_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
