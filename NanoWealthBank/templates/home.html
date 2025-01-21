@@ -26,41 +26,143 @@
   </div>
 </div>
 
-<!-- Banner Section -->
-<section class="banner">
-  <div class="banner-highlights text-center">
-    <marquee scrollamount="10">
-      <h2>Your Financial Partner</h2>
-      <p>Secure Banking Solutions for a Brighter Future</p>
-    </marquee>
-  </div>
-</section>
-
-<!-- Accounts Section -->
-<div class="accounts-container">
-  <div class="accounts-section" id="accountsSection">
-    <h2>Accounts and Deposits</h2>
-    <ul>
-      <li>Savings Account</li>
-      <li>Current Account</li>
-      <li>Fixed Deposit</li>
-      <li>Recurring Deposit</li>
-    </ul>
-  </div>
+<!-- Services Section -->
+<div class="services-container">
+    <div class="service-item">
+        <div class="service-content">
+            <span class="service-text">Savings Account</span>
+            <img src="{% static 'images/coins.png' %}" alt="Savings" class="service-icon">
+        </div>
+        <span class="arrow">↗</span>
+    </div>
+    <div class="divider"></div>
+    <div class="service-item">
+        <div class="service-content">
+            <span class="service-text">Fixed Deposit</span>
+            <img src="{% static 'images/money-bag.png' %}" alt="Fixed Deposit" class="service-icon">
+        </div>
+        <span class="arrow">↗</span>
+    </div>
+    <div class="divider"></div>
+    <div class="service-item">
+        <div class="service-content">
+            <span class="service-text">Current Account</span>
+            <img src="{% static 'images/current.png' %}" alt="Current" class="service-icon">
+        </div>
+        <span class="arrow">↗</span>
+    </div>
+    <div class="divider"></div>
+    <div class="service-item">
+        <div class="service-content">
+            <span class="service-text">Home Loans</span>
+            <img src="{% static 'images/home.png' %}" alt="Home" class="service-icon">
+        </div>
+        <span class="arrow">↗</span>
+    </div>
+    <div class="divider"></div>
+    <div class="service-item">
+        <div class="service-content">
+            <span class="service-text">Vehicle Loans</span>
+            <img src="{% static 'images/car.png' %}" alt="Vehicle" class="service-icon">
+        </div>
+        <span class="arrow">↗</span>
+    </div>
 </div>
+
+<style>
+/* Services Section Styles */
+.services-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #002B5B;
+    color: white;
+    padding: 10px 40px;
+    border-radius: 50px;
+    margin: 20px auto;
+    max-width: 1400px;  /* Increased width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 8px 15px;  /* Reduced vertical padding */
+    position: relative;
+    min-width: 200px;  /* Ensure minimum width */
+}
+
+.service-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.service-icon {
+    width: 25px;  /* Slightly reduced icon size */
+    height: 25px;
+    object-fit: contain;
+}
+
+.service-text {
+    font-size: 1rem;  /* Slightly reduced font size */
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+}
+
+.arrow {
+    position: absolute;
+    bottom: 2px;
+    right: 5px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-2px);
+}
+
+.service-item:hover .arrow {
+    opacity: 1;
+}
+
+.divider {
+    height: 30px;  /* Reduced height */
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 5px;
+}
+
+@media (max-width: 1200px) {
+    .services-container {
+        padding: 8px 30px;
+        max-width: 95%;
+    }
+}
+
+@media (max-width: 992px) {
+    .services-container {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 8px 20px;
+    }
+
+    .service-item {
+        flex: 0 0 auto;
+    }
+}
+</style>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const accountsToggle = document.getElementById("accountsToggle");
-  const accountsSection = document.getElementById("accountsSection");
-
-  accountsToggle.addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent default action of anchor
-    const isVisible = accountsSection.style.display === "block";
-    accountsSection.style.display = isVisible ? "none" : "block"; // Toggle visibility
-  });
-
   const slides = document.querySelector(".slides");
   const indicators = document.querySelectorAll(".indicator");
 
@@ -93,3 +195,4 @@
 </script>
 
 {% endblock %}
+
