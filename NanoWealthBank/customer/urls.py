@@ -62,7 +62,7 @@ urlpatterns = [
     path('list_deposits/', views.list_deposits, name='list_deposits'),
     path('add_deposit/', views.add_deposit, name='add_deposit'),
     path('download_statement/', views.download_statement, name='download_statement'),
-    path('internet_banking/', views.internet_banking, name='internet_banking'),
+    path('internet-banking/', views.internet_banking, name='internet_banking'),
 
     path('admin_dashboard/', views.admin_dashboard, name='admindashboard'),
     path('customer_list/', views.customer_list, name='customer_list'),
@@ -116,5 +116,8 @@ urlpatterns = [
     path('approve-application/<int:application_id>/', views.approve_classiccard_application, name='approve_classiccard_application'),
     path('reject-application/<int:application_id>/', views.reject_classiccard_application, name='reject_classiccard_application'),
     path('block-application/<int:application_id>/', views.block_classiccard_application, name='block_classiccard_application'),
+
+    path('approve-classiccard-application/<int:application_id>/', views.approve_classiccard_application, name='approve_classiccard_application'),
+    path('reject-classiccard-application/<int:application_id>/', views.reject_classiccard_application, name='reject_classiccard_application'),
 
 ]

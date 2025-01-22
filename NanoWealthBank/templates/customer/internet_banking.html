@@ -13,6 +13,10 @@
   <!-- Right Side: Transaction Form -->
   <div class="right-form" style="width: 50%; padding: 1rem; border: 1px solid #ccc">
     <h2>Net Banking</h2>
+    <div class="left-info" style="width: 50%; padding: 1rem; border: 1px solid #ccc">
+        <h2>Account Information</h2>
+        <p>Available Balance: ₹{{ account_balance }}</p>
+    </div>
     <form id="transactionForm">
       {% csrf_token %}
       <div class="form-group">
@@ -49,36 +53,120 @@
 
 <!-- JavaScript for Razorpay Integration -->
 <script>
-function openRazorpay() {
-  // Retrieve form data
-  const amount = document.getElementById('amount').value ;  // Convert to paise
-  const receiverName = document.getElementById('receiver_name').value;
-
-  // Razorpay options configuration
-  var options = {
-    "key": "rzp_test_K3m91dIeZXVDcE",  // Replace with your Razorpay Key ID
-    "amount": amount*100,  // Amount is in paise
-    "currency": "INR",
-    "name": "NanoWealthBank",
-    "description": "Transaction with " + receiverName,
-    "handler": function (response) {
-      //alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
-      // You could also redirect to a success page or show a success message here.
-      window.location.href = `/payment-success/?payment_id=${response.razorpay_payment_id}`;
-    },
-    "prefill": {
-      "name": "{{ customer.name }}",
-      "email": "{{ customer.email }}"
-    },
-    "theme": {
-      "color": "#3399cc"
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  };
+    return cookieValue;
+}
 
-  var rzp = new Razorpay(options);
-  rzp.open();
+function saveTransaction(paymentId) {
+    const formData = new FormData();
+    formData.append('receiver_name', document.getElementById('receiver_name').value);
+    formData.append('receiver_account_number', document.getElementById('receiver_account_number').value);
+    formData.append('amount', document.getElementById('amount').value);
+    formData.append('receiver_account_type', document.getElementById('receiver_account_type').value);
+    formData.append('ifsc_code', document.getElementById('ifsc_code').value);
+    formData.append('purpose', document.getElementById('purpose').value);
+    formData.append('payment_id', paymentId);
+    formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+    fetch("{% url 'internet_banking' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = `/payment-success/?payment_id=${paymentId}&amount=${document.getElementById('amount').value}&receiver_name=${document.getElementById('receiver_name').value}&receiver_account_number=${document.getElementById('receiver_account_number').value}`;
+        } else {
+            alert('Error saving transaction: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving transaction. Please try again.');
+    });
+}
+
+function openRazorpay() {
+    const amount = document.getElementById('amount').value;
+    const receiverName = document.getElementById('receiver_name').value;
+
+    var options = {
+        "key": "rzp_test_K3m91dIeZXVDcE",
+        "amount": amount * 100,
+        "currency": "INR",
+        "name": "NanoWealthBank",
+        "description": "Transaction with " + receiverName,
+        "handler": function (response) {
+            // Save transaction after successful payment
+            saveTransaction(response.razorpay_payment_id);
+        },
+        "prefill": {
+            "name": "{{ customer.name }}",
+            "email": "{{ customer.email }}"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
 }
 </script>
+
+<style>
+.internet-banking-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #3399cc;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+</style>
 
 {% endblock %}
   

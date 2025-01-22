@@ -818,58 +818,82 @@ def add_deposit(request):
     return render(request, 'customer/deposits_add.html', {'userdata': userdata})
 
 
+@csrf_exempt
 def internet_banking(request):
     user = request.session.get('user_id')
-    customer = {}
-    saving_acc = Savings.objects.filter(user_id=user).first()
-    current_acc = Current.objects.filter(user_id=user).first()
-    if saving_acc:
-        customer = saving_acc
-    if current_acc:
-        customer = current_acc
+    if not user:
+        return redirect('login')
+
+    account = {}
+    saving_account = Savings.objects.filter(user_id=user).first()
+    curr_account = Current.objects.filter(user_id=user).first()
+    
+    if saving_account:
+        account = saving_account
+    if curr_account:
+        account = curr_account
+
     if request.method == 'POST':
-        # Extract form data from POST request
-        receiver_name = request.POST.get('receiver_name')
-        receiver_account_number = request.POST.get('receiver_account_number')
-        amount = request.POST.get('amount')
-        receiver_account_type = request.POST.get('receiver_account_type')
-        ifsc_code = request.POST.get('ifsc_code')
-        purpose = request.POST.get('purpose')
+        try:
+            amount = float(request.POST.get('amount'))
+            current_balance = float(account.balance)
 
-        # Create and save a new Transaction instance
-        transaction = Transaction(
-            user_id=user,
-            owner_name=customer.name,
-            owner_account_number=customer.account_number,
-            receiver_name=receiver_name,
-            receiver_account_number=receiver_account_number,
-            amount=amount,
-            receiver_account_type=receiver_account_type,
-            ifsc_code=ifsc_code,
-            purpose=purpose,
-        )
-        transaction.save()
+            # Check if sufficient balance
+            if amount <= current_balance:
+                # Calculate new balance
+                new_balance = current_balance - amount
 
-        # Show success message and redirect
-        messages.success(request, 'Transaction submitted successfully!')
-        return redirect('internet_banking')
-    return render(request, 'customer/internet_banking.html', {'customer': customer})
+                # Create and save transaction with current_balance
+                transaction = Transaction(
+                    user_id=user,
+                    owner_name=account.name if hasattr(account, 'name') else account.customer_name,
+                    owner_account_number=account.account_number,
+                    receiver_name=request.POST.get('receiver_name'),
+                    receiver_account_number=request.POST.get('receiver_account_number'),
+                    amount=amount,
+                    receiver_account_type=request.POST.get('receiver_account_type'),
+                    ifsc_code=request.POST.get('ifsc_code'),
+                    purpose=request.POST.get('purpose'),
+                    payment_id=request.POST.get('payment_id'),
+                    payment_status='SUCCESS',
+                    is_approved=True,
+                    current_balance=new_balance  # Store the new balance after transaction
+                )
+                transaction.save()
 
+                # Update account balance
+                account.balance = new_balance
+                account.save()
 
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Transaction saved successfully'
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Insufficient balance'
+                })
 
-# def payment_success(request):
-#     payment_id = request.GET.get('payment_id', '')  
-#     return render(request, 'customer/payment_success.html', {'payment_id': payment_id})
+        except Exception as e:
+            print(f"Error in transaction: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            })
+
+    return render(request, 'customer/internet_banking.html', {
+        'customer': account,
+        'account_balance': account.balance if account else 0
+    })
+
 
 def payment_success(request):
-    # Assuming Razorpay sends payment details as GET parameters
     context = {
         'payment_id': request.GET.get('payment_id'),
         'amount': request.GET.get('amount'),
         'receiver_name': request.GET.get('receiver_name'),
         'receiver_account_number': request.GET.get('receiver_account_number'),
-
-                
     }
     return render(request, 'customer/payment_success.html', context)
 
@@ -1461,12 +1485,12 @@ def apply_classic_card(request):
     
     user_id = request.session.get('user_id')
     customer = Customer.objects.get(id=user_id)
-    
+    print("customer",customer.email)
     if request.method == 'POST':
         try:
             # Create new application
             application = ClassicCardApplication(
-                customer=customer,
+                customer_id=user_id,
                 full_name=customer.customer_name,
                 email=customer.email,
                 mobile=customer.mobile_number,
@@ -1476,6 +1500,7 @@ def apply_classic_card(request):
                 state=request.POST.get('state'),
                 pincode=request.POST.get('pincode')
             )
+            print("application",application)  
             application.save()
             
             # Send email to customer
@@ -1520,6 +1545,7 @@ Team NanoWealth Bank"""
 
 def admin_card_applications(request):
     applications = ClassicCardApplication.objects.all().order_by('-application_date')
+    print("applications requests",applications)
     return render(request, 'admin/card_applications.html', {'applications': applications})
 
 def approve_classiccard_application(request, application_id):
@@ -1538,7 +1564,7 @@ def approve_classiccard_application(request, application_id):
         }
         
         # Render HTML email template
-        html_content = render_to_string('emails/card_approval_email.html', context)
+        html_content = render_to_string('admin/card_approval_email.html', context)
         
         # Create email message
         email = EmailMessage(
@@ -1552,7 +1578,7 @@ def approve_classiccard_application(request, application_id):
         email.content_subtype = "html"
         
         # Updated path to card image
-        card_image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'classic_card.png')
+        card_image_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'classic_card.jpg')
         
         # Attach card image if it exists
         if os.path.exists(card_image_path):

@@ -178,7 +178,7 @@ class Transaction(models.Model):
     receiver_account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPE_CHOICES, verbose_name="Type of Receiver's Account")
     ifsc_code = models.CharField(max_length=11, verbose_name="IFSC Code")
     purpose = models.TextField(verbose_name="Purpose of Transfer", null=True, blank=True)
-
+    current_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     payment_id = models.CharField(max_length=255, blank=True, null=True)
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING', verbose_name="Payment Status")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Transaction Date & Time")
@@ -233,8 +233,7 @@ class ClassicCardApplication(models.Model):
         ('rejected', 'Rejected'),
         ('blocked', 'Blocked'),
     ]
-
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    customer_id = models.CharField(max_length=50, blank=True, null=True)
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
     mobile = models.CharField(max_length=15)
