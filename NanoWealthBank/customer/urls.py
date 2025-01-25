@@ -120,4 +120,13 @@ urlpatterns = [
     path('approve-classiccard-application/<int:application_id>/', views.approve_classiccard_application, name='approve_classiccard_application'),
     path('reject-classiccard-application/<int:application_id>/', views.reject_classiccard_application, name='reject_classiccard_application'),
 
+#admin panel- manager added
+    path('manager/list/', views.manager_list, name='manager_list'),
+    path('manager/add/', views.add_manager, name='add_manager'),
+    path('manager/edit/<int:manager_id>/', views.edit_manager, name='edit_manager'),
+    path('manager/view/<int:manager_id>/', views.view_manager, name='view_manager'),
+    # path('manager/dashboard/', views.manager_dashboard, name='manager_dashboard'),
+    path('managerdashboard/', views.managerdashboard, name='managerdashboard'),  # Changed the path to match the name
+
+
 ]

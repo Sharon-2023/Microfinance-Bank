@@ -4,6 +4,8 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
+import random
+import string
 
 
 class Customer(models.Model):
@@ -118,47 +120,6 @@ class LoanApplication(models.Model):
 
 
 
-# class Transaction(models.Model):
-#     ACCOUNT_TYPE_CHOICES = [
-#         ('SAVINGS', 'Savings'),
-#         ('CURRENT', 'Current'),
-#     ]
-#     PAYMENT_STATUS_CHOICES = [
-#         ('SUCCESS', 'Success'),
-#         ('FAILED', 'Failed'),
-#         ('PENDING', 'Pending'),
-#     ]
-#     user_id = models.CharField(max_length=50, blank=True, null=True)
-#     owner_name = models.CharField(max_length=200, blank=True, null=True)
-#     owner_account_number = models.CharField(
-#         max_length=20, verbose_name="Customer's Account Number")
-#     receiver_name = models.CharField(
-#         max_length=100, verbose_name="Receiver's Full Name")
-#     receiver_account_number = models.CharField(
-#         max_length=20, verbose_name="Receiver's Account Number")
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     receiver_account_type = models.CharField(
-#         max_length=10,
-#         choices=ACCOUNT_TYPE_CHOICES,
-#         verbose_name="Type of Receiver's Account"
-#     )
-#     ifsc_code = models.CharField(max_length=11, verbose_name="IFSC Code")
-#     purpose = models.TextField(
-#         verbose_name="Purpose of Transfer", null=True, blank=True)
-
-#     payment_id = models.CharField(max_length=255, blank=True, null=True)
-#     payment_status = models.CharField(
-#         max_length=20, choices=PAYMENT_STATUS_CHOICES, default='PENDING', verbose_name="Payment Status"
-#     )
-#     created_at = models.DateTimeField(
-#         auto_now_add=True, verbose_name="Transaction Date & Time")
-#     updated_at = models.DateTimeField(
-#         auto_now=True, verbose_name="Last Updated")
-#     is_approved = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return f"Transfer to {self.receiver_name} - {self.receiver_account_number}"
-
 class Transaction(models.Model):
     ACCOUNT_TYPE_CHOICES = [
         ('SAVINGS', 'Savings'),
@@ -251,4 +212,34 @@ class ClassicCardApplication(models.Model):
 
     def __str__(self):
         return f"Classic Card Application - {self.full_name}"
+    
+
+class Manager(models.Model):
+    manager_id = models.CharField(max_length=9, unique=True)
+    name = models.CharField(max_length=100)
+    branch = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=15)
+    password = models.CharField(max_length=128)
+    status = models.CharField(max_length=20, default='active')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.manager_id:
+            # Generate manager ID: MGR + 6 random digits
+            while True:
+                new_id = 'MGR' + ''.join(random.choices(string.digits, k=6))
+                if not Manager.objects.filter(manager_id=new_id).exists():
+                    self.manager_id = new_id
+                    break
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} - {self.branch}"
+
+    class Meta:
+        db_table = 'manager'
+        verbose_name = 'Manager'
+        verbose_name_plural = 'Managers'
     

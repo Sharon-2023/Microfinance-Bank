@@ -1,40 +1,488 @@
 {% extends 'base.html' %} {% load static %} 
-{% block title %}Accounts{% endblock %}
+{% block title %}Bank Accounts{% endblock %}
 {% block content %}
-<div class="card-container">
-    <!-- First Card -->
-    <div class="card">
-        <h2>Saving Account</h2>
-        <p>This account offers essential features for new users who want to start with basic functionalities.</p>
-                <h3>Terms and Conditions</h3>
-                <p>1. These terms and conditions govern your use of our services.</p>
-                <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
-                <p>3. The bank reserves the right to amend these terms at any time.</p>
-                <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
-                <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
-                    A Savings Bank Account may also be opened in
-                    the single name of a minor aged 10 years or more to be operated upon by the minor.
-                    the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
-                    the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
-                <p>6. There is no limit to the maximum balance in accounts</p>
-        <button ><a href="{% url 'login' %}">Apply</a></button>
+
+<div class="accounts-section">
+    <div class="section-header">
+        <h1 class="main-title">Choose Your Account Type</h1>
+        <p class="subtitle">Select the account that best suits your financial needs</p>
     </div>
 
-    <!-- Second Card -->
-    <div class="card">
-        <h2>Current Account</h2>
-        <p>Unlock advanced features and tools with the premium account, perfect for experienced users.</p>
-        <h3>Terms and Conditions</h3>
-        <p>1. These terms and conditions govern your use of our services.</p>
-        <p>2. An account may be opened in the name of one person or jointly in the names of two or more persons.</p>
-        <p>3. The bank reserves the right to amend these terms at any time.</p>
-        <p>4. Application to open a Savings Bank Account should be made on the Bank's prescribed forms duly completed with his name, address and occupation. Each applicant will be required to sign a declaration to the effect that he has read and accepted the Savings Bank Rules.</p>
-        <p>5. A Savings Bank account of a minor may be opened to be operated upon by the natural guardian of the minor or by the guardian appointed by the Court.
-            A Savings Bank Account may also be opened in
-            the single name of a minor aged 10 years or more to be operated upon by the minor.
-            the joint names of two minor who have completed the age of 10 years to be operated upon by them jointly.
-            the joint names of two or more minors to be operated upon by a person who is the natural guardian of both or all the minors.</p>
-        <button><a href="{% url 'login' %}">Apply</a></button>
+    <div class="accounts-container">
+        <!-- Savings Account -->
+        <div class="account-card">
+            <div class="card-header savings">
+                <div class="header-content">
+                    <span class="account-icon">💰</span>
+                    <h2>Savings Account</h2>
+                </div>
+                <span class="interest-badge">4.5% p.a</span>
+            </div>
+            <div class="card-body">
+                <h3>Key Features</h3>
+                <ul class="features-list">
+                    <li><span class="check">✓</span> Zero minimum balance requirement</li>
+                    <li><span class="check">✓</span> Free internet & mobile banking</li>
+                    <li><span class="check">✓</span> Free SMS alerts</li>
+                    <li><span class="check">✓</span> Complimentary debit card</li>
+                    <li><span class="check">✓</span> Monthly e-statement</li>
+                </ul>
+                <div class="requirements">
+                    <h3>Requirements</h3>
+                    <ul>
+                        <li>Valid ID proof</li>
+                        <li>Address proof</li>
+                        <li>Passport size photograph</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'login' %}" class="apply-btn">Apply Now</a>
+                <button class="details-btn" onclick="toggleDetails('savings-details')">View Details</button>
+            </div>
+        </div>
+
+        <!-- Current Account -->
+        <div class="account-card">
+            <div class="card-header current">
+                <div class="header-content">
+                    <span class="account-icon">🏦</span>
+                    <h2>Current Account</h2>
+                </div>
+                <span class="feature-badge">Business</span>
+            </div>
+            <div class="card-body">
+                <h3>Key Features</h3>
+                <ul class="features-list">
+                    <li><span class="check">✓</span> Unlimited transactions</li>
+                    <li><span class="check">✓</span> Overdraft facility available</li>
+                    <li><span class="check">✓</span> Business debit card</li>
+                    <li><span class="check">✓</span> Cheque book facility</li>
+                    <li><span class="check">✓</span> Business internet banking</li>
+                </ul>
+                <div class="requirements">
+                    <h3>Requirements</h3>
+                    <ul>
+                        <li>Business registration documents</li>
+                        <li>Tax registration details</li>
+                        <li>Business address proof</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'login' %}" class="apply-btn">Apply Now</a>
+                <button class="details-btn" onclick="toggleDetails('current-details')">View Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Added Why Choose Us Section -->
+    <div class="why-choose-us">
+        <h2 class="section-subtitle">Why Choose NanoWealth Bank?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <span class="benefit-icon">🔒</span>
+                <h3>Secure Banking</h3>
+                <p>State-of-the-art security measures to protect your finances</p>
+            </div>
+            <div class="benefit-card">
+                <span class="benefit-icon">📱</span>
+                <h3>Digital Banking</h3>
+                <p>24/7 access to your accounts through our mobile app</p>
+            </div>
+            <div class="benefit-card">
+                <span class="benefit-icon">💎</span>
+                <h3>Premium Benefits</h3>
+                <p>Exclusive rewards and benefits for our account holders</p>
+            </div>
+            <div class="benefit-card">
+                <span class="benefit-icon">🎯</span>
+                <h3>Zero Fees</h3>
+                <p>No hidden charges or maintenance fees</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Added FAQ Section -->
+    <div class="faq-section">
+        <h2 class="section-subtitle">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3>How do I open an account?</h3>
+                <p>Visit any of our branches with valid ID proof and address proof, or apply online through our website.</p>
+            </div>
+            <div class="faq-item">
+                <h3>What are the minimum balance requirements?</h3>
+                <p>Our savings accounts have zero minimum balance requirement. Current accounts require a minimum balance of ₹10,000.</p>
+            </div>
+            <div class="faq-item">
+                <h3>How long does it take to open an account?</h3>
+                <p>Account opening process typically takes 1-2 business days after document verification.</p>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+.accounts-section {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.main-title {
+    color: #002B5B;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.accounts-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.account-card {
+    flex: 1;
+    max-width: 580px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    padding: 12px 15px;
+}
+
+.card-header.savings {
+    background: linear-gradient(135deg, #0396FF, #0D47A1);
+}
+
+.card-header.current {
+    background: linear-gradient(135deg, #7B1FA2, #4A148C);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-content h2 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.account-icon {
+    font-size: 18px;
+    padding: 6px;
+}
+
+.interest-badge, .feature-badge {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+}
+
+.card-body {
+    padding: 12px 15px;
+    flex: 1;
+}
+
+.card-body h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.features-list {
+    margin: 8px 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.features-list li {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.check {
+    color: #00C853;
+    font-weight: bold;
+}
+
+.requirements {
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+.requirements ul {
+    padding-left: 15px;
+    margin: 5px 0;
+}
+
+.requirements li {
+    margin-bottom: 3px;
+    font-size: 0.8rem;
+}
+
+.card-footer {
+    padding: 12px 15px;
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.apply-btn, .details-btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    border-radius: 6px;
+}
+
+.apply-btn {
+    background: #002B5B;
+    color: white;
+    flex: 2;
+}
+
+.details-btn {
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    flex: 1;
+    cursor: pointer;
+}
+
+.apply-btn:hover {
+    background: #001B3B;
+}
+
+.details-btn:hover {
+    background: #e0e0e0;
+}
+
+/* Updated media queries */
+@media screen and (max-width: 992px) {
+    .accounts-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .account-card {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .accounts-section {
+        padding: 10px;
+    }
+
+    .accounts-container {
+        padding: 0 5px;
+        gap: 15px;
+    }
+
+    .account-card {
+        max-width: 100%;
+    }
+}
+
+/* Screen size breakpoints */
+@media screen and (min-width: 1400px) {
+    .accounts-container {
+        grid-template-columns: repeat(2, minmax(400px, 600px));
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .accounts-container {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 900px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .accounts-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+    
+    .main-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* Height-based adjustments */
+@media screen and (max-height: 800px) {
+    .accounts-section {
+        padding: 10px;
+    }
+
+    .section-header {
+        margin-bottom: 10px;
+    }
+
+    .features-list li, 
+    .requirements li {
+        margin-bottom: 3px;
+    }
+}
+
+/* Ensure minimum spacing on very small screens */
+@media screen and (max-width: 320px) {
+    .accounts-container {
+        grid-template-columns: 1fr;
+    }
+
+    .card-header, .card-body, .card-footer {
+        padding: 8px;
+    }
+}
+
+/* Added styles for Why Choose Us section */
+.why-choose-us {
+    margin-top: 40px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-subtitle {
+    color: #002B5B;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 10px;
+}
+
+.benefit-card {
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.benefit-card h3 {
+    color: #002B5B;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.benefit-card p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Added styles for FAQ section */
+.faq-section {
+    margin-top: 40px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-container {
+    display: grid;
+    gap: 20px;
+    padding: 10px;
+}
+
+.faq-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateX(5px);
+}
+
+.faq-item h3 {
+    color: #002B5B;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.faq-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .why-choose-us,
+    .faq-section {
+        margin-top: 30px;
+        padding: 15px;
+    }
+
+    .section-subtitle {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<script>
+function toggleDetails(detailsId) {
+    // Add your logic for showing more details
+    alert('Detailed information will be shown here');
+}
+</script>
+
 {% endblock %}

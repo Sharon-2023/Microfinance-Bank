@@ -1,41 +1,188 @@
 {% extends 'base.html' %} {% load static %} 
 {% block title %}Services{% endblock %}
 {% block content %}
-<header>
-    <h1>Bank Services</h1>
-    <p>Your one-stop solution for all financial services.</p>
-</header>
 
-<!-- Services Container -->
-<div class="services-container">
-    
-    <!-- Service 1: Checking Accounts -->
-    <div class="service-card">
-        <h3>Checking Accounts</h3>
-        <p>Manage your daily expenses with ease using our flexible checking accounts, designed to meet your financial needs.</p>
-        <a href="{% url 'login' %}">Learn More</a>
+<div class="services-section">
+    <h2 class="section-title">Our Banking Services</h2>
+    <div class="services-container">
+        <div class="service-item blue">
+            <div class="service-content">
+                <div class="service-header">
+                    <span class="service-icon">💰</span>
+                    <h3 class="service-title">Checking Accounts</h3>
+                </div>
+                <p class="service-description">Manage your daily expenses with ease using our flexible checking accounts, designed to meet your financial needs.</p>
+                <a href="{% url 'login' %}" class="service-link">Learn More <span class="arrow">→</span></a>
+            </div>
+        </div>
+
+        <div class="service-item purple">
+            <div class="service-content">
+                <div class="service-header">
+                    <span class="service-icon">💵</span>
+                    <h3 class="service-title">Savings Accounts</h3>
+                </div>
+                <p class="service-description">Start saving with competitive interest rates, secure accounts, and easy access to your money when you need it.</p>
+                <a href="{% url 'login' %}" class="service-link">Learn More <span class="arrow">→</span></a>
+            </div>
+        </div>
+
+        <div class="service-item green">
+            <div class="service-content">
+                <div class="service-header">
+                    <span class="service-icon">🏦</span>
+                    <h3 class="service-title">Personal Loans</h3>
+                </div>
+                <p class="service-description">Whether you need a loan for personal expenses, home improvements, or debt consolidation, we have options tailored for you.</p>
+                <a href="{% url 'login' %}" class="service-link">Learn More <span class="arrow">→</span></a>
+            </div>
+        </div>
+
+        <div class="service-item orange">
+            <div class="service-content">
+                <div class="service-header">
+                    <span class="service-icon">💳</span>
+                    <h3 class="service-title">Deposit Services</h3>
+                </div>
+                <p class="service-description">Plan for your future with our investment services, offering expert advice and a range of investment options.</p>
+                <a href="{% url 'login' %}" class="service-link">Learn More <span class="arrow">→</span></a>
+            </div>
+        </div>
     </div>
-
-    <!-- Service 2: Savings Accounts -->
-    <div class="service-card">
-        <h3>Savings Accounts</h3>
-        <p>Start saving with competitive interest rates, secure accounts, and easy access to your money when you need it.</p>
-        <a href="{% url 'login' %}">Learn More</a>
-    </div>
-
-    <!-- Service 3: Personal Loans -->
-    <div class="service-card">
-        <h3>Personal Loans</h3>
-        <p>Whether you need a loan for personal expenses, home improvements, or debt consolidation, we have options tailored for you.</p>
-        <a href="{% url 'login' %}">Learn More</a>
-    </div>
-
-    <!-- Service 4: Investment Services -->
-    <div class="service-card">
-        <h3>Deposit Services</h3>
-        <p>Plan for your future with our investment services, offering expert advice and a range of investment options.</p>
-        <a href="{% url 'login' %}">Learn More</a>
-    </div>
-
 </div>
+
+<style>
+.services-section {
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+}
+
+.section-title {
+    text-align: center;
+    color: #002B5B;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.services-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.service-item {
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.service-item.blue {
+    background: linear-gradient(135deg, #0396FF, #0D47A1);
+}
+
+.service-item.purple {
+    background: linear-gradient(135deg, #7B1FA2, #4A148C);
+}
+
+.service-item.green {
+    background: linear-gradient(135deg, #00C853, #1B5E20);
+}
+
+.service-item.orange {
+    background: linear-gradient(135deg, #FF6D00, #E65100);
+}
+
+.service-content {
+    padding: 30px;
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.service-icon {
+    font-size: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.service-title {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.service-description {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.service-link {
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.arrow {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.service-item:hover .service-link {
+    opacity: 0.9;
+}
+
+.service-item:hover .arrow {
+    transform: translateX(5px);
+}
+
+@media (max-width: 992px) {
+    .services-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .service-content {
+        padding: 20px;
+    }
+
+    .service-icon {
+        font-size: 28px;
+        padding: 12px;
+    }
+
+    .service-title {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
 {% endblock %}

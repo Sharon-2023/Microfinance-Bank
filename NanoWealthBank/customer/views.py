@@ -1,7 +1,7 @@
 from django.urls import reverse
 from .models import FixedDeposit, LoanApplication, Savings  # Make sure to import your model
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Admin, Customer, LoanOfficer, Transaction, ClassicCardApplication
+from .models import Admin, Customer, LoanOfficer, Transaction, ClassicCardApplication, Manager
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
@@ -34,6 +34,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 import os
+import string
 
 
 def home(request):
@@ -56,71 +57,125 @@ def contact(request):
     return render(request, 'contact.html')
 
 
+# def login(request):
+#     if request.method == 'POST':
+#         login_id = request.POST.get('login_id')  # This can be either email or account number
+#         password = request.POST.get('password')
+
+#         # First try to find user by email
+#         try:
+#             # Check if the login_id is an email
+#             if '@' in login_id:
+#                 customer = Customer.objects.get(email=login_id)
+#             else:
+#                 # Try to find customer by account number
+#                 savings_account = Savings.objects.filter(account_number=login_id).first()
+#                 current_account = Current.objects.filter(account_number=login_id).first()
+                
+#                 if savings_account:
+#                     customer = Customer.objects.get(id=savings_account.user_id)
+#                 elif current_account:
+#                     customer = Customer.objects.get(id=current_account.user_id)
+#                 else:
+#                     messages.error(request, "No account found with the provided credentials.")
+#                     return render(request, 'login.html')
+
+#             if check_password(password, customer.password):
+#                 if customer.is_active:
+#                     # Store customer data in session
+#                     request.session['user_id'] = customer.id
+#                     request.session['user_email'] = customer.email
+#                     request.session['user_role'] = 'customer'
+#                     request.session['username'] = customer.username
+#                     return redirect('userdashboard')
+#                 else:
+#                     messages.error(request, "Account not approved yet.")
+#                     return render(request, 'login.html')
+#             else:
+#                 messages.error(request, "Invalid credentials.")
+#                 return render(request, 'login.html')
+
+#         except Customer.DoesNotExist:
+#             # If customer not found, try admin login
+#             try:
+#                 admin = Admin.objects.get(email=login_id)
+#                 if admin.password == password:
+#                     request.session['user_id'] = admin.id
+#                     request.session['user_email'] = admin.email
+#                     request.session['user_role'] = 'admin'
+#                     request.session['username'] = admin.username
+#                     return redirect('admindashboard')
+#                 else:
+#                     messages.error(request, "Invalid admin credentials.")
+#             except Admin.DoesNotExist:
+#                 # Try loan officer login
+#                 try:
+#                     loan_officer = LoanOfficer.objects.get(email=login_id)
+#                     if loan_officer.password == password:
+#                         request.session['user_id'] = loan_officer.id
+#                         request.session['user_email'] = loan_officer.email
+#                         request.session['user_role'] = 'loan_officer'
+#                         return redirect('loanofficerdashboard')
+#                     else:
+#                         messages.error(request, "Invalid loan officer credentials.")
+#                 except LoanOfficer.DoesNotExist:
+#                     messages.error(request, "No user found with the provided credentials.")
+
+#     return render(request, 'login.html')
+
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        print(email, password)
 
-        # Check if the user is an Admin first
+        # First check for Manager
         try:
-            admin = Admin.objects.get(email=email)
-            if admin.password == password:
-                # Store admin data in session
-                request.session['user_id'] = admin.id
-                request.session['user_email'] = admin.email
-                request.session['user_role'] = 'admin'  # Set role as admin
-                request.session['username'] = admin.username
-                return redirect('admindashboard')
+            manager = Manager.objects.get(manager_id=email)
+            if check_password(password, manager.password):
+                request.session['user_id'] = manager.id
+                request.session['user_email'] = manager.email
+                request.session['user_role'] = 'manager'
+                request.session['username'] = manager.name
+                return redirect('managerdashboard')
             else:
-                messages.error(request, "Invalid admin credentials.")
+                messages.error(request, "Invalid manager credentials.")
                 return render(request, 'login.html')
-
-        except Admin.DoesNotExist:
-            # Admin not found, proceed to check for Customer
+        except Manager.DoesNotExist:
+            # If not a manager, check for Admin
             try:
-                customer = Customer.objects.get(email=email)
-                if check_password(password, customer.password):
-                    if customer.is_active:
-                        # Store customer data in session
-                        request.session['user_id'] = customer.id
-                        request.session['user_email'] = customer.email
-                        # Set role as customer
-                        request.session['user_role'] = 'customer'
-                        request.session['username'] = customer.username
-                        # request.session['account_number'] = customer.account_number
-                        return redirect('userdashboard')
-                    else:
-                        messages.error(request, "Customer Not Approved Yet.")
-                        return render(request, 'login.html')
+                admin = Admin.objects.get(email=email)
+                if admin.password == password:
+                    request.session['user_id'] = admin.id
+                    request.session['user_email'] = admin.email
+                    request.session['user_role'] = 'admin'
+                    request.session['username'] = admin.username
+                    return redirect('admindashboard')
                 else:
-                    messages.error(request, "Invalid customer credentials.")
+                    messages.error(request, "Invalid admin credentials.")
                     return render(request, 'login.html')
-
-            except Customer.DoesNotExist:
-                # Customer not found, proceed to check for LoanOfficer
+            except Admin.DoesNotExist:
+                # Finally check for Customer
                 try:
-                    loan_officer = LoanOfficer.objects.get(email=email)
-                    if loan_officer.password == password:
-                        # Store loan officer data in session
-                        request.session['user_id'] = loan_officer.id
-                        request.session['user_email'] = loan_officer.email
-                        # Set role as loan officer
-                        request.session['user_role'] = 'loan_officer'
-                        # request.session['username'] = f"{
-                        #     loan_officer.first_name} {loan_officer.last_name}"
-                        return redirect('loanofficerdashboard')
+                    customer = Customer.objects.get(email=email)
+                    if check_password(password, customer.password):
+                        if customer.is_active:
+                            request.session['user_id'] = customer.id
+                            request.session['user_email'] = customer.email
+                            request.session['user_role'] = 'customer'
+                            request.session['username'] = customer.username
+                            return redirect('userdashboard')
+                        else:
+                            messages.error(request, "Customer Not Approved Yet.")
+                            return render(request, 'login.html')
                     else:
-                        messages.error(
-                            request, "Invalid loan officer credentials.")
+                        messages.error(request, "Invalid customer credentials.")
                         return render(request, 'login.html')
-
-                except LoanOfficer.DoesNotExist:
-                    messages.error(
-                        request, "No user found with the provided email.")
+                except Customer.DoesNotExist:
+                    messages.error(request, "No account found with this email.")
                     return render(request, 'login.html')
 
     return render(request, 'login.html')
-
 
 user_pins = {}
 
@@ -908,7 +963,7 @@ def admin_dashboard(request):
     currents = Current.objects.all()
     loans = LoanApplication.objects.all()
     fixed_deposit = FixedDeposit.objects.all()
-    return render(request, 'admin_dashboard.html', {'pending_customers': pending_customers, 'total_customers': customers.count(), 'total_savings_accounts': savings.count(), 'total_current_accounts': currents.count(), 'total_loans': loans.count(),'total_fixed_deposit':fixed_deposit.count()})
+    return render(request, 'admin/admin_dashboard.html', {'pending_customers': pending_customers, 'total_customers': customers.count(), 'total_savings_accounts': savings.count(), 'total_current_accounts': currents.count(), 'total_loans': loans.count(),'total_fixed_deposit':fixed_deposit.count()})
 
 
 def customer_list(request):
@@ -1612,4 +1667,117 @@ def block_classiccard_application(request, application_id):
     return redirect('admin_card_applications')
 
 
+#admin- manager
+def manager_list(request):
+    managers = Manager.objects.all()
+    return render(request, 'manager_list.html', {'managers': managers})
 
+def generate_password():
+    # Generate a random 8-character password
+    characters = string.ascii_letters + string.digits + "@#$%^&*"
+    return ''.join(random.choices(characters, k=8))
+
+def add_manager(request):
+    if request.method == 'POST':
+        try:
+            # Generate password
+            password = generate_password()
+            
+            # Create manager instance
+            manager = Manager(
+                name=request.POST['name'],
+                branch=request.POST['branch'],
+                email=request.POST['email'],
+                phone=request.POST['phone'],
+                status=request.POST['status'],
+                password=make_password(password)  # Hash the password
+            )
+            
+            # Save manager (this will trigger the save method that generates manager_id)
+            manager.save()
+
+            # Send email with credentials
+            subject = 'Your Manager Account Credentials'
+            message = f"""
+            Dear {manager.name},
+
+            Your manager account has been created successfully. Here are your login credentials:
+
+            Manager ID: {manager.manager_id}
+            Password: {password}
+
+            Please change your password after your first login.
+
+            Best regards,
+            NanoWealth Bank Team
+            """
+            
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    'noreply@nanowealthbank.com',  # Replace with your email
+                    [manager.email],
+                    fail_silently=False,
+                )
+                messages.success(request, 'Manager added successfully! Credentials have been sent to their email.')
+            except Exception as e:
+                messages.warning(request, 'Manager added successfully but failed to send email. Please provide credentials manually.')
+            
+            return redirect('manager_list')
+
+        except Exception as e:
+            messages.error(request, f'Error adding manager: {str(e)}')
+            return render(request, 'add_manager.html')
+    
+    return render(request, 'manager/add_manager.html')
+
+def edit_manager(request, manager_id):
+    manager = get_object_or_404(Manager, id=manager_id)
+    if request.method == 'POST':
+        try:
+            # Update manager details
+            manager.name = request.POST['name']
+            manager.branch = request.POST['branch']
+            manager.email = request.POST['email']
+            manager.phone = request.POST['phone']
+            manager.status = request.POST['status']
+            manager.save()
+            messages.success(request, 'Manager updated successfully!')
+            return redirect('manager_list')
+        except Exception as e:
+            messages.error(request, f'Error updating manager: {str(e)}')
+    return render(request, 'edit_manager.html', {'manager': manager})
+
+def view_manager(request, manager_id):
+    manager = get_object_or_404(Manager, id=manager_id)
+    return render(request, 'view_manager.html', {'manager': manager})
+
+def managerdashboard(request):
+    # # Check if user is logged in via session
+    # if not request.session.get('user_id'):
+    #     messages.error(request, "Please login first")
+    #     return redirect('login')
+    
+    # if request.session.get('user_role') != 'manager':
+    #     messages.error(request, "Unauthorized access")
+    #     return redirect('login')
+    
+    # try:
+    #     manager_id = request.session.get('user_id')
+    #     manager = Manager.objects.get(id=manager_id)
+        
+    #     context = {
+    #         'manager': manager,
+    #         'username': request.session.get('username'),
+    #         'manager_id': request.session.get('manager_id')
+    #     }
+        
+    return render(request, 'manager/manager_dashboard.html')
+        
+    # except Manager.DoesNotExist:
+    #     messages.error(request, "Manager not found")
+    #     return redirect('login')
+    # except Exception as e:
+    #     messages.error(request, f"An error occurred: {str(e)}")
+    #     return redirect('login')
