@@ -89,7 +89,7 @@
 <body>
     <div class="container">
         <h1>Loan Application Form</h1>
-        <form method="POST">
+        <form id="loanForm" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="applicantName">Applicant Name</label>
@@ -153,5 +153,35 @@
             <button type="submit" class="submit-btn">Submit Application</button>
         </form>
     </div>
+    <script>
+    $(document).ready(function() {
+        $('#loanForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        // If successful and has redirect URL, redirect to success page
+                        if (response.redirect_url) {
+                            window.location.href = response.redirect_url;
+                        } else {
+                            // Show success message in alert
+                            alert(response.message);
+                        }
+                    } else {
+                        // Show error message
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>

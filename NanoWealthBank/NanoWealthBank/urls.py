@@ -26,7 +26,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('verify/<str:uidb64>/<str:token>/', views.activate, name='activate'),  
     path('userdashboard/', views.dashboard, name='userdashboard'),  
-   
+    path('chat/', views.chat_view, name='chat'),
+    path('get-site-content/', views.get_site_content, name='get-site-content'),
 ]
 
 if settings.DEBUG:

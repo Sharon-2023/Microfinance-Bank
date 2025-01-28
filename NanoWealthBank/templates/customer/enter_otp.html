@@ -1,0 +1,277 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mt-5">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title text-white">Enter OTP</h3>
+                        </div>
+                        <div class="card-body">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <div class="alert alert-info text-center mb-4">
+                                <p class="mb-0">Please enter the OTP sent to your email:</p>
+                                <strong>{{ customer.email }}</strong>
+                            </div>
+
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="otp">Enter OTP</label>
+                                    <input type="text" class="form-control otp-input" id="otp" name="otp" 
+                                           maxlength="6" required placeholder="Enter 6-digit OTP">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Verify OTP
+                                </button>
+                            </form>
+
+                            <div class="text-center mt-3">
+                                <a href="{% url 'activate_classiccard' %}" class="btn btn-link">
+                                    Back to Card Activation
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.content-wrapper {
+    background: linear-gradient(135deg, #f0f2f5 0%, #e5e7eb 100%);
+    min-height: calc(100vh - 60px); /* Adjusted for navbar */
+    padding: 20px;
+    overflow-x: hidden;
+    margin-top: 60px; /* Height of navbar */
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+}
+
+.card-header {
+    background: #4338ca;
+    border-radius: 16px 16px 0 0;
+    padding: 20px 25px;
+    border: none;
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.alert {
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-info {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+}
+
+.alert-danger {
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 5px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+}
+
+.otp-input:focus {
+    border-color: #4338ca;
+    box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.1);
+    outline: none;
+}
+
+.btn {
+    height: 45px;
+    padding: 0 25px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #4338ca;
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #3730a3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(67, 56, 202, 0.15);
+}
+
+.btn-link {
+    color: #4338ca;
+    text-decoration: none;
+    padding: 8px 16px;
+}
+
+.btn-link:hover {
+    background: #eef2ff;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 15px;
+        margin-top: 56px; /* Adjusted for mobile navbar */
+    }
+
+    .card {
+        margin-top: 15px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin: 0 4px;
+    }
+
+    .btn {
+        height: 42px;
+    }
+}
+
+/* For smaller screens */
+@media (max-width: 480px) {
+    .otp-input {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+        margin: 0 3px;
+    }
+}
+</style>
+
+<script>
+$(document).ready(function() {
+    // OTP input handling
+    $('.otp-input').on('input', function() {
+        // Allow only numbers
+        this.value = this.value.replace(/[^0-9]/g, '');
+        
+        if (this.value) {
+            const next = $(this).data('index');
+            if (next < 6) {
+                $(`.otp-input[data-index="${next + 1}"]`).focus();
+            }
+        }
+        
+        // Combine OTP values
+        let otp = '';
+        $('.otp-input').each(function() {
+            otp += $(this).val();
+        });
+        $('#otp').val(otp);
+    });
+
+    // Handle backspace
+    $('.otp-input').on('keydown', function(e) {
+        if (e.key === 'Backspace' && !this.value) {
+            const prev = $(this).data('index');
+            if (prev > 1) {
+                $(`.otp-input[data-index="${prev - 1}"]`).focus();
+            }
+        }
+    });
+
+    // Timer functionality
+    let timeLeft = 120; // 2 minutes in seconds
+    const countdownEl = $('#countdown');
+    const resendBtn = $('#resendBtn');
+    let timerInterval;
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timeLeft = 120;
+        resendBtn.prop('disabled', true);
+        
+        timerInterval = setInterval(function() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            countdownEl.text(
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+            );
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                resendBtn.prop('disabled', false);
+                countdownEl.text('00:00');
+                return;
+            }
+            
+            timeLeft--;
+        }, 1000);
+    }
+
+    // Start timer on page load
+    startTimer();
+
+    // Resend OTP button click handler
+    resendBtn.on('click', function() {
+        window.location.reload();
+    });
+
+    // Clear timer when leaving the page
+    $(window).on('beforeunload', function() {
+        clearInterval(timerInterval);
+    });
+});
+</script>
+{% endblock %}

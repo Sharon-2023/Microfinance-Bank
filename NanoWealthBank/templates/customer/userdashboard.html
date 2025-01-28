@@ -11,7 +11,527 @@
   </div>
   <img
     src="{% static 'images/customerdashboard.jpg' %}"
-    alt="Dashboard Image"
+    alt="Dashboard Image" 
     class="dashboard-image"
   />
+
+<!-- Chat Icon and Popup -->
+<div class="chat-icon" onclick="toggleChat()">
+    <img src="https://cdn-icons-png.flaticon.com/512/1698/1698535.png" alt="Chat Bot" class="chat-bot-img">
+</div>
+
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <h3>NanoWealth Assistant</h3>
+        <span class="close-btn" onclick="toggleChat()">&times;</span>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your message...">
+        <button id="sendButton" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<!-- Add this CSS -->
+<style>
+    .chat-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 1000;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .chat-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-icon.active {
+        transform: rotate(360deg);
+    }
+
+    .chat-container {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: none;
+        flex-direction: column;
+        z-index: 999;
+        transform-origin: bottom right;
+        animation: none;
+    }
+
+    /* Animation for opening */
+    .chat-container.show {
+        display: flex;
+        animation: popIn 0.3s ease-out forwards;
+    }
+
+    /* Animation for closing */
+    .chat-container.hide {
+        animation: popOut 0.3s ease-in forwards;
+    }
+
+    .chat-header {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-messages {
+        height: 300px;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        background-color: #f8f9fa;
+    }
+
+    .chat-input {
+        padding: 10px;
+        display: flex;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-right: 5px;
+    }
+
+    .chat-input button {
+        padding: 8px 15px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .close-btn {
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    /* Add these new styles */
+    .message {
+        margin: 8px 0;
+        padding: 10px 15px;
+        border-radius: 10px;
+        max-width: 80%;
+        word-wrap: break-word;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .user-message {
+        background-color: #007bff;
+        color: white;
+        margin-left: auto;
+        border-radius: 15px 15px 0 15px;
+        flex-direction: row-reverse;
+    }
+
+    .bot-message {
+        background-color: #f0f0f0;
+        color: #333;
+        margin-right: auto;
+        border-radius: 15px 15px 15px 0;
+    }
+
+    .message-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .user-icon {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .bot-icon {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .message-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-text {
+        margin: 0;
+    }
+
+    .message-time {
+        font-size: 0.75rem;
+        opacity: 0.7;
+        margin-top: 4px;
+    }
+
+    .chat-input input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .chat-input button:hover {
+        background-color: #0056b3;
+        transition: background-color 0.2s;
+    }
+
+    .chat-bot-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .message-icon img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    @keyframes popIn {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+    }
+
+    @keyframes popOut {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0);
+            opacity: 0;
+        }
+    }
+
+    /* Add these new loading animation styles */
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 3px solid #007bff;
+        animation: spin 1s linear infinite;
+        margin: 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loading-message {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .loading-dots {
+        display: inline-block;
+    }
+
+    .loading-dots:after {
+        content: '.';
+        animation: dots 1.5s steps(5, end) infinite;
+    }
+
+    @keyframes dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60% { content: '...'; }
+        80%, 100% { content: ''; }
+    }
+</style>
+
+<!-- Add this JavaScript -->
+<script>
+    function gatherSiteContext() {
+        // Get account number if available
+        const accountNumber = document.querySelector('.welcome-message span').textContent.trim();
+        
+        // Get username
+        const username = document.querySelector('.welcome-message').textContent.split(',')[1]?.split('!')[0]?.trim();
+        
+        // Gather visible banking information from the page
+        const pageContent = {
+            username: username || 'Not found',
+            accountNumber: accountNumber.includes('Not created') ? 'Not available' : accountNumber.replace('Account Number: ', ''),
+            currentPage: 'Customer Dashboard',
+            availableServices: [
+                'Account Management',
+                'Banking Services',
+                'Customer Support'
+            ]
+        };
+
+        return pageContent;
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const message = input.value.trim();
+        if (!message) return;
+
+        // Update button text and disable it
+        sendButton.textContent = 'Sent';
+        sendButton.disabled = true;
+
+        appendMessage('user', message);
+        input.value = '';
+
+        // Check if the message is banking related
+        const bankingKeywords = ['account', 'loan', 'transfer', 'balance', 'deposit', 'withdraw', 'payment', 'credit', 'debit', 'transaction', 'bank'];
+        const isBankingQuery = bankingKeywords.some(keyword => message.toLowerCase().includes(keyword));
+
+        if (!isBankingQuery) {
+            appendMessage('bot', 'I can only assist with banking-related queries. Please ask something related to banking services.');
+            // Reset button
+            sendButton.textContent = 'Send';
+            sendButton.disabled = false;
+            return;
+        }
+
+        const loadingMessage = appendLoadingMessage();
+
+        try {
+            // Gather context from the current page
+            const siteContext = gatherSiteContext();
+
+            const response = await fetch('/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ 
+                    message: message,
+                    query_type: 'banking',
+                    context: siteContext  // Include the site context in the request
+                })
+            });
+            
+            // Remove loading message
+            loadingMessage.remove();
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data && data.response) {
+                const messageDiv = createEmptyBotMessage();
+                await typeWriterEffect(messageDiv.querySelector('.message-text'), data.response);
+            } else {
+                throw new Error('Invalid response format');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+            appendMessage('bot', 'Sorry, I encountered an error. Please try again.');
+        } finally {
+            sendButton.textContent = 'Send';
+            sendButton.disabled = false;
+        }
+    }
+
+    document.getElementById('userInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function toggleChat() {
+        const chatContainer = document.querySelector('.chat-container');
+        const chatIcon = document.querySelector('.chat-icon');
+        
+        if (chatContainer.style.display === 'none' || !chatContainer.style.display) {
+            // Opening animation
+            chatContainer.style.display = 'flex';
+            chatContainer.classList.remove('hide');
+            chatContainer.classList.add('show');
+            chatIcon.classList.add('active');
+        } else {
+            // Closing animation
+            chatContainer.classList.remove('show');
+            chatContainer.classList.add('hide');
+            chatIcon.classList.remove('active');
+            
+            // Hide the container after animation completes
+            setTimeout(() => {
+                chatContainer.style.display = 'none';
+                chatContainer.classList.remove('hide');
+            }, 300);
+        }
+    }
+
+    function appendMessage(sender, message) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `message-icon ${sender}-icon`;
+        
+        if (sender === 'user') {
+            iconDiv.innerHTML = '<i class="fas fa-user"></i>';
+        } else {
+            iconDiv.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/1698/1698535.png" alt="Bot">';
+        }
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        
+        const textP = document.createElement('p');
+        textP.className = 'message-text';
+        textP.textContent = message;
+        
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        contentDiv.appendChild(textP);
+        contentDiv.appendChild(timeSpan);
+        
+        messageDiv.appendChild(iconDiv);
+        messageDiv.appendChild(contentDiv);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        return messageDiv; // Return the message div for potential removal (loading message)
+    }
+
+    function appendLoadingMessage() {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message loading-message';
+        
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'message-icon bot-icon';
+        iconDiv.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/1698/1698535.png" alt="Bot">';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        
+        const loadingContainer = document.createElement('div');
+        loadingContainer.className = 'loading-spinner';
+        
+        const loadingText = document.createElement('span');
+        loadingText.className = 'loading-dots';
+        loadingText.textContent = '';
+        
+        contentDiv.appendChild(loadingContainer);
+        contentDiv.appendChild(loadingText);
+        
+        messageDiv.appendChild(iconDiv);
+        messageDiv.appendChild(contentDiv);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        return messageDiv;
+    }
+
+    function createEmptyBotMessage() {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'message-icon bot-icon';
+        iconDiv.innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/1698/1698535.png" alt="Bot">';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        
+        const textP = document.createElement('p');
+        textP.className = 'message-text';
+        
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'message-time';
+        timeSpan.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        contentDiv.appendChild(textP);
+        contentDiv.appendChild(timeSpan);
+        
+        messageDiv.appendChild(iconDiv);
+        messageDiv.appendChild(contentDiv);
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        return messageDiv;
+    }
+
+    async function typeWriterEffect(element, text, speed = 30) {
+        for (let i = 0; i < text.length; i++) {
+            element.textContent += text.charAt(i);
+            // Scroll to bottom as text is being typed
+            element.parentElement.parentElement.parentElement.scrollTop = 
+                element.parentElement.parentElement.parentElement.scrollHeight;
+            await new Promise(resolve => setTimeout(resolve, speed));
+        }
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 {% endblock %}

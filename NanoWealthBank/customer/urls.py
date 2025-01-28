@@ -108,6 +108,10 @@ urlpatterns = [
 
 #apply card
     path('apply-card/', views.apply_card, name='apply_card'),
+    path('activate-classiccard/', views.activate_classiccard, name='activate_classiccard'),
+    path('activate-card/enter-otp/', views.enter_otp, name='enter_otp'),  # Added this line
+    #   path('enter-otp/', views.enter_otp, name='enter_otp'),
+    
 #classic card
     path('classic-card-details/', views.classic_card_details, name='classic_card_details'),  
     path('apply-classic/', views.apply_classic_card, name='apply_classic_card'),
@@ -128,5 +132,7 @@ urlpatterns = [
     # path('manager/dashboard/', views.manager_dashboard, name='manager_dashboard'),
     path('managerdashboard/', views.managerdashboard, name='managerdashboard'),  # Changed the path to match the name
 
+#chatbot
+    path('chat/', views.chat_view, name='chat'),
 
 ]

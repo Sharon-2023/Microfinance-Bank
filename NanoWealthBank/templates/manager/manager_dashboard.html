@@ -5,45 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/adminpanel.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   </head>
   <body>
     <div class="navbar">
-      <h1>Admin Dashboard</h1>
+      <h1><i class="fas fa-bank me-2"></i>Manager Dashboard</h1>
+      <div class="nav-right">
+        <span class="date-time" id="datetime"></span>
+        <a href="{% url 'logout_view' %}" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
     </div>
 
     <div class="dashboard">
       <!-- Left-side Container for Menu -->
       <div class="left-container">
+        <div class="menu-header">
+          <i class="fas fa-user-shield"></i>
+          <span>Manager Panel</span>
+        </div>
         <ul class="menu-items">
           <li>
-            <a href="{% url 'admindashboard' %}">Dashboard</a>
+            <a href="{% url 'managerdashboard' %}">
+              <i class="fas fa-home"></i>
+              <span>Dashboard</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'customer_list' %}">Customer Login Requests</a>
+            <a href="{% url 'customer_list' %}">
+              <i class="fas fa-users"></i>
+              <span>Customer Requests</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'loanofficer_list' %}">Loan Officer List</a>
+            <a href="{% url 'loanofficer_list' %}">
+              <i class="fas fa-user-tie"></i>
+              <span>Loan Officers</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'manager_list' %}">Branch Managers</a>
+            <a href="{% url 'transactions_list' %}">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Transactions</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'transactions_list' %}">Transaction Monitoring</a>
+            <a href="{% url 'loan_list' %}">
+              <i class="fas fa-hand-holding-usd"></i>
+              <span>Loan Management</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'loan_list' %}">Loan Management</a>
+            <a href="{% url 'savings_account_approval' %}">
+              <i class="fas fa-piggy-bank"></i>
+              <span>Savings Account</span>
+            </a>
           </li>
           <li>
-            <a href="{% url 'savings_account_approval' %}">Savings Account</a>
+            <a href="{% url 'current_account_approval' %}">
+              <i class="fas fa-landmark"></i>
+              <span>Current Account</span>
+            </a>
           </li>
           <li>
-            <a href="{%url 'current_account_approval' %}">Current Account</a>
-          </li>
-          <li>
-            <a href="{% url 'admin_card_applications' %}">Card Applications</a>
-          </li>
-          <li>
-            <a href="{%url 'logout_view' %}">Logout</a>
+            <a href="{% url 'admin_card_applications' %}">
+              <i class="fas fa-credit-card"></i>
+              <span>Card Applications</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -56,6 +86,59 @@
         padding: 0;
         overflow-x: hidden;
         min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+      }
+
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      .navbar h1 {
+        font-size: 20px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .date-time {
+        font-size: 14px;
+        color: #e3f2fd;
+      }
+
+      .logout-btn {
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
+      }
+
+      .logout-btn:hover {
+        background: rgba(255,255,255,0.2);
       }
 
       .dashboard {
@@ -67,21 +150,28 @@
       .left-container {
         width: 250px;
         height: calc(100vh - 60px);
-        background-color: #2c3e50;
+        background: #1a237e; /* Dark blue background */
         padding: 20px 0;
         position: fixed;
         left: 0;
         top: 60px;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         overflow-y: auto;
       }
 
-      .container {
-        flex: 1;
-        margin-left: 250px;
-        padding: 15px;
-        overflow-y: auto;
-        height: calc(100vh - 60px);
+      .menu-header {
+        padding: 0 25px 20px;
+        color: #ffffff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 10px;
+      }
+
+      .menu-header i {
+        color: #ffffff;
       }
 
       .menu-items {
@@ -96,38 +186,36 @@
       }
 
       .menu-items a {
-        color: #fff;
+        color: #ffffff;
         text-decoration: none;
         padding: 12px 25px;
-        display: block;
-        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
         transition: all 0.3s ease;
-        font-weight: 500;
+        border-left: 3px solid transparent;
       }
 
       .menu-items a:hover {
-        background-color: #34495e;
-        padding-left: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-left-color: #ffffff;
       }
 
-      .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 60px;
-        background-color: #2c3e50;
-        color: white;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        z-index: 1000;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      .menu-items i {
+        width: 20px;
+        text-align: center;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
       }
 
-      .navbar h1 {
-        font-size: 20px;
-        margin: 0;
+      .container {
+        flex: 1;
+        margin-left: 250px;
+        padding: 25px;
+        overflow-y: auto;
+        height: calc(100vh - 60px);
+        background: #f8fafc;
       }
 
       @media (max-width: 768px) {
@@ -141,13 +229,37 @@
 
         .menu-items a {
           padding: 12px;
-          text-align: center;
+          justify-content: center;
         }
 
-        .menu-items a span {
+        .menu-items a span,
+        .menu-header span {
           display: none;
+        }
+
+        .menu-header {
+          justify-content: center;
+          padding: 0 0 20px;
         }
       }
     </style>
+
+    <script>
+    function updateDateTime() {
+        const now = new Date();
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit'
+        };
+        document.getElementById('datetime').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+    </script>
   </body>
 </html>

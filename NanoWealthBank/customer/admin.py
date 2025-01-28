@@ -10,4 +10,5 @@ admin.site.register(Savings)
 admin.site.register(Current)
 admin.site.register(LoanApplication)
 admin.site.register(Transaction)
+
 admin.site.register(FixedDeposit)

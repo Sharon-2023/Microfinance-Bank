@@ -1,7 +1,7 @@
 from django.urls import reverse
 from .models import FixedDeposit, LoanApplication, Savings  # Make sure to import your model
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Admin, Customer, LoanOfficer, Transaction, ClassicCardApplication, Manager
+from .models import Admin, Customer, LoanOfficer, Transaction, ClassicCardApplication, Manager, CreditScore
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.contrib import messages
@@ -35,6 +35,10 @@ from django.template.loader import render_to_string
 from django.conf import settings
 import os
 import string
+from django.core.cache import cache
+import requests
+import json
+import google.generativeai as genai
 
 
 def home(request):
@@ -56,72 +60,6 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-
-# def login(request):
-#     if request.method == 'POST':
-#         login_id = request.POST.get('login_id')  # This can be either email or account number
-#         password = request.POST.get('password')
-
-#         # First try to find user by email
-#         try:
-#             # Check if the login_id is an email
-#             if '@' in login_id:
-#                 customer = Customer.objects.get(email=login_id)
-#             else:
-#                 # Try to find customer by account number
-#                 savings_account = Savings.objects.filter(account_number=login_id).first()
-#                 current_account = Current.objects.filter(account_number=login_id).first()
-                
-#                 if savings_account:
-#                     customer = Customer.objects.get(id=savings_account.user_id)
-#                 elif current_account:
-#                     customer = Customer.objects.get(id=current_account.user_id)
-#                 else:
-#                     messages.error(request, "No account found with the provided credentials.")
-#                     return render(request, 'login.html')
-
-#             if check_password(password, customer.password):
-#                 if customer.is_active:
-#                     # Store customer data in session
-#                     request.session['user_id'] = customer.id
-#                     request.session['user_email'] = customer.email
-#                     request.session['user_role'] = 'customer'
-#                     request.session['username'] = customer.username
-#                     return redirect('userdashboard')
-#                 else:
-#                     messages.error(request, "Account not approved yet.")
-#                     return render(request, 'login.html')
-#             else:
-#                 messages.error(request, "Invalid credentials.")
-#                 return render(request, 'login.html')
-
-#         except Customer.DoesNotExist:
-#             # If customer not found, try admin login
-#             try:
-#                 admin = Admin.objects.get(email=login_id)
-#                 if admin.password == password:
-#                     request.session['user_id'] = admin.id
-#                     request.session['user_email'] = admin.email
-#                     request.session['user_role'] = 'admin'
-#                     request.session['username'] = admin.username
-#                     return redirect('admindashboard')
-#                 else:
-#                     messages.error(request, "Invalid admin credentials.")
-#             except Admin.DoesNotExist:
-#                 # Try loan officer login
-#                 try:
-#                     loan_officer = LoanOfficer.objects.get(email=login_id)
-#                     if loan_officer.password == password:
-#                         request.session['user_id'] = loan_officer.id
-#                         request.session['user_email'] = loan_officer.email
-#                         request.session['user_role'] = 'loan_officer'
-#                         return redirect('loanofficerdashboard')
-#                     else:
-#                         messages.error(request, "Invalid loan officer credentials.")
-#                 except LoanOfficer.DoesNotExist:
-#                     messages.error(request, "No user found with the provided credentials.")
-
-#     return render(request, 'login.html')
 
 def login(request):
     if request.method == 'POST':
@@ -155,25 +93,38 @@ def login(request):
                     messages.error(request, "Invalid admin credentials.")
                     return render(request, 'login.html')
             except Admin.DoesNotExist:
-                # Finally check for Customer
+                # Check for Loan Officer
                 try:
-                    customer = Customer.objects.get(email=email)
-                    if check_password(password, customer.password):
-                        if customer.is_active:
-                            request.session['user_id'] = customer.id
-                            request.session['user_email'] = customer.email
-                            request.session['user_role'] = 'customer'
-                            request.session['username'] = customer.username
-                            return redirect('userdashboard')
-                        else:
-                            messages.error(request, "Customer Not Approved Yet.")
-                            return render(request, 'login.html')
+                    loan_officer = LoanOfficer.objects.get(email=email)
+                    if loan_officer.password == password:
+                        request.session['user_id'] = loan_officer.id
+                        request.session['user_email'] = loan_officer.email
+                        request.session['user_role'] = 'loan_officer'
+                        request.session['username'] = f"{loan_officer.first_name} {loan_officer.last_name}"
+                        return redirect('loanofficerdashboard')
                     else:
-                        messages.error(request, "Invalid customer credentials.")
+                        messages.error(request, "Invalid loan officer credentials.")
                         return render(request, 'login.html')
-                except Customer.DoesNotExist:
-                    messages.error(request, "No account found with this email.")
-                    return render(request, 'login.html')
+                except LoanOfficer.DoesNotExist:
+                    # Finally check for Customer
+                    try:
+                        customer = Customer.objects.get(email=email)
+                        if check_password(password, customer.password):
+                            if customer.is_active:
+                                request.session['user_id'] = customer.id
+                                request.session['user_email'] = customer.email
+                                request.session['user_role'] = 'customer'
+                                request.session['username'] = customer.username
+                                return redirect('userdashboard')
+                            else:
+                                messages.error(request, "Customer Not Approved Yet.")
+                                return render(request, 'login.html')
+                        else:
+                            messages.error(request, "Invalid customer credentials.")
+                            return render(request, 'login.html')
+                    except Customer.DoesNotExist:
+                        messages.error(request, "No account found with this email.")
+                        return render(request, 'login.html')
 
     return render(request, 'login.html')
 
@@ -436,8 +387,6 @@ def apply_for_account(request):
             Current.objects.create(user=request.user)
 
         return redirect('success_page')
-
-    return render(request, 'apply_for_account.html')
 
 # View Profile in dashboard
 
@@ -956,14 +905,15 @@ def payment_success(request):
 
 
 def admin_dashboard(request):
-    pending_customers = Customer.objects.filter(
-        is_active=False)  # Pending approval requests
-    customers = Customer.objects.all()
-    savings = Savings.objects.all()
-    currents = Current.objects.all()
-    loans = LoanApplication.objects.all()
-    fixed_deposit = FixedDeposit.objects.all()
-    return render(request, 'admin/admin_dashboard.html', {'pending_customers': pending_customers, 'total_customers': customers.count(), 'total_savings_accounts': savings.count(), 'total_current_accounts': currents.count(), 'total_loans': loans.count(),'total_fixed_deposit':fixed_deposit.count()})
+    context = {
+        'total_customers': Customer.objects.count(),
+        'total_savings_accounts': Savings.objects.count(),
+        'total_current_accounts': Current.objects.count(),
+        'total_fixed_deposit': FixedDeposit.objects.count(),
+        'total_loans': LoanApplication.objects.count(),
+        # Add more context data as needed
+    }
+    return render(request, 'admin/admin_dashboard.html', context)
 
 
 def customer_list(request):
@@ -1161,9 +1111,8 @@ def approve_savings_account(request, request_id):
         if action == 'approve':
             # Generate a unique account number
             while True:
-                if account.user_id:
-                    account_number = f"NWB{random.randint(100000, 999999)}00{
-                        account.user_id}"
+                if user_id:
+                    account_number = f"NWB{random.randint(100000, 999999)}00{user_id}"
                 else:
                     account_number = f"NWB{random.randint(10000000, 99999999)}"
                 if not Savings.objects.filter(account_number=account_number).exists():
@@ -1212,8 +1161,7 @@ def approve_current_account(request, account_id):
             # Generate a unique account number
             while True:
                 if account.user_id:
-                    account_number = f"NWB{random.randint(1000000, 9999999)}00{
-                        account.user_id}"
+                    account_number = f"NWB{random.randint(1000000, 9999999)}00{account.user_id}"
                     print(account_number)
                 else:
                     account_number = f"NWB{random.randint(1000000, 9999999)}"
@@ -1290,7 +1238,6 @@ def personal_loan(request):
 def loan_application(request):
     if request.method == 'POST':
         try:
-            # Get the customer instance using the user_id from session
             customer = Customer.objects.get(id=request.session.get('user_id'))
             
             # Extract data from the request
@@ -1308,12 +1255,19 @@ def loan_application(request):
             loan_purpose = request.POST.get('loanPurpose')
 
             # Validate required fields
-            if not all([applicant_name, nationality, gender, address, city, state, pin_code, employment_status, monthly_income, loan_type, loan_amount, loan_purpose]):
-                return JsonResponse({'success': False, 'message': 'All fields are required.'})
+            if not all([applicant_name, nationality, gender, address, city, state, 
+                       pin_code, employment_status, monthly_income, loan_type, 
+                       loan_amount, loan_purpose]):
+                messages.error(request, 'All fields are required.')
+                return redirect('loan_application')
 
-            # Create a new loan application with the customer instance
+            # Calculate credit score
+            credit_score, created = CreditScore.objects.get_or_create(customer=customer)
+            credit_score.update_credit_score()
+
+            # Create loan application
             new_loan = LoanApplication.objects.create(
-                customer=customer,  # Set the customer foreign key
+                customer=customer,
                 name=applicant_name,
                 nationality=nationality,
                 gender=gender,
@@ -1326,20 +1280,35 @@ def loan_application(request):
                 loan_type=loan_type,
                 loan_amount_required=loan_amount,
                 loan_purpose=loan_purpose,
-                application_date=datetime.now()
+                application_date=timezone.now(),
+                credit_score_at_application=credit_score.score
             )
             
-            # Calculate the next payment date (30 days from application date)
+            # Set next payment date
             next_payment_date = new_loan.application_date + timedelta(days=30)
             new_loan.next_payment_date = next_payment_date
+            
+            # Set initial status based on credit score
+            if credit_score.score >= 750:
+                new_loan.status = 'APPROVED'
+                messages.success(request, 'Loan application approved! Your credit score is excellent.')
+            elif credit_score.score >= 650:
+                new_loan.status = 'UNDER_REVIEW'
+                messages.success(request, 'Loan application submitted for review. Your credit score is good.')
+            else:
+                new_loan.status = 'PENDING'
+                messages.warning(request, 'Loan application submitted. Your credit score needs improvement.')
+            
             new_loan.save()
-
-            return JsonResponse({'success': True, 'message': 'Application submitted successfully.'})
+            
+            return redirect('userdashboard')
             
         except Customer.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Please log in to submit a loan application.'})
+            messages.error(request, 'Please log in to submit a loan application.')
+            return redirect('login')
         except Exception as e:
-            return JsonResponse({'success': False, 'message': f'An error occurred: {str(e)}'})
+            messages.error(request, f'An error occurred: {str(e)}')
+            return redirect('loan_application')
 
     return render(request, 'customer/loan_application.html')
 
@@ -1474,45 +1443,7 @@ def process_payment(request, transaction_id):
         # Handle payment failure (optional)
         return HttpResponse("Payment failed. Please try again.")
     
-# def payment_success(request):
-#     # Get the payment_id from the query string
-#     payment_id = request.GET.get('payment_id')
 
-#     # if not payment_id:
-#     #     # Handle the case where payment_id is missing
-#     #     return render(request, '404.html', status=404)
-
-#     # # Fetch the transaction using the payment_id
-#     # transaction = get_object_or_404(Transaction, payment_id=payment_id)
-
-#     # Pass the transaction details to the template
-#     # context = {
-#     #     'payment_id': transaction.payment_id,
-#     #     'beneficiary_name': transaction.receiver_name,
-#     #     'beneficiary_account_number': transaction.receiver_account_number,
-#     #     'amount': transaction.amount,
-#     #     'transaction_date': transaction.created_at.strftime('%d-%m-%Y %H:%M:%S'),
-#     # }
-
-#     transaction = Transaction.objects.filter(payment_id=payment_id).first()
-
-#     if transaction:
-#            # If the transaction already exists, update its payment status
-#            transaction.payment_status = 'SUCCESS'
-#            transaction.save()
-#     else:
-          
-#            transaction = Transaction(
-#                payment_id=transaction.payment_id,
-#                beneficiary_name: transaction.receiver_name,
-#                 beneficiary_account_number: transaction.receiver_account_number,
-#                 amount: transaction.amount,
-#                 transaction_date: transaction.created_at.strftime('%d-%m-%Y %H:%M:%S'),
-               
-#            )
-#            transaction.save()
-
-#     return render(request, 'customer/payment_success.html',)
 
 
 #Apply for card
@@ -1522,6 +1453,9 @@ def apply_card(request):
         messages.error(request, 'Please login to access this page')
         return redirect('login')
     return render(request, 'customer/apply_card.html')
+
+
+
 
 def classic_card_details(request):
     if 'user_id' not in request.session:
@@ -1758,26 +1692,252 @@ def managerdashboard(request):
     # if not request.session.get('user_id'):
     #     messages.error(request, "Please login first")
     #     return redirect('login')
-    
+    # 
     # if request.session.get('user_role') != 'manager':
     #     messages.error(request, "Unauthorized access")
     #     return redirect('login')
-    
+    # 
     # try:
     #     manager_id = request.session.get('user_id')
     #     manager = Manager.objects.get(id=manager_id)
-        
+    #     
     #     context = {
     #         'manager': manager,
     #         'username': request.session.get('username'),
     #         'manager_id': request.session.get('manager_id')
     #     }
-        
-    return render(request, 'manager/manager_dashboard.html')
-        
+    #     
+    #     return render(request, 'manager/manager_dashboard.html', context)
+    #     
     # except Manager.DoesNotExist:
     #     messages.error(request, "Manager not found")
     #     return redirect('login')
     # except Exception as e:
     #     messages.error(request, f"An error occurred: {str(e)}")
     #     return redirect('login')
+
+
+    return render(request, 'manager/manager_dashboard.html')
+
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+
+def send_otp_email(email, otp):
+    subject = 'NanoWealth Bank - Card Activation OTP'
+    message = f'''
+    Dear Customer,
+
+    Your OTP for card activation is: {otp}
+
+    This OTP is valid for a limited time. Please do not share this OTP with anyone.
+
+    Best Regards,
+    NanoWealth Bank Team
+    '''
+    
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [email],
+            fail_silently=False,
+        )
+        return True
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+        return False
+
+def activate_classiccard(request):
+    if request.method == 'POST':
+        try:
+            customer = Customer.objects.get(id=request.session.get('user_id'))
+            
+            # Get form data
+            card_number = request.POST.get('card_number')
+            
+            # Basic validation
+            if not card_number or len(card_number) != 16:
+                messages.error(request, 'Please enter a valid 16-digit card number.')
+                return render(request, 'customer/activate_classiccard.html', {'customer': customer})
+            
+            # Generate OTP
+            otp = generate_otp()
+            
+            # Send OTP via email
+            if send_otp_email(customer.email, otp):
+                # Store in session for verification
+                request.session['card_number'] = card_number
+                request.session['card_activation_otp'] = otp
+                request.session['otp_timestamp'] = str(timezone.now())
+                
+                messages.success(request, f'OTP has been sent to your email address: {customer.email}')
+                return redirect('enter_otp')  # Redirect to new OTP entry page
+            else:
+                messages.error(request, 'Failed to send OTP. Please try again.')
+                return render(request, 'customer/activate_classiccard.html', {'customer': customer})
+                
+        except Customer.DoesNotExist:
+            messages.error(request, 'Customer not found.')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+            return render(request, 'customer/activate_classiccard.html')
+    
+    # GET request
+    try:
+        customer = Customer.objects.get(id=request.session.get('user_id'))
+        return render(request, 'customer/activate_classiccard.html', {'customer': customer})
+    except Customer.DoesNotExist:
+        messages.error(request, 'Please login to activate your card.')
+        return redirect('login')
+
+def enter_otp(request):
+    if request.method == 'POST':
+        try:
+            customer = Customer.objects.get(id=request.session.get('user_id'))
+            entered_otp = request.POST.get('otp')
+            stored_otp = request.session.get('card_activation_otp')
+            card_number = request.session.get('card_number')
+            
+            if not stored_otp:
+                messages.error(request, 'OTP expired. Please request a new one.')
+                return redirect('activate_classic_card')
+            
+            if entered_otp == stored_otp:
+                # Update customer details
+                customer.card_number = card_number
+                customer.is_card_active = True
+                customer.card_activation_date = timezone.now()
+                customer.save()
+                
+                # Clear session data
+                session_keys = ['card_activation_otp', 'otp_timestamp', 'card_number']
+                for key in session_keys:
+                    if key in request.session:
+                        del request.session[key]
+                
+                messages.success(request, 'Your classic card has been activated successfully!')
+                return redirect('userdashboard')
+            else:
+                messages.error(request, 'Invalid OTP. Please try again.')
+                return render(request, 'customer/enter_otp.html', {'customer': customer})
+        
+        except Customer.DoesNotExist:
+            messages.error(request, 'Customer not found.')
+            return redirect('login')
+    
+    # GET request
+    try:
+        customer = Customer.objects.get(id=request.session.get('user_id'))
+        if not request.session.get('card_activation_otp'):
+            messages.error(request, 'Please request OTP first.')
+            return redirect('activate_classic_card')
+        return render(request, 'customer/enter_otp.html', {'customer': customer})
+    except Customer.DoesNotExist:
+        messages.error(request, 'Please login to continue.')
+        return redirect('login')
+
+def check_loan_eligibility(request):
+    if request.method == 'POST':
+        customer = request.user.customer
+        
+        # Get or create credit score
+        credit_score, created = CreditScore.objects.get_or_create(customer=customer)
+        credit_score.update_credit_score()
+        
+        loan_amount = float(request.POST.get('loan_amount'))
+        
+        context = {
+            'credit_score': credit_score.score,
+            'credit_rating': credit_score.get_credit_rating(),
+            'payment_history': credit_score.payment_history,
+            'credit_utilization': credit_score.credit_utilization,
+            'income_factor': credit_score.income_factor,
+            'employment_factor': credit_score.employment_factor,
+            'age_factor': credit_score.age_factor,
+            'is_eligible': credit_score.score >= 650  # Minimum score for loan approval
+        }
+        
+        return render(request, 'customer/loan_eligibility.html', context)
+    
+    return render(request, 'customer/loan_application.html')
+
+@csrf_exempt
+def chat_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_message = data.get('message')
+
+        # Configure Gemini API
+        genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
+        model = genai.GenerativeModel('gemini-pro')
+
+        try:
+            # Get response from Gemini
+            response = model.generate_content(user_message)
+            return JsonResponse({'response': response.text})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+def extract_content_from_template(template_name):
+    try:
+        template_path = os.path.join(settings.BASE_DIR, 'templates', template_name)
+        with open(template_path, 'r') as file:
+            return file.read()
+    except Exception as e:
+        print(f"Error reading template {template_name}: {e}")
+        return ""
+
+def get_site_content(request):
+    site_content = {
+        'pages': {
+            'accounts': extract_content_from_template('accounts.html'),
+            'services': extract_content_from_template('services.html'),
+            'about': extract_content_from_template('about.html'),
+            'contact': extract_content_from_template('contact.html')
+        },
+        'faqs': extract_faqs(),
+        'products': get_product_information()
+    }
+    
+    return JsonResponse(site_content)
+
+from google.cloud import aiplatform
+from google.cloud.aiplatform.gapic.schema import predict
+import google.ai.generativelanguage as glm
+import google.generativeai as genai
+
+def is_banking_related(query):
+    banking_keywords = [
+        'loan', 'account', 'deposit', 'credit', 'debit', 'transfer', 'balance',
+        'interest', 'bank', 'transaction', 'atm', 'card', 'savings', 'current',
+        'fixed deposit', 'fd', 'kyc', 'upi', 'neft', 'rtgs', 'imps', 'branch',
+        'payment', 'emi', 'insurance', 'investment', 'mutual fund'
+    ]
+    return any(keyword in query.lower() for keyword in banking_keywords)
+
+def chat(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_message = data.get('message', '')
+
+        if not is_banking_related(user_message):
+            return JsonResponse({
+                'response': "I can only assist with banking-related queries. Please ask questions about our banking services."
+            })
+
+        # Configure Gemini
+        genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
+        model = genai.GenerativeModel('gemini-pro')
+        
+        prompt = f"As a bank assistant, answer this query: {user_message}"
+        response = model.generate_content(prompt)
+        
+        return JsonResponse({
+            'response': response.text
+        })
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

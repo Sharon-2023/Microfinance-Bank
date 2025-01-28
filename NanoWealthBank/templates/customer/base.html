@@ -63,12 +63,30 @@
             >Transactions</a
           >
         </li>
-        <li>
-          <a href="{% url 'apply_card' %}" class="sidebar-link">
-            Apply Card
-          </a>
-        </li>
-        
+        <ul>
+          <li>
+            <span class="sidebar-span" onclick="toggleDropdown(this)">
+              Card Services
+              <span class="dropdown-arrow">▼</span>
+            </span>
+  
+            <ul class="dropdown-content">
+              <li>
+                <a
+                  href="{% url 'apply_card' %}"
+                  class="dropdown-content-link"
+                  >Apply New Card</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'activate_classiccard' %}"
+                  class="dropdown-content-link"
+                  >Activate Card</a
+                >
+              </li>
+            </ul>
+          </li>
         <li>
           <span class="sidebar-span" onclick="toggleDropdown(this)">
             Deposits

@@ -1,0 +1,559 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="activation-container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="activation-form">
+                    <div class="form-header">
+                        <h2>Card Activation</h2>
+                        <p>Please complete the form below to activate your card</p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} fade show">
+                                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'activate_classiccard' %}" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email Address
+                            </label>
+                            <input type="email" class="form-control" 
+                                   id="email" name="email" value="{{customer.email}}"
+                                   required
+                                   placeholder="Enter your email address">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="card_number">
+                                <i class="fas fa-credit-card"></i>
+                                Card Number
+                            </label>
+                            <input type="text" class="form-control" 
+                                   id="card_number" name="card_number" 
+                                   required maxlength="16" 
+                                   placeholder="Enter 16-digit card number">
+                        </div>
+
+                        {% if show_otp_field %}
+                        <div class="form-group">
+                            <label for="otp">
+                                <i class="fas fa-key"></i>
+                                OTP Verification
+                            </label>
+                            <div class="otp-container">
+                                <input type="text" maxlength="1" class="otp-input" data-index="1">
+                                <input type="text" maxlength="1" class="otp-input" data-index="2">
+                                <input type="text" maxlength="1" class="otp-input" data-index="3">
+                                <input type="text" maxlength="1" class="otp-input" data-index="4">
+                                <input type="text" maxlength="1" class="otp-input" data-index="5">
+                                <input type="text" maxlength="1" class="otp-input" data-index="6">
+                            </div>
+                            <input type="hidden" name="otp" id="otp">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                OTP has been sent to your registered mobile number
+                            </small>
+                        </div>
+                        {% endif %}
+
+                        <button type="submit" class="submit-btn">
+                            <span class="btn-text">
+                                {% if show_otp_field %}Verify OTP{% else %}Activate Card{% endif %}
+                            </span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Clean background */
+.content-wrapper {
+    background: #f8fafc;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* Enhanced form container */
+.activation-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.activation-form {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.activation-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Colorful header */
+.form-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.form-header h2 {
+    background: linear-gradient(120deg, #4f46e5, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.form-header p {
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.form-header::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+    margin: 20px auto 0;
+    border-radius: 2px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #334155;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+label i {
+    color: #6366f1;
+    font-size: 16px;
+}
+
+/* Clean inputs */
+.form-control {
+    height: 56px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 0 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* OTP container */
+.otp-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Animated submit button */
+.submit-btn {
+    width: 100%;
+    height: 56px;
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.submit-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+/* Alert styles */
+.alert {
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 25px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideIn 0.4s ease;
+}
+
+.alert-danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+/* Validation states */
+.form-control.is-valid {
+    border-color: #10b981;
+    background-color: #ffffff;
+}
+
+.form-control.is-invalid {
+    border-color: #ef4444;
+    background-color: #ffffff;
+}
+
+.invalid-feedback {
+    color: #ef4444;
+    font-size: 14px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.is-invalid {
+    animation: shake 0.4s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .activation-form {
+        padding: 30px 20px;
+    }
+
+    .form-header h2 {
+        font-size: 24px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+</style>
+
+<script>
+$(document).ready(function() {
+    const form = $('form');
+    
+    // Email validation
+    function isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return emailRegex.test(email);
+    }
+
+    $('#email').on('input', function() {
+        const emailInput = $(this);
+        const email = emailInput.val().trim();
+        const feedbackDiv = emailInput.next('.invalid-feedback');
+        
+        if (email === '') {
+            emailInput.removeClass('is-valid').addClass('is-invalid');
+            feedbackDiv.text('Email address is required');
+        } else if (!isValidEmail(email)) {
+            emailInput.removeClass('is-valid').addClass('is-invalid');
+            feedbackDiv.text('Please enter a valid email address');
+        } else {
+            emailInput.removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    // Card number validation
+    function isValidCardNumber(number) {
+        // Remove any spaces or dashes
+        number = number.replace(/[\s-]/g, '');
+        
+        // Check if it's exactly 16 digits
+        if (!/^\d{16}$/.test(number)) {
+            return false;
+        }
+        
+        // Luhn algorithm for card number validation
+        let sum = 0;
+        let isEven = false;
+        
+        // Loop through values starting from the rightmost digit
+        for (let i = number.length - 1; i >= 0; i--) {
+            let digit = parseInt(number.charAt(i));
+            
+            if (isEven) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            
+            sum += digit;
+            isEven = !isEven;
+        }
+        
+        return (sum % 10) === 0;
+    }
+
+    $('#card_number').on('input', function() {
+        const cardInput = $(this);
+        let value = cardInput.val().replace(/\D/g, '');
+        const feedbackDiv = cardInput.next('.invalid-feedback');
+        
+        // Limit to 16 digits
+        if (value.length > 16) {
+            value = value.slice(0, 16);
+        }
+        
+        // Format the card number with spaces
+        const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        cardInput.val(formattedValue);
+        
+        // Validate card number
+        if (value === '') {
+            cardInput.removeClass('is-valid').addClass('is-invalid');
+            feedbackDiv.text('Card number is required');
+        } else if (value.length < 16) {
+            cardInput.removeClass('is-valid').addClass('is-invalid');
+            feedbackDiv.text('Card number must be 16 digits');
+        } else if (!isValidCardNumber(value)) {
+            cardInput.removeClass('is-valid').addClass('is-invalid');
+            feedbackDiv.text('Please enter a valid card number');
+        } else {
+            cardInput.removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    // OTP validation
+    $('.otp-input').on('input', function() {
+        const otpInput = $(this);
+        let value = otpInput.val().replace(/\D/g, '');
+        
+        // Ensure single digit
+        if (value.length > 0) {
+            value = value.charAt(0);
+            otpInput.val(value);
+            
+            // Move to next input
+            const next = otpInput.data('index');
+            if (next < 6) {
+                $(`.otp-input[data-index="${next + 1}"]`).focus();
+            }
+        }
+        
+        // Combine and validate full OTP
+        let fullOtp = '';
+        $('.otp-input').each(function() {
+            fullOtp += $(this).val();
+        });
+        $('#otp').val(fullOtp);
+        
+        // Validate full OTP
+        if (fullOtp.length === 6) {
+            $('.otp-input').addClass('is-valid').removeClass('is-invalid');
+        }
+    });
+
+    // Handle backspace in OTP inputs
+    $('.otp-input').on('keydown', function(e) {
+        if (e.key === 'Backspace') {
+            const prev = $(this).data('index');
+            if (prev > 1 && !this.value) {
+                $(`.otp-input[data-index="${prev - 1}"]`).focus();
+            }
+        }
+    });
+
+    // Form submission validation
+    form.on('submit', function(e) {
+        e.preventDefault();
+        
+        const email = $('#email').val().trim();
+        const cardNumber = $('#card_number').val().replace(/\D/g, '');
+        let isValid = true;
+        
+        // Validate email
+        if (!isValidEmail(email)) {
+            $('#email').removeClass('is-valid').addClass('is-invalid');
+            isValid = false;
+        }
+        
+        // Validate card number
+        if (!isValidCardNumber(cardNumber)) {
+            $('#card_number').removeClass('is-valid').addClass('is-invalid');
+            isValid = false;
+        }
+        
+        // Validate OTP if visible
+        if ($('.otp-container').is(':visible')) {
+            const otp = $('#otp').val();
+            if (otp.length !== 6) {
+                $('.otp-input').removeClass('is-valid').addClass('is-invalid');
+                isValid = false;
+            }
+        }
+        
+        // Show overall form validation message
+        if (!isValid) {
+            const alertHtml = `
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Please correct the errors in the form
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            `;
+            $('.form-header').after(alertHtml);
+            return false;
+        }
+        
+        // If all validations pass, submit the form
+        this.submit();
+    });
+
+    // Clear validation states on focus
+    $('.form-control, .otp-input').on('focus', function() {
+        $(this).removeClass('is-invalid is-valid');
+    });
+});
+</script>
+
+<style>
+/* Add these validation-specific styles */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.form-control.is-valid {
+    border-color: #28a745;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.invalid-feedback {
+    display: none;
+    color: #dc3545;
+    font-size: 80%;
+    margin-top: 0.25rem;
+}
+
+.form-control.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+.alert {
+    margin-bottom: 1rem;
+}
+
+.alert-danger {
+    background-color: #fff5f5;
+    border-color: #ffd7d7;
+    color: #dc3545;
+}
+</style>
+{% endblock %}

@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 import random
 import string
 
@@ -110,10 +111,13 @@ class LoanApplication(models.Model):
     monthly_income = models.DecimalField(max_digits=10, decimal_places=2)
     loan_type = models.CharField(max_length=20)
     loan_amount_required = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Added this field
     loan_purpose = models.TextField()
-    application_date = models.DateTimeField(default=datetime.now)
+    application_date = models.DateTimeField(default=timezone.now)
     next_payment_date = models.DateTimeField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
+    credit_score_at_application = models.IntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return f"Loan Application for {self.name}"
@@ -206,6 +210,7 @@ class ClassicCardApplication(models.Model):
     branch_location = models.CharField(max_length=50, choices=BRANCH_CHOICES, default='Ernakulam')
     application_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    card_number = models.CharField(max_length=16, unique=True, null=True, blank=True)
 
     class Meta:
         ordering = ['-application_date']
@@ -213,9 +218,8 @@ class ClassicCardApplication(models.Model):
     def __str__(self):
         return f"Classic Card Application - {self.full_name}"
     
-
 class Manager(models.Model):
-    manager_id = models.CharField(max_length=9, unique=True)
+    manager_id = models.CharField(max_length=9, unique=True, null=True, blank=True)
     name = models.CharField(max_length=100)
     branch = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -242,4 +246,129 @@ class Manager(models.Model):
         db_table = 'manager'
         verbose_name = 'Manager'
         verbose_name_plural = 'Managers'
+    
+
+class CreditScore(models.Model):
+    customer = models.OneToOneField('Customer', on_delete=models.CASCADE)
+    score = models.IntegerField(
+        validators=[
+            MinValueValidator(300, message="Credit score cannot be less than 300"),
+            MaxValueValidator(900, message="Credit score cannot exceed 900")
+        ],
+        default=300
+    )
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    # Credit Score Components
+    payment_history = models.IntegerField(default=0)  # Max 200 points
+    credit_utilization = models.IntegerField(default=0)  # Max 200 points
+    income_factor = models.IntegerField(default=0)  # Max 150 points
+    employment_factor = models.IntegerField(default=0)  # Max 100 points
+    age_factor = models.IntegerField(default=0)  # Max 100 points
+
+    def calculate_payment_history(self):
+        loans = LoanApplication.objects.filter(customer=self.customer)
+        score = 0
+        
+        for loan in loans:
+            if loan.status == 'COMPLETED':
+                score += 50  # Completed loans
+            elif loan.status == 'ACTIVE' and not loan.has_missed_payments:
+                score += 30  # Active loans in good standing
+            elif loan.has_missed_payments:
+                score -= 20  # Penalty for missed payments
+                
+        return min(score, 200)
+
+    def calculate_credit_utilization(self):
+        active_loans = LoanApplication.objects.filter(
+            customer=self.customer, 
+            status='ACTIVE'
+        )
+        total_loan_amount = sum(loan.loan_amount_required for loan in active_loans)
+        monthly_income = float(self.customer.monthly_income or 0)
+        
+        if monthly_income == 0:
+            return 0
+            
+        utilization_ratio = total_loan_amount / (monthly_income * 12)  # Annual ratio
+        
+        if utilization_ratio <= 0.2:
+            return 200  # Excellent utilization
+        elif utilization_ratio <= 0.4:
+            return 150  # Good utilization
+        elif utilization_ratio <= 0.6:
+            return 100  # Fair utilization
+        else:
+            return 50   # Poor utilization
+
+    def calculate_income_factor(self):
+        monthly_income = float(self.customer.monthly_income or 0)
+        annual_income = monthly_income * 12
+        
+        if annual_income > 1000000:    # > 10 lakhs
+            return 150
+        elif annual_income > 500000:   # > 5 lakhs
+            return 100
+        elif annual_income > 300000:   # > 3 lakhs
+            return 75
+        else:
+            return 50
+
+    def calculate_employment_factor(self):
+        employment_status = self.customer.employment_status
+        
+        if employment_status == 'GOVERNMENT':
+            return 100
+        elif employment_status == 'PRIVATE':
+            return 75
+        elif employment_status == 'SELF_EMPLOYED':
+            return 50
+        else:
+            return 25
+
+    def calculate_age_factor(self):
+        # Assuming you have age field in Customer model
+        age = self.customer.age
+        
+        if 25 <= age <= 45:
+            return 100
+        elif 46 <= age <= 55:
+            return 75
+        else:
+            return 50
+
+    def update_credit_score(self):
+        self.payment_history = self.calculate_payment_history()
+        self.credit_utilization = self.calculate_credit_utilization()
+        self.income_factor = self.calculate_income_factor()
+        self.employment_factor = self.calculate_employment_factor()
+        self.age_factor = self.calculate_age_factor()
+        
+        # Calculate total score (base score of 300 + factor scores)
+        base_score = 300
+        factor_score = sum([
+            self.payment_history,
+            self.credit_utilization,
+            self.income_factor,
+            self.employment_factor,
+            self.age_factor
+        ])
+        
+        self.score = base_score + factor_score
+        self.score = min(900, max(300, self.score))
+        self.save()
+
+    def get_credit_rating(self):
+        if self.score >= 750:
+            return "Excellent"
+        elif self.score >= 650:
+            return "Good"
+        elif self.score >= 550:
+            return "Fair"
+        else:
+            return "Poor"
+
+    def __str__(self):
+        return f"Credit Score for {self.customer}: {self.score}"
     
