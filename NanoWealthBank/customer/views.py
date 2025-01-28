@@ -1873,7 +1873,7 @@ def chat_view(request):
 
         # Configure Gemini API
         genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-pro') 
 
         try:
             # Get response from Gemini
