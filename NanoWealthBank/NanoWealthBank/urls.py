@@ -29,6 +29,7 @@ urlpatterns = [
     path('chat/', views.chat_view, name='chat'),
     path('get-site-content/', views.get_site_content, name='get-site-content'),
     path('upload-salary-certificate/', views.upload_salary_certificate, name='upload_salary_certificate'),
+    path('download-receipt/', views.download_receipt, name='download_receipt'),
 ]
 
 if settings.DEBUG:

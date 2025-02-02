@@ -41,6 +41,13 @@ import json
 import google.generativeai as genai
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Sum, Count, Avg
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from io import BytesIO
+from django.views.decorators.http import require_POST
 
 
 def home(request):
@@ -895,11 +902,15 @@ def internet_banking(request):
 
 
 def payment_success(request):
+    if request.method != 'POST':
+        return redirect('home')  # Redirect if not POST
+        
     context = {
-        'payment_id': request.GET.get('payment_id'),
-        'amount': request.GET.get('amount'),
-        'receiver_name': request.GET.get('receiver_name'),
-        'receiver_account_number': request.GET.get('receiver_account_number'),
+        'payment_id': request.POST.get('payment_id'),
+        'amount': request.POST.get('amount'),
+        'receiver_name': request.POST.get('receiver_name'),
+        'receiver_account_number': request.POST.get('receiver_account_number'),
+        'transaction_date': timezone.now().strftime("%B %d, %Y, %I:%M %p")
     }
     return render(request, 'customer/payment_success.html', context)
 
@@ -1966,6 +1977,87 @@ def upload_salary_certificate(request):
         'success': False,
         'error': 'Invalid request'
     }, status=400)
+
+#download receipt after payment success in internet banking
+@require_POST
+def download_receipt(request):
+    # Get data from POST request
+    payment_id = request.POST.get('payment_id')
+    receiver_name = request.POST.get('receiver_name')
+    receiver_account = request.POST.get('receiver_account_number')
+    amount = request.POST.get('amount')
+    transaction_date = request.POST.get('transaction_date')
+    
+    # Create the HttpResponse object with PDF headers
+    buffer = BytesIO()
+    
+    # Create the PDF object using ReportLab
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=72,
+        leftMargin=72,
+        topMargin=72,
+        bottomMargin=72
+    )
+    
+    # Container for the 'Flowable' objects
+    elements = []
+    
+    # Define styles
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(
+        name='CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=24,
+        spaceAfter=30,
+        alignment=1  # Center alignment
+    ))
+    
+    # Add the "Payment Receipt" title
+    elements.append(Paragraph("Payment Receipt", styles['CustomTitle']))
+    elements.append(Spacer(1, 12))
+    
+    # Create the table data
+    data = [
+        ['Payment ID:', payment_id],
+        ['Beneficiary Name:', receiver_name],
+        ['Account Number:', receiver_account],
+        ['Amount:', f'₹{amount}'],
+        ['Transaction Date:', transaction_date],
+    ]
+    
+    # Create table style
+    table_style = TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('BACKGROUND', (1, 0), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('BOX', (0, 0), (-1, -1), 2, colors.black),
+    ])
+    
+    # Create the table and apply the style
+    table = Table(data, colWidths=[2*inch, 4*inch])
+    table.setStyle(table_style)
+    
+    elements.append(table)
+    
+    # Build the PDF document
+    doc.build(elements)
+    
+    # Get the value of the BytesIO buffer and return the PDF as a response
+    pdf = buffer.getvalue()
+    buffer.close()
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="payment_receipt_{payment_id}.pdf"'
+    response.write(pdf)
+    
+    return response
 
 
 
