@@ -99,6 +99,13 @@ class Current(models.Model):
         return self.customer_name
 
 class LoanApplication(models.Model):
+    STATUS_CHOICES = (
+        ('PENDING', 'Pending'),
+        ('UNDER_REVIEW', 'Under Review'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected')
+    )
+
     customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     nationality = models.CharField(max_length=50)
@@ -111,13 +118,14 @@ class LoanApplication(models.Model):
     monthly_income = models.DecimalField(max_digits=10, decimal_places=2)
     loan_type = models.CharField(max_length=20)
     loan_amount_required = models.DecimalField(max_digits=10, decimal_places=2)
-    balance_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Added this field
+    balance_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     loan_purpose = models.TextField()
     application_date = models.DateTimeField(default=timezone.now)
     next_payment_date = models.DateTimeField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
     credit_score_at_application = models.IntegerField(null=True, blank=True)
-
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+    has_missed_payments = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Loan Application for {self.name}"

@@ -7,52 +7,58 @@
 <style>
 /* Dashboard Container */
 .dashboard-container {
-    padding: 2rem;
+    padding: 2.5rem;
     background-color: #f8f9fa;
     min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Welcome Section */
 .welcome-section {
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
     color: white;
-    padding: 2rem;
-    border-radius: 15px;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-section h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .welcome-section p {
-    opacity: 0.9;
-    font-size: 1.1rem;
+    opacity: 0.95;
+    font-size: 1.2rem;
+    letter-spacing: 0.3px;
 }
 
 /* Stats Grid */
 .stats-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 2.5rem;
 }
 
 .stats-box {
     background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.8rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
     overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .stats-box:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .stats-box::before {
@@ -61,153 +67,81 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 5px;
 }
 
-.stats-box.customers::before { background: #3498db; }
-.stats-box.savings::before { background: #2ecc71; }
-.stats-box.current::before { background: #f1c40f; }
-.stats-box.fixed::before { background: #e74c3c; }
-.stats-box.recurring::before { background: #9b59b6; }
+.stats-box.customers::before { background: #1976d2; }
+.stats-box.savings::before { background: #2e7d32; }
+.stats-box.current::before { background: #f9a825; }
+.stats-box.fixed::before { background: #c62828; }
+.stats-box.recurring::before { background: #6a1b9a; }
 
 .stats-box h3 {
-    font-size: 1.1rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    color: #37474f;
+    margin-bottom: 1.2rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .stats-box p {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #2c3e50;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #263238;
     margin: 0;
+    letter-spacing: 0.5px;
 }
 
 .stats-box .trend {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.trend.up { color: #2ecc71; }
-.trend.down { color: #e74c3c; }
-
-/* Quick Actions */
-.quick-actions {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-}
-
-.quick-actions h2 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.actions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-}
-
-.action-button {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border: none;
-    border-radius: 10px;
-    color: #2c3e50;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.action-button:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-}
-
-.action-button i {
-    font-size: 1.2rem;
-    color: #3498db;
-}
-
-/* Recent Activity */
-.recent-activity {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.activity-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.activity-header h2 {
-    color: #2c3e50;
-    font-size: 1.3rem;
-}
-
-.view-all {
-    color: #3498db;
-    text-decoration: none;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
     font-weight: 500;
 }
 
-.activity-list {
-    list-style: none;
-    padding: 0;
+.trend.up { color: #2e7d32; }
+.trend.down { color: #c62828; }
+
+/* Add subtle animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.activity-item {
-    padding: 1rem;
-    border-left: 4px solid #3498db;
-    background: #f8f9fa;
-    margin-bottom: 0.5rem;
-    border-radius: 0 10px 10px 0;
+.stats-box {
+    animation: fadeIn 0.6s ease-out forwards;
 }
 
-.activity-item:nth-child(2n) {
-    border-left-color: #2ecc71;
-}
-
-.activity-item:nth-child(3n) {
-    border-left-color: #f1c40f;
-}
+.stats-box:nth-child(2) { animation-delay: 0.1s; }
+.stats-box:nth-child(3) { animation-delay: 0.2s; }
+.stats-box:nth-child(4) { animation-delay: 0.3s; }
+.stats-box:nth-child(5) { animation-delay: 0.4s; }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-container {
-        padding: 1rem;
-    }
-    
-    .welcome-section {
         padding: 1.5rem;
     }
     
+    .welcome-section {
+        padding: 2rem;
+    }
+    
     .welcome-section h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     
     .stats-box {
-        padding: 1rem;
+        padding: 1.5rem;
     }
     
     .stats-box p {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 }
 </style>
@@ -267,51 +201,6 @@
                 <span>3% decrease</span>
             </div>
         </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-        <h2>Quick Actions</h2>
-        <div class="actions-grid">
-            <button class="action-button">
-                <i class="fas fa-user-plus"></i>
-                Add Customer
-            </button>
-            <button class="action-button">
-                <i class="fas fa-file-invoice-dollar"></i>
-                Review Loans
-            </button>
-            <button class="action-button">
-                <i class="fas fa-chart-line"></i>
-                View Reports
-            </button>
-            <button class="action-button">
-                <i class="fas fa-cog"></i>
-                Settings
-            </button>
-        </div>
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="recent-activity">
-        <div class="activity-header">
-            <h2>Recent Activity</h2>
-            <a href="#" class="view-all">View All</a>
-        </div>
-        <ul class="activity-list">
-            <li class="activity-item">
-                <strong>New Account Created</strong>
-                <p>Customer #1234 opened a savings account</p>
-            </li>
-            <li class="activity-item">
-                <strong>Loan Approved</strong>
-                <p>Personal loan approved for Customer #5678</p>
-            </li>
-            <li class="activity-item">
-                <strong>Fixed Deposit Matured</strong>
-                <p>FD #9012 matured with final amount ₹150,000</p>
-            </li>
-        </ul>
     </div>
 </div>
 {% endblock %}

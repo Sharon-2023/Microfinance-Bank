@@ -28,6 +28,7 @@ urlpatterns = [
     path('userdashboard/', views.dashboard, name='userdashboard'),  
     path('chat/', views.chat_view, name='chat'),
     path('get-site-content/', views.get_site_content, name='get-site-content'),
+    path('upload-salary-certificate/', views.upload_salary_certificate, name='upload_salary_certificate'),
 ]
 
 if settings.DEBUG:

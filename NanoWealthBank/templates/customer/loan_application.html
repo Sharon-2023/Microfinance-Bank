@@ -84,6 +84,158 @@
                 width: 90%;
             }
         }
+
+        .invalid {
+            border-color: #dc3545 !important;
+            background-color: #fff8f8 !important;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #0f2847;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #1a4169;
+        }
+
+        /* Add styles for SweetAlert customization */
+        .swal2-popup {
+            font-size: 1.1rem;
+        }
+
+        .swal2-title {
+            color: #0f2847;
+        }
+
+        .swal2-confirm {
+            background-color: #0f2847 !important;
+        }
+
+        .swal2-confirm:hover {
+            background-color: #1a4169 !important;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message:not(:empty) {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            resize: vertical;
+        }
+
+        #salaryCertificateField {
+            margin-top: 1rem;
+        }
+
+        #salaryCertificateField small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #6c757d;
+        }
+
+        input[type="file"] {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            width: 100%;
+            margin-top: 0.25rem;
+            background-color: white;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background-color: #0f2847;
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            margin-right: 0.75rem;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: #1a4169;
+        }
+
+        .upload-status {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .upload-status.uploading {
+            color: #0f2847;
+        }
+
+        .upload-status.success {
+            color: #28a745;
+        }
+
+        .upload-status.error {
+            color: #dc3545;
+        }
+
+        .file-upload-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .upload-btn {
+            padding: 8px 16px;
+            background-color: #0f2847;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-btn:hover {
+            background-color: #1a4169;
+        }
+
+        .upload-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -93,95 +245,442 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="applicantName">Applicant Name</label>
-                <input type="text" id="applicantName" name="applicantName" required>
+                <input 
+                    type="text" 
+                    id="applicantName" 
+                    name="applicantName" 
+                    pattern="[A-Za-z\s]+" 
+                    minlength="3"
+                    maxlength="50"
+                    required
+                    oninput="validateName(this)"
+                    placeholder="Enter your full name"
+                >
+                <span id="nameError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="nationality">Nationality</label>
-                <input type="text" id="nationality" name="nationality" required>
+                <input 
+                    type="text" 
+                    id="nationality" 
+                    name="nationality" 
+                    pattern="[A-Za-z\s]+" 
+                    required
+                    oninput="validateNationality(this)"
+                    placeholder="Enter your nationality"
+                >
+                <span id="nationalityError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="gender">Gender</label>
                 <select id="gender" name="gender" required>
+                    <option value="">Select gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
+                <span id="genderError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
+                <input 
+                    type="text" 
+                    id="address" 
+                    name="address" 
+                    minlength="10"
+                    maxlength="200"
+                    required
+                    oninput="validateAddress(this)"
+                    placeholder="Enter your complete address"
+                >
+                <span id="addressError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="city">City</label>
-                <input type="text" id="city" name="city" required>
+                <input 
+                    type="text" 
+                    id="city" 
+                    name="city" 
+                    pattern="[A-Za-z\s]+" 
+                    required
+                    oninput="validateCity(this)"
+                    placeholder="Enter your city"
+                >
+                <span id="cityError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="state">State</label>
-                <input type="text" id="state" name="state" required>
+                <input 
+                    type="text" 
+                    id="state" 
+                    name="state" 
+                    pattern="[A-Za-z\s]+" 
+                    required
+                    oninput="validateState(this)"
+                    placeholder="Enter your state"
+                >
+                <span id="stateError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="pinCode">Pin Code</label>
-                <input type="text" id="pinCode" name="pinCode" required>
+                <input 
+                    type="text" 
+                    id="pinCode" 
+                    name="pinCode" 
+                    pattern="[0-9]{6}" 
+                    maxlength="6"
+                    required
+                    oninput="validatePinCode(this)"
+                    placeholder="Enter 6-digit pin code"
+                >
+                <span id="pinCodeError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="employmentStatus">Employment Status</label>
-                <select id="employmentStatus" name="employmentStatus" required>
+                <select id="employmentStatus" name="employmentStatus" required onchange="toggleSalaryCertificate()">
+                    <option value="">Select employment status</option>
                     <option value="Employed">Employed</option>
                     <option value="Self-Employed">Self-Employed</option>
                     <option value="Unemployed">Unemployed</option>
                 </select>
+                <span id="employmentError" class="error-message"></span>
             </div>
+
+            <div class="form-group" id="salaryCertificateField" style="display: none;">
+                <label for="salaryCertificate">Salary Certificate (PDF only)</label>
+                <div class="file-upload-wrapper">
+                    <input 
+                        type="file" 
+                        id="salaryCertificate" 
+                        name="salaryCertificate" 
+                        accept=".pdf"
+                        onchange="handleFileSelect(this)"
+                    >
+                    <button 
+                        type="button" 
+                        id="uploadButton" 
+                        class="upload-btn" 
+                        style="display: none;"
+                        onclick="handleFileUpload()"
+                    >
+                        Upload Certificate
+                    </button>
+                </div>
+                <span id="salaryCertificateError" class="error-message"></span>
+                <span id="uploadStatus" class="upload-status"></span>
+                <small class="form-text text-muted">Please upload your salary certificate in PDF format (Max size: 5MB)</small>
+            </div>
+
             <div class="form-group">
-                <label for="monthlyIncome">Monthly Income</label>
-                <input type="number" id="monthlyIncome" name="monthlyIncome" required>
+                <label for="monthlyIncome">Monthly Income (₹)</label>
+                <input 
+                    type="number" 
+                    id="monthlyIncome" 
+                    name="monthlyIncome" 
+                    min="10000"
+                    required
+                    oninput="validateMonthlyIncome(this)"
+                >
+                <span id="incomeError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="loanType">Loan Type</label>
                 <select id="loanType" name="loanType" required>
+                    <option value="">Select loan type</option>
                     <option value="Personal">Personal</option>
                     <option value="Education">Education</option>
                 </select>
+                <span id="loanTypeError" class="error-message"></span>
             </div>
+
             <div class="form-group">
-                <label for="loanAmount">Loan Amount</label>
-                <input type="number" id="loanAmount" name="loanAmount" required>
+                <label for="loanAmount">Loan Amount (₹)</label>
+                <input 
+                    type="number" 
+                    id="loanAmount" 
+                    name="loanAmount" 
+                    min="1000"
+                    max="50000"
+                    required
+                    oninput="validateLoanAmount(this)"
+                >
+                <span id="loanAmountError" class="error-message"></span>
             </div>
+
             <div class="form-group">
                 <label for="loanPurpose">Loan Purpose</label>
-                <input type="text" id="loanPurpose" name="loanPurpose" required>
+                <textarea 
+                    id="loanPurpose" 
+                    name="loanPurpose" 
+                    minlength="10"
+                    maxlength="500"
+                    required
+                    oninput="validateLoanPurpose(this)"
+                    rows="4"
+                ></textarea>
+                <span id="purposeError" class="error-message"></span>
             </div>
+
             <button type="submit" class="submit-btn">Submit Application</button>
         </form>
     </div>
     <script>
-    $(document).ready(function() {
-        $('#loanForm').on('submit', function(e) {
-            e.preventDefault();
+    function validateName(input) {
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const errorElement = document.getElementById('nameError');
+        
+        if (!nameRegex.test(input.value)) {
+            errorElement.textContent = 'Name should contain only letters and spaces';
+            return false;
+        } else if (input.value.length < 3) {
+            errorElement.textContent = 'Name should be at least 3 characters long';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateNationality(input) {
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const errorElement = document.getElementById('nationalityError');
+        
+        if (!nameRegex.test(input.value)) {
+            errorElement.textContent = 'Nationality should contain only letters and spaces';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateAddress(input) {
+        const errorElement = document.getElementById('addressError');
+        
+        if (input.value.length < 10) {
+            errorElement.textContent = 'Address should be at least 10 characters long';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validatePinCode(input) {
+        const pinRegex = /^[0-9]{6}$/;
+        const errorElement = document.getElementById('pinCodeError');
+        
+        if (!pinRegex.test(input.value)) {
+            errorElement.textContent = 'Pin code should be exactly 6 digits';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateMonthlyIncome(input) {
+        const income = parseFloat(input.value);
+        const errorElement = document.getElementById('incomeError');
+        
+        if (isNaN(income) || income < 10000) {
+            errorElement.textContent = 'Monthly income should be at least ₹10,000';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateLoanAmount(input) {
+        const amount = parseFloat(input.value);
+        const errorElement = document.getElementById('loanAmountError');
+        
+        if (isNaN(amount) || amount < 1000) {
+            errorElement.textContent = 'Minimum loan amount is ₹1,000';
+            return false;
+        } else if (amount > 50000) {
+            errorElement.textContent = 'Maximum loan amount is ₹50,000';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateLoanPurpose(input) {
+        const errorElement = document.getElementById('purposeError');
+        
+        if (input.value.length < 10) {
+            errorElement.textContent = 'Please provide a detailed loan purpose (at least 10 characters)';
+            return false;
+        } else {
+            errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function handleFileSelect(input) {
+        const errorElement = document.getElementById('salaryCertificateError');
+        const statusElement = document.getElementById('uploadStatus');
+        const uploadButton = document.getElementById('uploadButton');
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        
+        if (input.files.length > 0) {
+            const file = input.files[0];
             
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                success: function(response) {
-                    if (response.success) {
-                        // If successful and has redirect URL, redirect to success page
-                        if (response.redirect_url) {
-                            window.location.href = response.redirect_url;
-                        } else {
-                            // Show success message in alert
-                            alert(response.message);
-                        }
-                    } else {
-                        // Show error message
-                        alert(response.message);
-                    }
+            // Validate file type
+            if (!file.type.match('application/pdf')) {
+                errorElement.textContent = 'Please upload a PDF file only';
+                statusElement.textContent = '';
+                input.value = '';
+                uploadButton.style.display = 'none';
+                return false;
+            }
+            
+            // Validate file size
+            if (file.size > maxSize) {
+                errorElement.textContent = 'File size should not exceed 5MB';
+                statusElement.textContent = '';
+                input.value = '';
+                uploadButton.style.display = 'none';
+                return false;
+            }
+            
+            // Clear error and show upload button
+            errorElement.textContent = '';
+            statusElement.textContent = 'File selected. Click Upload to proceed.';
+            uploadButton.style.display = 'block';
+            return true;
+        } else {
+            uploadButton.style.display = 'none';
+            statusElement.textContent = '';
+        }
+    }
+
+    async function handleFileUpload() {
+        const input = document.getElementById('salaryCertificate');
+        const errorElement = document.getElementById('salaryCertificateError');
+        const statusElement = document.getElementById('uploadStatus');
+        const uploadButton = document.getElementById('uploadButton');
+        
+        if (!input.files.length) {
+            return;
+        }
+
+        try {
+            const file = input.files[0];
+            statusElement.textContent = 'Uploading...';
+            statusElement.className = 'upload-status uploading';
+            uploadButton.disabled = true;
+
+            // Create FormData and append file
+            const formData = new FormData();
+            formData.append('salaryCertificate', file);
+            
+            // Get CSRF token
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            const response = await fetch('/upload-salary-certificate/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrftoken
                 },
-                error: function() {
-                    alert('An error occurred. Please try again.');
+                credentials: 'same-origin'
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                statusElement.textContent = 'File uploaded successfully!';
+                statusElement.className = 'upload-status success';
+                uploadButton.style.display = 'none';
+                return true;
+            } else {
+                throw new Error(data.error || 'Upload failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorElement.textContent = error.message || 'Failed to upload file. Please try again.';
+            statusElement.textContent = '';
+            uploadButton.disabled = false;
+            return false;
+        }
+    }
+
+    function toggleSalaryCertificate() {
+        const employmentStatus = document.getElementById('employmentStatus').value;
+        const salaryCertificateField = document.getElementById('salaryCertificateField');
+        const salaryCertificateInput = document.getElementById('salaryCertificate');
+        const statusElement = document.getElementById('uploadStatus');
+        const errorElement = document.getElementById('salaryCertificateError');
+        const uploadButton = document.getElementById('uploadButton');
+        
+        if (employmentStatus === 'Employed') {
+            salaryCertificateField.style.display = 'block';
+            salaryCertificateInput.required = true;
+        } else {
+            salaryCertificateField.style.display = 'none';
+            salaryCertificateInput.required = false;
+            salaryCertificateInput.value = '';
+            statusElement.textContent = '';
+            errorElement.textContent = '';
+            uploadButton.style.display = 'none';
+        }
+    }
+
+    // Form submission handler with all validations
+    document.getElementById('loanForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const employmentStatus = document.getElementById('employmentStatus').value;
+        let isValid = 
+            validateName(document.getElementById('applicantName')) &&
+            validateNationality(document.getElementById('nationality')) &&
+            validateAddress(document.getElementById('address')) &&
+            validatePinCode(document.getElementById('pinCode')) &&
+            validateMonthlyIncome(document.getElementById('monthlyIncome')) &&
+            validateLoanAmount(document.getElementById('loanAmount')) &&
+            validateLoanPurpose(document.getElementById('loanPurpose'));
+        
+        // Add salary certificate validation for employed status
+        if (employmentStatus === 'Employed') {
+            const salaryCertificate = document.getElementById('salaryCertificate');
+            if (!salaryCertificate.files.length) {
+                document.getElementById('salaryCertificateError').textContent = 'Please upload your salary certificate';
+                isValid = false;
+            } else {
+                isValid = isValid && handleFileUpload();
+            }
+        }
+        
+        if (isValid) {
+            // Show success message using SweetAlert2
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your loan application has been submitted successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
                 }
             });
-        });
+        }
     });
     </script>
+
+    <!-- Add SweetAlert2 CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

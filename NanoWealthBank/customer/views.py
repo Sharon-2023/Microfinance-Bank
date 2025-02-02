@@ -19,7 +19,7 @@ from .models import Savings, Current
 from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.auth.hashers import check_password
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from decimal import Decimal
 from django.utils import timezone
 import datetime
@@ -39,6 +39,8 @@ from django.core.cache import cache
 import requests
 import json
 import google.generativeai as genai
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Sum, Count, Avg
 
 
 def home(request):
@@ -692,12 +694,12 @@ def download_statement(request):
 
     # Filter transactions based on the selected period
     if period == "last_6_months":
-        start_date = timezone.now() - datetime.timedelta(days=180)
+        start_date = timezone.now() - timedelta(days=180)
         transactions = Transaction.objects.filter(created_at__gte=start_date)
     elif period == "specific_month" and month:
         year, month = map(int, month.split('-'))
         start_date = datetime.datetime(year, month, 1)
-        end_date = (start_date + datetime.timedelta(days=31)).replace(day=1)
+        end_date = (start_date + timedelta(days=31)).replace(day=1)
         transactions = Transaction.objects.filter(
             created_at__gte=start_date, created_at__lt=end_date
         )
@@ -1261,10 +1263,6 @@ def loan_application(request):
                 messages.error(request, 'All fields are required.')
                 return redirect('loan_application')
 
-            # Calculate credit score
-            credit_score, created = CreditScore.objects.get_or_create(customer=customer)
-            credit_score.update_credit_score()
-
             # Create loan application
             new_loan = LoanApplication.objects.create(
                 customer=customer,
@@ -1281,26 +1279,15 @@ def loan_application(request):
                 loan_amount_required=loan_amount,
                 loan_purpose=loan_purpose,
                 application_date=timezone.now(),
-                credit_score_at_application=credit_score.score
+                status='PENDING'
             )
             
             # Set next payment date
             next_payment_date = new_loan.application_date + timedelta(days=30)
             new_loan.next_payment_date = next_payment_date
-            
-            # Set initial status based on credit score
-            if credit_score.score >= 750:
-                new_loan.status = 'APPROVED'
-                messages.success(request, 'Loan application approved! Your credit score is excellent.')
-            elif credit_score.score >= 650:
-                new_loan.status = 'UNDER_REVIEW'
-                messages.success(request, 'Loan application submitted for review. Your credit score is good.')
-            else:
-                new_loan.status = 'PENDING'
-                messages.warning(request, 'Loan application submitted. Your credit score needs improvement.')
-            
             new_loan.save()
             
+            messages.success(request, 'Loan application submitted successfully!')
             return redirect('userdashboard')
             
         except Customer.DoesNotExist:
@@ -1312,9 +1299,8 @@ def loan_application(request):
 
     return render(request, 'customer/loan_application.html')
 
+
 # logout
-
-
 def logout_view(request):
     request.session.flush()
     # Ensure 'login' matches the name in your URLs
@@ -1453,8 +1439,6 @@ def apply_card(request):
         messages.error(request, 'Please login to access this page')
         return redirect('login')
     return render(request, 'customer/apply_card.html')
-
-
 
 
 def classic_card_details(request):
@@ -1719,7 +1703,7 @@ def managerdashboard(request):
 
     return render(request, 'manager/manager_dashboard.html')
 
-
+#card activation email otp
 def generate_otp():
     return str(random.randint(100000, 999999))
 
@@ -1840,6 +1824,8 @@ def enter_otp(request):
         messages.error(request, 'Please login to continue.')
         return redirect('login')
 
+
+#credit score
 def check_loan_eligibility(request):
     if request.method == 'POST':
         customer = request.user.customer
@@ -1865,6 +1851,8 @@ def check_loan_eligibility(request):
     
     return render(request, 'customer/loan_application.html')
 
+
+#chatbot
 @csrf_exempt
 def chat_view(request):
     if request.method == 'POST':
@@ -1873,7 +1861,7 @@ def chat_view(request):
 
         # Configure Gemini API
         genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
-        model = genai.GenerativeModel('gemini-pro') 
+        model = genai.GenerativeModel('gemini-pro')
 
         try:
             # Get response from Gemini
@@ -1941,3 +1929,43 @@ def chat(request):
         })
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+#salary certificate upload
+@ensure_csrf_cookie
+def upload_salary_certificate(request):
+    if request.method == 'POST' and request.FILES.get('salaryCertificate'):
+        try:
+            file = request.FILES['salaryCertificate']
+            
+            # Validate file type
+            if not file.content_type == 'application/pdf':
+                return JsonResponse({'error': 'Please upload a PDF file only'}, status=400)
+            
+            # Validate file size (5MB)
+            if file.size > 5 * 1024 * 1024:
+                return JsonResponse({'error': 'File size should not exceed 5MB'}, status=400)
+            
+            # Save file
+            fs = FileSystemStorage()
+            filename = fs.save(f'salary_certificates/{file.name}', file)
+            file_url = fs.url(filename)
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'File uploaded successfully',
+                'file_url': file_url
+            })
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request'
+    }, status=400)
+
+
+

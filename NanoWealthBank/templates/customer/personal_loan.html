@@ -1,5 +1,97 @@
-{% extends 'customer/base.html' %} {% load static %} {% block title %}Loan
-Application - NanoWealth Bank{% endblock %} {% block content %}
+{% extends 'customer/base.html' %} 
+{% load static %} 
+
+{% block title %}Loan Application - NanoWealth Bank{% endblock %} 
+
+{% block content %}
+
+<style>
+  .good-score {
+    color: green;
+    font-weight: bold;
+  }
+
+  .poor-score {
+    color: red;
+    font-weight: bold;
+  }
+
+  .trans-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+  }
+
+  .page-title h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  .loan-info {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .key-features ul {
+    padding-left: 20px;
+  }
+
+  .apply-loan-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin: 20px auto;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    width: 250px;
+    border-radius: 5px;
+  }
+
+  .apply-loan-btn:hover {
+    background: #0056b3;
+  }
+
+  .credit-score-info {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .loan-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 20px;
+  }
+
+  .loan-table th, .loan-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+
+  .loan-table th {
+    background: #007bff;
+    color: white;
+  }
+
+  .approved {
+    color: green;
+    font-weight: bold;
+  }
+
+  .not-approved {
+    color: red;
+    font-weight: bold;
+  }
+</style>
 
 <div class="trans-container">
   <div class="page-title">
@@ -10,7 +102,7 @@ Application - NanoWealth Bank{% endblock %} {% block content %}
   <div class="loan-info">
     <h2>Understanding Personal Loans</h2>
     <p>
-      A personal loan from NanoWealth Bank is an secured loan that provides
+      A personal loan from NanoWealth Bank is an unsecured loan that provides
       you with a lump sum of money to use for various purposes. Whether you're
       consolidating debt, financing a major purchase, or covering unexpected
       expenses, our personal loans offer a flexible financial solution.
@@ -39,8 +131,27 @@ Application - NanoWealth Bank{% endblock %} {% block content %}
       financial goals.
     </p>
   </div>
+
+  <!-- Credit Score Information -->
+  <div class="credit-score-info">
+    <h2>Your Credit Score</h2>
+    {% if credit_score %}
+      <p>Your current credit score is: 
+        <span class="{% if credit_score >= 700 %}good-score{% else %}poor-score{% endif %}">
+          {{ credit_score }}
+        </span>
+      </p>
+      <p>
+        A higher credit score improves your chances of loan approval and may get you lower interest rates.
+      </p>
+    {% else %}
+      <p>Your credit score is unavailable. Please update your financial records.</p>
+    {% endif %}
+  </div>
+
   <!-- Apply for New Loan Button -->
   <a href="{% url 'loan_application' %}" class="apply-loan-btn">Apply for a New Loan</a>
+
   <!-- Ongoing Loans Section -->
   <div class="ongoing-loans">
     <h2>Your Current Loans</h2>
@@ -57,6 +168,7 @@ Application - NanoWealth Bank{% endblock %} {% block content %}
           <th>Loan Purpose</th>
           <th>Next Payment Date</th>
           <th>Loan Approved</th>
+          <th>Credit Score</th>
         </tr>
       </thead>
       <tbody>
@@ -76,7 +188,10 @@ Application - NanoWealth Bank{% endblock %} {% block content %}
             {% else %}
                 Not Approved
             {% endif %}
-        </td>
+          </td>
+          <td class="{% if loan.credit_score >= 700 %}good-score{% else %}poor-score{% endif %}">
+            {{ loan.credit_score }}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -85,7 +200,6 @@ Application - NanoWealth Bank{% endblock %} {% block content %}
     <p>You have no ongoing personal loans.</p>
     {% endif %}
   </div>
-
 
 </div>
 

@@ -11,7 +11,7 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
-    path('userdashboard/', views.dashboard, name='userdashboard'),
+    path('customer/userdashboard/', views.dashboard, name='userdashboard'),
 
     path('personal_banking/', views.personal_banking, name='personal_banking'),
     path('business_banking/', views.business_banking, name='business_banking'),
@@ -19,6 +19,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', views.login, name='login'), 
     path('logout_view/', views.logout_view, name='logout_view'),
+    # path('logout/', views.logout_view, name='logout'),
     
     # Password reset URLs
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
@@ -134,5 +135,6 @@ urlpatterns = [
 
 #chatbot
     path('chat/', views.chat_view, name='chat'),
+
 
 ]
