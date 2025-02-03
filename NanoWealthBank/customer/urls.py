@@ -136,5 +136,6 @@ urlpatterns = [
 #chatbot
     path('chat/', views.chat_view, name='chat'),
 
+    path('verify-dob/', views.verify_dob, name='verify_dob'),
 
 ]

@@ -1971,7 +1971,7 @@ def chat(request):
             })
 
         # Configure Gemini
-        genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg    ')
+        genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg')
         model = genai.GenerativeModel('gemini-pro')
         
         prompt = f"As a bank assistant, answer this query: {user_message}"
@@ -2101,46 +2101,44 @@ def download_receipt(request):
     
     return response
 
-# @login_required
+
 def card_details(request):
     try:
-        # Get user_id from session
         user_id = request.session.get('user_id')
         if not user_id:
             messages.error(request, 'Please login to view card details')
             return redirect('login')
 
-        # Get customer details
         customer = Customer.objects.get(id=user_id)
         
         # Get account details
         savings_account = Savings.objects.filter(user_id=user_id).first()
         current_account = Current.objects.filter(user_id=user_id).first()
-        
-        # Determine which account to use
         account = savings_account if savings_account else current_account
         
         if not account:
             messages.error(request, 'No account found')
             return redirect('home')
         
-        # Get card application
         card = ClassicCardApplication.objects.filter(customer_id=user_id).first()
         
         if not card:
             messages.error(request, 'No card application found')
             return redirect('home')
-        
-        # Format balance
-        formatted_balance = "{:,.2f}".format(float(account.balance))
-        
+
+        # Track verification attempts in session
+        if 'verification_attempts' not in request.session:
+            request.session['verification_attempts'] = 0
+
         context = {
             'card': card,
-            'customer': customer.customer_name,
+            'customer': customer,
             'account_number': account.account_number,
-            'account_type': 'Savings Account' ,
-            'balance': formatted_balance,
-            'ifsc_code': 'NB00345'  # Static IFSC code as per your template
+            'account_type': 'Savings Account' if savings_account else 'Current Account',
+            'balance': "{:,.2f}".format(float(account.balance)),
+            'ifsc_code': 'NB00345',
+            'is_verified': request.session.get('card_verified', False),
+            'is_locked': request.session.get('verification_attempts', 0) >= 3
         }
         
         return render(request, 'customer/card_details.html', context)
@@ -2149,7 +2147,50 @@ def card_details(request):
         messages.error(request, 'Customer profile not found')
         return redirect('login')
     except Exception as e:
-        messages.error(request, f'An error occurred: {str(e)}')
+        messages.error(request, str(e))
         return redirect('home')
 
+def verify_dob(request):
+    if request.method == 'POST':
+        try:
+            # Check if account is locked
+            if request.session.get('verification_attempts', 0) >= 3:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Account locked. Please try again after 30 minutes.',
+                    'is_locked': True
+                })
 
+            data = json.loads(request.body)
+            entered_dob = data.get('dob')
+            
+            # Get customer's DOB
+            customer = Customer.objects.get(id=request.session.get('user_id'))
+            actual_dob = customer.date_of_birth.strftime('%Y-%m-%d')
+            
+            # Increment attempt counter
+            request.session['verification_attempts'] = request.session.get('verification_attempts', 0) + 1
+            
+            if entered_dob == actual_dob:
+                # Reset attempts on successful verification
+                request.session['verification_attempts'] = 0
+                request.session['card_verified'] = True
+                return JsonResponse({'success': True})
+            else:
+                attempts_left = 3 - request.session['verification_attempts']
+                message = f'Invalid security code. {attempts_left} attempts remaining.' if attempts_left > 0 else 'Account locked. Please try again after 30 minutes.'
+                
+                return JsonResponse({
+                    'success': False,
+                    'message': message,
+                    'attempts_left': attempts_left,
+                    'is_locked': attempts_left <= 0
+                })
+                
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            })
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
