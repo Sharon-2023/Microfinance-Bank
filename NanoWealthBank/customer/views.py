@@ -2194,3 +2194,20 @@ def verify_dob(request):
             })
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+#reject loan option in loan officer dashboard
+def reject_loan(request, loan_id):
+    if request.method == 'POST':
+        try:
+            loan = LoanApplication.objects.get(id=loan_id)
+            loan.is_rejected = True
+            loan.is_approved = False
+            loan.save()
+            messages.success(request, 'Loan application rejected successfully.')
+        except LoanApplication.DoesNotExist:
+            messages.error(request, 'Loan application not found.')
+        except Exception as e:
+            messages.error(request, f'Error rejecting loan: {str(e)}')
+    
+    return redirect('loan_to_be_approved')  

@@ -14,25 +14,40 @@
             <th>Loan Amount</th>
             <th>Monthly Income</th>
             <th>Employment Status</th>
-            <th>Approval</th>
+            <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for loan in loans %}
         <tr>
             <td>{{ loan.name }}</td>
-            <td>{{ loan.get_loan_type_display }}</td>
+            <!-- <td>{{ loan.get_loan_type_display }}</td> -->
+            <td>Personal Loan</td>
             <td>{{ loan.loan_amount_required }}</td>
             <td>{{ loan.monthly_income }}</td>
             <td>{{ loan.get_employment_status_display }}</td>
             <td>
-                {% if not loan.is_approved %}
-                <form action="{% url 'approve_loan' loan.id %}" style="box-shadow: none;"  method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="approve-button">Approve</button>
-                </form>
-                {% else %}
+                {% if loan.is_approved %}
                 <span style="color: green;">Approved</span>
+                {% elif loan.is_rejected %}
+                <span style="color: red;">Rejected</span>
+                {% else %}
+                <span style="color: orange;">Pending</span>
+                {% endif %}
+            </td>
+            <td class="action-buttons">
+                {% if not loan.is_approved and not loan.is_rejected %}
+                <div class="button-group">
+                    <form action="{% url 'approve_loan' loan.id %}" style="box-shadow: none;" method="post" class="action-form">
+                        {% csrf_token %}
+                        <button type="submit" class="approve-button">Approve</button>
+                    </form>
+                    <form action="{% url 'reject_loan' loan.id %}" style="box-shadow: none;" method="post" class="action-form">
+                        {% csrf_token %}
+                        <button type="submit" class="reject-button">Reject</button>
+                    </form>
+                </div>
                 {% endif %}
             </td>
         </tr>
@@ -42,5 +57,77 @@
 {% else %}
 <p>No pending loan applications.</p>
 {% endif %}
+
+<style>
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-form {
+        margin: 0;
+    }
+
+    .approve-button, .reject-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .approve-button {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .reject-button {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .approve-button:hover {
+        background-color: #45a049;
+    }
+
+    .reject-button:hover {
+        background-color: #da190b;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #dddddd;
+    }
+
+    th {
+        background-color: #3d16a9;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .loan_title {
+        color: #333;
+        margin-bottom: 20px;
+    }
+</style>
 
 {% endblock %}

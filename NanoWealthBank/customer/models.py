@@ -123,6 +123,7 @@ class LoanApplication(models.Model):
     application_date = models.DateTimeField(default=timezone.now)
     next_payment_date = models.DateTimeField(null=True, blank=True)
     is_approved = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
     credit_score_at_application = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
     has_missed_payments = models.BooleanField(default=False)

@@ -87,6 +87,7 @@ urlpatterns = [
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('loan_to_be_approved/', views.loan_to_be_approved, name='loan_to_be_approved'),
     path('loans/approve/<int:loan_id>/', views.approve_loan, name='approve_loan'),
+    path('reject-loan/<int:loan_id>/', views.reject_loan, name='reject_loan'),
 
     path('transactions/', views.transactions_view, name='transactions_view'),
     
