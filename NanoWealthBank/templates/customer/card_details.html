@@ -1,0 +1,192 @@
+{% extends 'customer/base.html' %}
+{% block content %}
+
+<div class="card-details-container">
+    <!-- Balance Summary Section -->
+    <div class="balance-summary">
+        <div class="balance-card">
+            <div class="balance-header">Available Balance</div>
+            <div class="balance-amount">₹{{ balance }}</div>
+            <div class="card-number-preview">Card ending in {{ card.card_number|slice:"-4:" }}</div>
+        </div>
+    </div>
+
+    <!-- Existing Card Preview Section -->
+    <div class="card-preview">
+        <div class="bank-card">
+            <div class="card-front">
+                <div class="chip"></div>
+                <div class="card-number">
+                    {{ card.card_number|slice:":4" }} {{ card.card_number|slice:"4:8" }} 
+                    {{ card.card_number|slice:"8:12" }} {{ card.card_number|slice:"12:16" }}
+                </div>
+                <div class="card-info">
+                    <div class="valid-thru">
+                        <span>Valid Thru</span>
+                        <span>{{ card.expiry_date }}</span>
+                    </div>
+                    <div class="cardholder">{{ request.user.get_full_name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Details Section -->
+    <div class="details-section">
+        <h2>Card Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Card Status</label>
+                <span class="status-badge active">Active</span>
+            </div>
+            <div class="info-item">
+                <label>Linked Account</label>
+                <span>{{ account_number }}</span>
+            </div>
+            <div class="info-item">
+                <label>Account Type</label>
+                <span>{{ account_type }}</span>
+            </div>
+            <div class="info-item">
+                <label>Current Balance</label>
+                <span class="balance">₹{{ balance }}</span>
+            </div>
+            <div class="info-item">
+                <label>Card Holder</label>
+                <span>{{ request.user.get_full_name }}</span>
+            </div>
+            <div class="info-item">
+                <label>IFSC Code</label>
+                <span>{{ ifsc_code }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Existing styles ... */
+
+.balance-summary {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.balance-card {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.balance-header {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.balance-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-number-preview {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}
+
+.info-item .balance {
+    color: #2ecc71;
+    font-weight: 700;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .balance-card {
+        padding: 1.5rem;
+    }
+
+    .balance-amount {
+        font-size: 2rem;
+    }
+}
+
+/* Enhanced Info Grid Styles */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.info-item {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.info-item label {
+    display: block;
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-item span {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: block;
+}
+
+/* Status Badge Enhancements */
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+</style>
+
+{% endblock %}

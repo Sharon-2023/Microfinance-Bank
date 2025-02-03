@@ -30,6 +30,7 @@ urlpatterns = [
     path('get-site-content/', views.get_site_content, name='get-site-content'),
     path('upload-salary-certificate/', views.upload_salary_certificate, name='upload_salary_certificate'),
     path('download-receipt/', views.download_receipt, name='download_receipt'),
+    path('customer/card_details/', views.card_details, name='card_details'),
 ]
 
 if settings.DEBUG:

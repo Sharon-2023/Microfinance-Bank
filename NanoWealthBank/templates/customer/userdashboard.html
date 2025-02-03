@@ -321,24 +321,9 @@
         appendMessage('user', message);
         input.value = '';
 
-        // Check if the message is banking related
-        const bankingKeywords = ['account', 'loan', 'transfer', 'balance', 'deposit', 'withdraw', 'payment', 'credit', 'debit', 'transaction', 'bank'];
-        const isBankingQuery = bankingKeywords.some(keyword => message.toLowerCase().includes(keyword));
-
-        if (!isBankingQuery) {
-            appendMessage('bot', 'I can only assist with banking-related queries. Please ask something related to banking services.');
-            // Reset button
-            sendButton.textContent = 'Send';
-            sendButton.disabled = false;
-            return;
-        }
-
         const loadingMessage = appendLoadingMessage();
 
         try {
-            // Gather context from the current page
-            const siteContext = gatherSiteContext();
-
             const response = await fetch('/chat/', {
                 method: 'POST',
                 headers: {
@@ -348,8 +333,7 @@
                 credentials: 'same-origin',
                 body: JSON.stringify({ 
                     message: message,
-                    query_type: 'banking',
-                    context: siteContext  // Include the site context in the request
+                    context: gatherSiteContext()  // Include the site context
                 })
             });
             
@@ -372,7 +356,7 @@
             if (loadingMessage) {
                 loadingMessage.remove();
             }
-            appendMessage('bot', 'Sorry, I encountered an error. Please try again.');
+            appendMessage('bot', 'I apologize, but I encountered an error. Please try again or contact support if the issue persists.');
         } finally {
             sendButton.textContent = 'Send';
             sendButton.disabled = false;

@@ -1462,6 +1462,9 @@ def classic_card_details(request):
         print(f"Error: {e}")  
         return render(request, 'customer/error.html', {'error': str(e)})
 
+
+
+
 def apply_classic_card(request):
     if 'user_id' not in request.session:
         messages.error(request, 'Please login to access this page')
@@ -1867,19 +1870,58 @@ def check_loan_eligibility(request):
 @csrf_exempt
 def chat_view(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        user_message = data.get('message')
-
-        # Configure Gemini API
-        genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
-        model = genai.GenerativeModel('gemini-pro')
-
         try:
+            # Parse the JSON data
+            data = json.loads(request.body)
+            user_message = data.get('message')
+            context = data.get('context', {})  # Get the context if provided
+
+            if not user_message:
+                return JsonResponse({'error': 'No message provided'}, status=400)
+
+            # Create a more detailed prompt with context
+            prompt = f"""
+            You are a banking assistant for NanoWealth Bank. The user's context is:
+            - Username: {context.get('username', 'Not available')}
+            - Account Number: {context.get('accountNumber', 'Not available')}
+            - Current Page: {context.get('currentPage', 'Not available')}
+            
+            User's message: {user_message}
+            
+            Please provide a helpful, professional response related to banking services.
+            """
+
+            # Configure Gemini API
+            genai.configure(api_key='YOUR_API_KEY')  # Replace with your actual API key
+            model = genai.GenerativeModel('gemini-pro')
+
             # Get response from Gemini
-            response = model.generate_content(user_message)
-            return JsonResponse({'response': response.text})
+            response = model.generate_content(prompt)
+            
+            if not response or not response.text:
+                raise Exception("Empty response from AI model")
+
+            return JsonResponse({
+                'response': response.text,
+                'status': 'success'
+            })
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'error': 'Invalid JSON data',
+                'status': 'error'
+            }, status=400)
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            print(f"Chat error: {str(e)}")  # Log the error for debugging
+            return JsonResponse({
+                'error': 'An error occurred while processing your request',
+                'status': 'error'
+            }, status=500)
+
+    return JsonResponse({
+        'error': 'Only POST method is allowed',
+        'status': 'error'
+    }, status=405)
 
 def extract_content_from_template(template_name):
     try:
@@ -1929,7 +1971,7 @@ def chat(request):
             })
 
         # Configure Gemini
-        genai.configure(api_key='AIzaSyCxaJdu6UNroGJyPE92K0efhJ4eCPHsK7E')
+        genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg    ')
         model = genai.GenerativeModel('gemini-pro')
         
         prompt = f"As a bank assistant, answer this query: {user_message}"
@@ -2059,5 +2101,55 @@ def download_receipt(request):
     
     return response
 
+# @login_required
+def card_details(request):
+    try:
+        # Get user_id from session
+        user_id = request.session.get('user_id')
+        if not user_id:
+            messages.error(request, 'Please login to view card details')
+            return redirect('login')
+
+        # Get customer details
+        customer = Customer.objects.get(id=user_id)
+        
+        # Get account details
+        savings_account = Savings.objects.filter(user_id=user_id).first()
+        current_account = Current.objects.filter(user_id=user_id).first()
+        
+        # Determine which account to use
+        account = savings_account if savings_account else current_account
+        
+        if not account:
+            messages.error(request, 'No account found')
+            return redirect('home')
+        
+        # Get card application
+        card = ClassicCardApplication.objects.filter(customer_id=user_id).first()
+        
+        if not card:
+            messages.error(request, 'No card application found')
+            return redirect('home')
+        
+        # Format balance
+        formatted_balance = "{:,.2f}".format(float(account.balance))
+        
+        context = {
+            'card': card,
+            'customer': customer.customer_name,
+            'account_number': account.account_number,
+            'account_type': 'Savings Account' ,
+            'balance': formatted_balance,
+            'ifsc_code': 'NB00345'  # Static IFSC code as per your template
+        }
+        
+        return render(request, 'customer/card_details.html', context)
+        
+    except Customer.DoesNotExist:
+        messages.error(request, 'Customer profile not found')
+        return redirect('login')
+    except Exception as e:
+        messages.error(request, f'An error occurred: {str(e)}')
+        return redirect('home')
 
 

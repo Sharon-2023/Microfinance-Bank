@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon: 'success',
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#0f2847',
+                allowOutsideClick: false,
                 showClass: {
                     popup: 'animate__animated animate__fadeInDown'
                 },
@@ -88,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form after showing the popup
-                    this.submit();
+                    // Redirect to card_details.html
+                    window.location.href = "{% url 'card_details' %}";
                 }
             });
         } else {
