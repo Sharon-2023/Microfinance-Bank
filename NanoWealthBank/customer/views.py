@@ -47,7 +47,8 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
+
 
 
 def home(request):
@@ -1869,59 +1870,49 @@ def check_loan_eligibility(request):
 #chatbot
 @csrf_exempt
 def chat_view(request):
-    if request.method == 'POST':
-        try:
-            # Parse the JSON data
-            data = json.loads(request.body)
-            user_message = data.get('message')
-            context = data.get('context', {})  # Get the context if provided
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST allowed'}, status=405)
+    
+    try:
+        user_message = json.loads(request.body).get('message', '').strip()
+        if not user_message:
+            return JsonResponse({'error': 'Empty message'}, status=400)
 
-            if not user_message:
-                return JsonResponse({'error': 'No message provided'}, status=400)
+        genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg')
+        model = genai.GenerativeModel('gemini-pro')
+        
+        # Get real-time data from your local database
+        context = f"""
+        As NanoWealth Bank's AI assistant, I can help with:
+        
+        Services:
+        - Account Types: Savings, Current
+        - Loans: Personal Loans ({LoanApplication.objects.count()} active applications)
+        - Cards: Classic, Platinum
+        - Net Banking & Mobile Banking
+        
+        Current Features:
+        - Account Management
+        - Fund Transfers
+        - Loan Applications
+        - Card Applications
+        - Transaction History
+        
+        Provide accurate responses based on NanoWealth Bank's local system.
+        """
+        
+        response = model.generate_content(
+            f"{context}\nUser: {user_message}\nAssistant:"
+        )
 
-            # Create a more detailed prompt with context
-            prompt = f"""
-            You are a banking assistant for NanoWealth Bank. The user's context is:
-            - Username: {context.get('username', 'Not available')}
-            - Account Number: {context.get('accountNumber', 'Not available')}
-            - Current Page: {context.get('currentPage', 'Not available')}
-            
-            User's message: {user_message}
-            
-            Please provide a helpful, professional response related to banking services.
-            """
+        return JsonResponse({
+            'response': response.text.replace('\n', '<br>'),
+            'status': 'success'
+        })
 
-            # Configure Gemini API
-            genai.configure(api_key='YOUR_API_KEY')  # Replace with your actual API key
-            model = genai.GenerativeModel('gemini-pro')
-
-            # Get response from Gemini
-            response = model.generate_content(prompt)
-            
-            if not response or not response.text:
-                raise Exception("Empty response from AI model")
-
-            return JsonResponse({
-                'response': response.text,
-                'status': 'success'
-            })
-
-        except json.JSONDecodeError:
-            return JsonResponse({
-                'error': 'Invalid JSON data',
-                'status': 'error'
-            }, status=400)
-        except Exception as e:
-            print(f"Chat error: {str(e)}")  # Log the error for debugging
-            return JsonResponse({
-                'error': 'An error occurred while processing your request',
-                'status': 'error'
-            }, status=500)
-
-    return JsonResponse({
-        'error': 'Only POST method is allowed',
-        'status': 'error'
-    }, status=405)
+    except Exception as e:
+        print(f"Chat error: {str(e)}")
+        return JsonResponse({'error': 'Processing error'}, status=500)
 
 def extract_content_from_template(template_name):
     try:
@@ -2211,3 +2202,52 @@ def reject_loan(request, loan_id):
             messages.error(request, f'Error rejecting loan: {str(e)}')
     
     return redirect('loan_to_be_approved')  
+
+@require_http_methods(["POST"])
+def check_credit_score(request):
+    try:
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'success': False,
+                'message': 'Please login to check credit score'
+            })
+
+        # Simulate credit score check
+        credit_score = random.randint(300, 900)
+        
+        # Calculate max eligible amount based on credit score
+        if credit_score >= 750:
+            max_amount = 50000
+        elif credit_score >= 650:
+            max_amount = 30000
+        else:
+            max_amount = 10000
+
+        # Get loan history
+        loan_history = LoanApplication.objects.filter(customer_id=user_id).values(
+            'loan_type', 'loan_amount_required', 'is_approved', 'created_at'
+        )
+
+        history_list = [{
+            'type': 'Personal Loan',
+            'amount': float(loan.get('loan_amount_required')),
+            'status': 'Approved' if loan.get('is_approved') else 'Rejected',
+            'date': loan.get('created_at').strftime('%Y-%m-%d')
+        } for loan in loan_history]
+
+        return JsonResponse({
+            'success': True,
+            'credit_score': credit_score,
+            'max_eligible_amount': max_amount,
+            'loan_history': history_list
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        })  
+    
+
+

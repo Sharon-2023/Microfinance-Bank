@@ -381,3 +381,5 @@ class CreditScore(models.Model):
     def __str__(self):
         return f"Credit Score for {self.customer}: {self.score}"
     
+
+

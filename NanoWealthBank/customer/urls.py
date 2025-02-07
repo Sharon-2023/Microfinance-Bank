@@ -117,6 +117,10 @@ urlpatterns = [
 #classic card
     path('classic-card-details/', views.classic_card_details, name='classic_card_details'),  
     path('apply-classic/', views.apply_classic_card, name='apply_classic_card'),
+
+#card details security code
+    path('verify-dob/', views.verify_dob, name='verify_dob'),
+    
 #admin card approval
     path('admin_card_applications/', views.admin_card_applications, name='admin_card_applications'),
     path('approve-application/<int:application_id>/', views.approve_classiccard_application, name='approve_classiccard_application'),
@@ -137,6 +141,6 @@ urlpatterns = [
 #chatbot
     path('chat/', views.chat_view, name='chat'),
 
-    path('verify-dob/', views.verify_dob, name='verify_dob'),
+    
 
 ]

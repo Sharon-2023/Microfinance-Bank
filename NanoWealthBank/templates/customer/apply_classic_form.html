@@ -45,32 +45,16 @@
                                     <input type="text" class="form-control" name="address" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
+                                    <label class="form-label">PIN Code</label>
+                                    <input type="text" class="form-control" name="pincode" id="pincode" maxlength="6" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">City</label>
-                                    <input type="text" class="form-control" name="city" required>
+                                    <input type="text" class="form-control" name="city" id="city" readonly required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">State</label>
-                                    <input type="text" class="form-control" name="state" required>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">PIN Code</label>
-                                    <input type="text" class="form-control" name="pincode" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Branch Selection -->
-                        <div class="section mb-4">
-                            <h5 class="text-primary mb-3">Branch Selection</h5>
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label class="form-label">Preferred Branch Location</label>
-                                    <select class="form-select" name="branch_location" required>
-                                        <option value="">Select Branch</option>
-                                        <option value="Ernakulam">Ernakulam Branch</option>
-                                        <option value="Trivandrum">Trivandrum Branch</option>
-                                        <option value="Kottayam">Kottayam Branch</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="state" id="state" readonly required>
                                 </div>
                             </div>
                         </div>
@@ -217,6 +201,55 @@ function clearError(field) {
     }
     field.classList.remove('is-invalid');
 }
+
+document.getElementById('pincode').addEventListener('input', function() {
+    const pincode = this.value;
+    if (pincode.length === 6) {
+        // Show loading state
+        document.getElementById('state').value = 'Loading...';
+        document.getElementById('city').value = 'Loading...';
+
+        // Fetch location data from India Post API
+        fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('API Response:', data); // Debug log
+                if (data[0].Status === 'Success') {
+                    const postOffice = data[0].PostOffice[0];
+                    document.getElementById('state').value = postOffice.State;
+                    document.getElementById('city').value = postOffice.District;
+                    clearError(document.getElementById('state'));
+                    clearError(document.getElementById('city'));
+                } else {
+                    document.getElementById('state').value = '';
+                    document.getElementById('city').value = '';
+                    showError('pincode', '* Invalid PIN Code');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('state').value = '';
+                document.getElementById('city').value = '';
+                showError('pincode', '* Error fetching location data');
+            });
+    } else {
+        // Clear fields if PIN code is incomplete
+        document.getElementById('state').value = '';
+        document.getElementById('city').value = '';
+    }
+});
+
+// Prevent non-numeric input
+document.getElementById('pincode').addEventListener('keypress', function(e) {
+    if (e.key < '0' || e.key > '9') {
+        e.preventDefault();
+    }
+});
+
+// Clean up PIN code input
+document.getElementById('pincode').addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+});
 </script>
 
 <style>
