@@ -17,7 +17,8 @@ urlpatterns = [
     path('business_banking/', views.business_banking, name='business_banking'),
 
     path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'), 
+    path('login/', views.login, name='login'),
+    # path('login/', views.login_view, name='login'),
     path('logout_view/', views.logout_view, name='logout_view'),
     # path('logout/', views.logout_view, name='logout'),
     
@@ -140,7 +141,10 @@ urlpatterns = [
 
 #chatbot
     path('chat/', views.chat_view, name='chat'),
+#2FA
+    # path('login/', views.login_view, name='login'),
+    # path('verify-2FA/', views.verify_2FA, name='verify_2FA'),
 
-    
-
+    path('document-verification/', views.document_verification, name='document_verification'),
+    path('biometric-verification/', views.biometric_verification, name='biometric_verification'),
 ]

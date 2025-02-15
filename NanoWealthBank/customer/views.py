@@ -47,9 +47,28 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from io import BytesIO
+from google.cloud import aiplatform
+from google.cloud.aiplatform.gapic.schema import predict
+import google.ai.generativelanguage as glm
+import google.generativeai as genai
 from django.views.decorators.http import require_POST, require_http_methods
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate
+import pyotp
+#import face_recognition 
+from functools import wraps
+# from .utils import send_otp_email
+import cv2
+import numpy as np
+from .models import UserDocument
+from PIL import Image
+import io
+import json
+from django.http import JsonResponse
 
-
+# Configure Gemini API
+genai.configure(api_key=settings.GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-pro')
 
 def home(request):
     return render(request, 'home.html')
@@ -141,6 +160,17 @@ def login(request):
 user_pins = {}
 
 
+# 2FA decorator
+# def require_2fa(view_func):
+#     @wraps(view_func)
+#     def _wrapped_view(request, *args, **kwargs):
+
+#         if not request.session.get('2fa_verified'):
+#             return redirect('verify_2FA')
+#         return view_func(request, *args, **kwargs)
+#     return _wrapped_view
+
+# @require_2fa
 def dashboard(request):
     user_id = request.session.get('user_id')
     account_number = 0
@@ -211,6 +241,82 @@ def signup(request):
             return render(request, 'verify_code.html', {'email': email})
 
     return render(request, 'signup.html')
+
+
+# def validate_document(document_type, document_number):
+#     if Customer.objects.filter(document_type=document_type, 
+#                              document_number=document_number).exists():
+#         raise ValidationError('This document has already been registered')
+    
+#     # Document format validation
+#     if document_type == 'aadhar':
+#         if not (document_number.isdigit() and len(document_number) == 12):
+#             raise ValidationError('Invalid Aadhar number format')
+#     elif document_type == 'pan':
+#         if not (len(document_number) == 10 and document_number.isalnum()):
+#             raise ValidationError('Invalid PAN number format')
+#     elif document_type == 'passport':
+#         if not (len(document_number) == 8 and document_number[0].isalpha()):
+#             raise ValidationError('Invalid Passport number format')
+
+# def verify_face(face_image):
+#     try:
+#         # Load the uploaded image
+#         face_encoding = face_recognition.face_encodings(
+#             face_recognition.load_image_file(face_image)
+#         )
+        
+#         if not face_encoding:
+#             raise ValidationError('No face detected in the image')
+            
+#         return True
+#     except Exception as e:
+#         raise ValidationError(f'Face verification failed: {str(e)}')
+
+# def signup(request):
+#     if request.method == 'POST':
+#         # ... existing fields ...
+#         document_type = request.POST.get('proof_of_verification')
+#         document_number = request.POST.get('document_number')
+#         document_file = request.FILES.get('document_upload')
+#         face_image = request.FILES.get('face_image')
+
+#         try:
+#             # Validate document
+#             validate_document(document_type, document_number)
+            
+#             # Verify face
+#             if face_image:
+#                 is_face_valid = verify_face(face_image)
+#             else:
+#                 raise ValidationError('Face image is required')
+
+#             # Create user with verified documents
+#             user = Customer(
+#                 username=username,
+#                 password=make_password(password),
+#                 email=email,
+#                 date_of_birth=dob,
+#                 mobile_number=mobile,
+#                 customer_name=customer_name,
+#                 document_type=document_type,
+#                 document_number=document_number,
+#                 document_file=document_file,
+#                 face_image=face_image,
+#                 is_face_verified=is_face_valid
+#             )
+#             user.save()
+
+#             # Send verification email
+#             send_verification_email(user)
+            
+#             return redirect('verify_email')
+            
+#         except ValidationError as e:
+#             messages.error(request, str(e))
+#             return render(request, 'signup.html', {'error': str(e)})
+            
+#     return render(request, 'signup.html')
 
 
 def verify_email(request, uidb64, token):
@@ -1870,49 +1976,63 @@ def check_loan_eligibility(request):
 #chatbot
 @csrf_exempt
 def chat_view(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Only POST allowed'}, status=405)
-    
-    try:
-        user_message = json.loads(request.body).get('message', '').strip()
-        if not user_message:
-            return JsonResponse({'error': 'Empty message'}, status=400)
+    if request.method == 'POST':
+        try:
+            # Parse the JSON data
+            data = json.loads(request.body)
+            user_message = data.get('message')
+            context = data.get('context', {})  # Get the context if provided
 
-        genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg')
-        model = genai.GenerativeModel('gemini-pro')
-        
-        # Get real-time data from your local database
-        context = f"""
-        As NanoWealth Bank's AI assistant, I can help with:
-        
-        Services:
-        - Account Types: Savings, Current
-        - Loans: Personal Loans ({LoanApplication.objects.count()} active applications)
-        - Cards: Classic, Platinum
-        - Net Banking & Mobile Banking
-        
-        Current Features:
-        - Account Management
-        - Fund Transfers
-        - Loan Applications
-        - Card Applications
-        - Transaction History
-        
-        Provide accurate responses based on NanoWealth Bank's local system.
-        """
-        
-        response = model.generate_content(
-            f"{context}\nUser: {user_message}\nAssistant:"
-        )
+            if not user_message:
+                return JsonResponse({'error': 'No message provided'}, status=400)
 
-        return JsonResponse({
-            'response': response.text.replace('\n', '<br>'),
-            'status': 'success'
-        })
+            # Create a precise and concise prompt
+            prompt = f"""
+            You are a smart banking assistant for NanoWealth Bank, responding briefly and accurately.
+            The user's context is:
+            - Username: {context.get('username', 'Not available')}
+            - Account Number: {context.get('accountNumber', 'Not available')}
+            - Current Page: {context.get('currentPage', 'Not available')}
 
-    except Exception as e:
-        print(f"Chat error: {str(e)}")
-        return JsonResponse({'error': 'Processing error'}, status=500)
+            User's query: {user_message}
+
+            Provide a short and direct response (1-2 sentences) based only on the features of the NanoWealth Banking System.
+            """
+
+            # Configure Gemini API
+            genai.configure(api_key='AIzaSyBXdNisWrVD6lChHo_QfgU_isJknCEczeg')  # Replace with your actual API key
+            model = genai.GenerativeModel('gemini-pro')
+
+            # Get response from Gemini
+            response = model.generate_content(prompt)
+
+            if not response or not response.text:
+                raise Exception("Empty response from AI model")
+
+            # Return response with short and precise answer
+            return JsonResponse({
+                'response': response.text.strip(),
+                'status': 'success'
+            })
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'error': 'Invalid JSON data',
+                'status': 'error'
+            }, status=400)
+        except Exception as e:
+            print(f"Chat error: {str(e)}")  # Log the error for debugging
+            return JsonResponse({
+                'error': 'An error occurred while processing your request',
+                'status': 'error'
+            }, status=500)
+
+    return JsonResponse({
+        'error': 'Only POST method is allowed',
+        'status': 'error'
+    }, status=405)
+
+
 
 def extract_content_from_template(template_name):
     try:
@@ -1937,10 +2057,6 @@ def get_site_content(request):
     
     return JsonResponse(site_content)
 
-from google.cloud import aiplatform
-from google.cloud.aiplatform.gapic.schema import predict
-import google.ai.generativelanguage as glm
-import google.generativeai as genai
 
 def is_banking_related(query):
     banking_keywords = [
@@ -2249,5 +2365,298 @@ def check_credit_score(request):
             'message': str(e)
         })  
     
+#2FA login
+# Customer= get_user_model()
+# def login_view(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         password = request.POST.get('password')
+        
+#         try:
+#             user = Customer.objects.get(email=email)
+#             if user.check_password(password):
+#                 # Generate verification code
+#                 verification_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+                
+#                 # Store in session
+#                 request.session['verification_code'] = verification_code
+#                 request.session['temp_user_id'] = user.id
+#                 request.session['user_email'] = email
+                
+#                 # Email content
+#                 subject = 'Your Login Verification Code - NanoWealth Bank'
+#                 message = f'''
+#                 Hello,
+
+#                 Your verification code is: {verification_code}
+
+#                 If you did not request this code, please ignore this email.
+
+#                 Best regards,
+#                 NanoWealth Bank Team
+#                 '''
+                
+#                 # Send email
+#                 send_mail(
+#                     subject,
+#                     message,
+#                     settings.EMAIL_HOST_USER,
+#                     [email],
+#                     fail_silently=False,
+#                 )
+                
+#                 print(f"Verification code sent: {verification_code}")  # For debugging
+#                 return redirect('verify_2FA')
+                
+#         except User.DoesNotExist:
+#             messages.error(request, 'Invalid credentials')
+#         except Exception as e:
+#             print(f"Error: {str(e)}")  # For debugging
+#             messages.error(request, 'An error occurred. Please try again.')
+    
+#     return render(request, 'login.html')
+
+# def verify_2FA(request):
+#     email = request.session.get('user_email')
+#     if not email:
+#         return redirect('login')
+    
+#     if request.method == 'POST':
+#         user_code = request.POST.get('verification_code')
+#         stored_code = request.session.get('verification_code')
+        
+#         if user_code == stored_code:
+#             user_id = request.session.get('temp_user_id')
+#             user = User.objects.get(id=user_id)
+#             login(request, user)
+            
+#             # Clean up session
+#             del request.session['verification_code']
+#             del request.session['temp_user_id']
+#             del request.session['user_email']
+            
+#             return redirect('dashboard')
+#         else:
+#             messages.error(request, 'Invalid verification code')
+    
+#     context = {
+#         'masked_email': mask_email(email)
+#     }
+#     return render(request, 'customer/verify_2FA.html', context)
+
+# def mask_email(email):
+#     parts = email.split('@')
+#     username = parts[0]
+#     domain = parts[1]
+#     masked_username = username[:2] + '*' * (len(username) - 2)
+#     return f"{masked_username}@{domain}"
+
+#Signup verification- document and face verification
+def document_verification(request):
+    if request.method == 'POST':
+        try:
+            # Get uploaded document
+            document = request.FILES.get('document_upload')
+            document_type = request.POST.get('proof_of_verification')
+            document_number = request.POST.get('document_number')
+            
+            # Validate document format and size
+            if not document.name.endswith('.pdf'):
+                messages.error(request, 'Please upload a PDF document.')
+                return redirect('document_verification')
+            
+            if document.size > 5 * 1024 * 1024:  # 5MB limit
+                messages.error(request, 'Document size should not exceed 5MB.')
+                return redirect('document_verification')
+            
+            # Check if document number already exists
+            if UserDocument.objects.filter(document_number=document_number).exists():
+                messages.error(request, 'This document has already been used.')
+                return redirect('document_verification')
+            
+            # Save document
+            fs = FileSystemStorage()
+            filename = fs.save(f'documents/{document.name}', document)
+            
+            # Create document record
+            UserDocument.objects.create(
+                user=request.user,
+                document_type=document_type,
+                document_number=document_number,
+                document_file=filename,
+                is_verified=False
+            )
+            
+            messages.success(request, 'Document uploaded successfully.')
+            return redirect('biometric_verification')
+            
+        except Exception as e:
+            messages.error(request, f'Error: {str(e)}')
+            return redirect('document_verification')
+    
+    return render(request, 'customer/document_verification.html')
+
+def biometric_verification(request):
+    if request.method == 'POST':
+        try:
+            # Get uploaded face image
+            face_image = request.FILES.get('face_image')
+            
+            # Save the uploaded image temporarily
+            fs = FileSystemStorage(location='temp/')
+            filename = fs.save(face_image.name, face_image)
+            filepath = f'temp/{filename}'
+            
+            # Read image using OpenCV
+            img = cv2.imdecode(
+                np.fromstring(face_image.read(), np.uint8), 
+                cv2.IMREAD_COLOR
+            )
+            
+            # Load face cascade classifier
+            face_cascade = cv2.CascadeClassifier(
+                cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+            )
+            
+            # Convert to grayscale
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            
+            # Detect faces
+            faces = face_cascade.detectMultiScale(
+                gray, 
+                scaleFactor=1.1, 
+                minNeighbors=5,
+                minSize=(30, 30)
+            )
+            
+            # Check if exactly one face is detected
+            if len(faces) != 1:
+                messages.error(request, 'Please ensure only one face is visible.')
+                fs.delete(filename)
+                return redirect('biometric_verification')
+            
+            # Save the verified face image
+            user_filename = f'faces/user_{request.user.id}.jpg'
+            fs = FileSystemStorage(location='media/')
+            fs.save(user_filename, face_image)
+            
+            # Update user profile
+            request.user.has_verified_face = True
+            request.user.face_image = user_filename
+            request.user.save()
+            
+            # Clean up temporary file
+            fs.delete(filename)
+            
+            messages.success(request, 'Face verification successful!')
+            return redirect('dashboard')
+            
+        except Exception as e:
+            messages.error(request, f'Error: {str(e)}')
+            return redirect('biometric_verification')
+    
+    return render(request, 'customer/biometric_verification.html')
+
+def signup_view(request):
+    if request.method == 'POST':
+        try:
+            # Get form data
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            document = request.FILES.get('document_upload')
+            face_image = request.FILES.get('face_image')
+            document_type = request.POST.get('proof_of_verification')
+            
+            # Validate document type
+            valid_doc_types = ['aadhar_card', 'pan_card', 'passport']
+            if document_type not in valid_doc_types:
+                messages.error(request, 'Please select a valid document type (Aadhar, PAN, or Passport)')
+                return redirect('signup')
+            
+            # Verify document and face match
+            is_verified, verification_message = verify_document_and_face(document, face_image)
+            
+            if is_verified:
+                # Create user and save documents
+                user = User.objects.create_user(
+                    email=email,
+                    password=password,
+                )
+                
+                # Save document
+                fs = FileSystemStorage()
+                doc_filename = fs.save(f'documents/{document_type}/{document.name}', document)
+                
+                # Create document record
+                UserDocument.objects.create(
+                    user=user,
+                    document_type=document_type,
+                    document_number=request.POST.get('document_number'),
+                    document_file=doc_filename,
+                    is_verified=True
+                )
+                
+                # Save face image
+                face_filename = f'faces/user_{user.id}.jpg'
+                fs.save(face_filename, face_image)
+                user.face_image = face_filename
+                user.has_verified_face = True
+                user.save()
+                
+                messages.success(request, 'Account created successfully! Your ID has been verified.')
+                return redirect('login')
+            else:
+                messages.warning(request, verification_message)
+                return redirect('signup')
+                
+        except Exception as e:
+            print(f"Signup error: {str(e)}")
+            messages.error(request, 'An error occurred during signup. Please try again.')
+            return redirect('signup')
+    
+    return render(request, 'signup.html')
+
+def verify_document_and_face(document, face_image):
+    try:
+        # Convert images to OpenCV format
+        doc_img = cv2.imdecode(np.frombuffer(document.read(), np.uint8), cv2.IMREAD_COLOR)
+        face_img = cv2.imdecode(np.frombuffer(face_image.read(), np.uint8), cv2.IMREAD_COLOR)
+        
+        # Reset file pointers
+        document.seek(0)
+        face_image.seek(0)
+        
+        # Load face cascade classifier
+        face_cascade = cv2.CascadeClassifier(
+            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        )
+        
+        # Detect faces in document
+        doc_faces = face_cascade.detectMultiScale(
+            cv2.cvtColor(doc_img, cv2.COLOR_BGR2GRAY),
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30)
+        )
+        
+        if len(doc_faces) == 0:
+            return False, "No face found in document. Please upload a valid Aadhar, PAN, or Passport photo."
+            
+        # Check document dimensions (typical ID card ratios)
+        height, width = doc_img.shape[:2]
+        aspect_ratio = width / height
+        
+        # Most ID cards have aspect ratios between 1.4 and 1.6
+        if not (1.4 <= aspect_ratio <= 1.6):
+            return False, "Please upload a valid ID document (Aadhar, PAN, or Passport)"
+            
+        return True, "Valid photo ID document detected"
+            
+    except Exception as e:
+        print(f"Document verification error: {str(e)}")
+        return False, "Invalid document format. Please upload a clear photo of your Aadhar, PAN, or Passport."
+
+
+
 
 

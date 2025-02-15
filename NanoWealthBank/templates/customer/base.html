@@ -265,6 +265,54 @@
                 padding: 0.5rem;
             }
         }
+
+        /* Add these styles */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid rgba(100, 181, 246, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1001;
+        }
+
+        .dropdown-menu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f5f5f5;
+        }
+
+        /* Show dropdown when active */
+        .dropdown-menu.show {
+            display: block;
+        }
     </style>
   </head>
   <body>
@@ -276,8 +324,13 @@
       </div>
       <div class="user-info">
         <span>Welcome, {{ request.session.username }}</span>
-        <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" />
-        <a href="{% url 'logout_view' %}" class="logout-button">Logout</a>
+        <div class="profile-dropdown">
+            <img src="{% static 'images/profileicon.png' %}" alt="Profile Icon" class="profile-icon" onclick="toggleProfileDropdown()">
+            <div class="dropdown-menu" id="profileDropdown">
+                <a href="{% url 'view_profile' %}">View Profile</a>
+                <a href="{% url 'logout_view' %}">Logout</a>
+            </div>
+        </div>
       </div>
     </div>
 
@@ -292,25 +345,16 @@
 
           <ul class="dropdown-content">
             <li>
-              <a
-                href="{% url 'savings_account' %}"
-                class="dropdown-content-link"
-                >Savings Account</a
-              >
+              <a href="{% url 'savings_account' %}" class="dropdown-content-link">
+                Savings Account
+              </a>
             </li>
             <li>
-              <a
-                href="{% url 'current_account' %}"
-                class="dropdown-content-link"
-                >Current Account</a
-              >
+              <a href="{% url 'current_account' %}" class="dropdown-content-link">
+                Current Account
+              </a>
             </li>
           </ul>
-        </li>
-        <li>
-          <a href="{% url 'view_profile' %}" class="sidebar-link"
-            >View Profile</a
-          >
         </li>
         <li>
           <a href="{% url 'topup_balance' %}" class="sidebar-link" id="addMoneyButton">
@@ -319,9 +363,9 @@
         </li>
         
         <li>
-          <a href="{% url 'transactions' %}" class="sidebar-link"
-            >Transactions</a
-          >
+          <a href="{% url 'transactions' %}" class="sidebar-link">
+            Transactions
+          </a>
         </li>
         <ul>
           <li>
@@ -329,28 +373,22 @@
               Card Services
               <span class="dropdown-arrow">▼</span>
             </span>
-  
+
             <ul class="dropdown-content">
               <li>
-                <a
-                  href="{% url 'apply_card' %}"
-                  class="dropdown-content-link"
-                  >Apply New Card</a
-                >
+                <a href="{% url 'apply_card' %}" class="dropdown-content-link">
+                  Apply New Card
+                </a>
               </li>
               <li>
-                <a
-                  href="{% url 'activate_classiccard' %}"
-                  class="dropdown-content-link"
-                  >Activate Card</a
-                >
+                <a href="{% url 'activate_classiccard' %}" class="dropdown-content-link">
+                  Activate Card
+                </a>
               </li>
-              <li></li>
-                <a
-                  href="{% url 'card_details' %}"
-                  class="dropdown-content-link"
-                  >Card Details</a
-                >
+              <li>
+                <a href="{% url 'card_details' %}" class="dropdown-content-link">
+                  Card Details
+                </a>
               </li>
             </ul>
           </li>
@@ -361,32 +399,36 @@
           </span>
           <ul class="dropdown-content">
             <li>
-              <a class="dropdown-content-link" href="{% url 'list_deposits' %}">Fixed Deposits</a>
+              <a class="dropdown-content-link" href="{% url 'list_deposits' %}">
+                Fixed Deposits
+              </a>
             </li>
           </ul>
         </li>
           
-          <li>
+        <li>
           <span class="sidebar-span" onclick="toggleDropdown(this)">
             Loans
             <span class="dropdown-arrow">▼</span>
           </span>
           <ul class="dropdown-content">
             <li>
-              <a class="dropdown-content-link" href="{% url 'personal_loan' %}"
-                >Personal Loan</a
-              >
+              <a class="dropdown-content-link" href="{% url 'personal_loan' %}">
+                Personal Loan
+              </a>
             </li>
           </ul>
         </li>
 
         <li>
-          <a href="{% url 'internet_banking' %}" class="sidebar-link" id="internet-banking-button">Internet Banking</a>
+          <a href="{% url 'internet_banking' %}" class="sidebar-link" id="internet-banking-button">
+            Internet Banking
+          </a>
         </li>
       </ul>
-      <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button"
-        >Back to Dashboard</a
-      >
+      <a href="{% url 'userdashboard' %}" class="back-to-dashboard-button">
+        Back to Dashboard
+      </a>
     </div>
 
     <!-- Main Content -->
@@ -396,6 +438,7 @@
     </main>
 
     <script>
+      // For sidebar dropdowns
       function toggleDropdown(element) {
         var dropdownContent = element.nextElementSibling;
         var arrow = element.querySelector(".dropdown-arrow");
@@ -408,7 +451,25 @@
         }
       }
 
-      // Add hover effects
+      // For profile dropdown
+      function toggleProfileDropdown() {
+        document.getElementById('profileDropdown').classList.toggle('show');
+      }
+
+      // Close dropdown when clicking outside
+      window.onclick = function(event) {
+        if (!event.target.matches('.profile-icon')) {
+          var dropdowns = document.getElementsByClassName('dropdown-menu');
+          for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+              openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
+
+      // Add hover effects for sidebar
       var menuItems = document.querySelectorAll(".sidebar a, .sidebar span");
       menuItems.forEach(function (item) {
         item.addEventListener("mouseover", function () {

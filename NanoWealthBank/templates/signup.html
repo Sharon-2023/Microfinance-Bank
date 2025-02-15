@@ -160,8 +160,102 @@
     padding: 10px 20px;
   }
 
+  .camera-section {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .camera-section video, .camera-section canvas {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .camera-controls {
+    margin: 10px 0;
+  }
+
+  .btn-start-camera, .btn-capture {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn-start-camera {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .btn-capture {
+    background-color: #2196F3;
+    color: white;
+  }
+
+  .btn-capture:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+  #preview img {
+    max-width: 200px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  .verification-status {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .verification-status.verifying {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
+
+  .verification-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .verification-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .verification-message {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
 </head>
 <body>
   <div class="navbar">
@@ -230,13 +324,9 @@
     </div>
 
     <div class="verification-item">
-      <label for="document_upload">Upload Document:</label>
-      <div class="file-upload-container">
-        <input type="file" id="document_upload" name="document_upload" accept=".pdf" required>
-        <button type="button" onclick="uploadDocument()">Upload</button>
-      </div>
-      <div id="documentError" class="error-message" style="display: none;"></div>
-      <div id="documentSuccess" class="success-message" style="display: none;">Document uploaded successfully!</div>
+      <label for="document_upload">Upload Photo ID Document (JPG, PNG only)</label>
+      <input type="file" id="document_upload" name="document_upload" accept="image/*" required>
+      <small class="form-text text-muted">Please upload a clear photo of your ID document containing your photo and details</small>
     </div>
 
     <!-- Checkbox for physical document submission -->
@@ -244,6 +334,49 @@
       <input type="checkbox" id="physical_document_acknowledgment" name="physical_document_acknowledgment" style="width:50px;" required>
       <label for="physical_document_acknowledgment" >I will submit a physical document to the bank</label>
     </div>
+
+    <!-- <div class="verification-item">
+        <label for="document_number">Document Number:</label>
+        <input type="text" id="document_number" name="document_number" required>
+        <div id="documentNumberError" class="error-message" style="display: none;">
+            Invalid document number format
+        </div>
+    </div> -->
+
+    <!-- <div class="verification-item">
+        <label for="face_image">Face Photo:</label>
+        <div class="file-upload-container">
+            <input type="file" id="face_image" name="face_image" accept="image/*" required>
+            <button type="button" onclick="verifyFace()">Verify Face</button>
+        </div>
+        <div id="faceError" class="error-message" style="display: none;"></div>
+        <div id="faceSuccess" class="success-message" style="display: none;">
+            Face verified successfully!
+        </div>
+    </div>
+  </div> -->
+
+  <div class="form-group">
+    <label for="face_image">Face Verification</label>
+    <div class="camera-section">
+        <video id="video" width="400" height="300" autoplay playsinline style="display: none;"></video>
+        <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
+        <div id="preview"></div>
+        <input type="hidden" name="face_image" id="face_image">
+        
+        <div class="camera-controls">
+            <button type="button" onclick="startCamera()" class="btn-start-camera">Start Camera</button>
+            <button type="button" onclick="captureFace()" class="btn-capture" disabled>Capture Photo</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="documentStatus" class="verification-status" style="display: none;">
+    <p id="documentMessage"></p>
+  </div>
+
+  <div id="faceStatus" class="verification-status" style="display: none;">
+    <p id="faceMessage"></p>
   </div>
 
   <button type="submit">Submit</button>
@@ -340,25 +473,18 @@
       }
     });
 
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
-      const email = document.getElementById('email').value;
-      const mobileNum = document.getElementById('mobilenum').value;
-      const name = document.getElementById('customername').value;
-      const username = document.getElementById('username').value;
-
-      if (!isValidEmail(email)) {
-        alert('Please enter a valid email.');
-        event.preventDefault();
-      } else if (!isValidMobileNumber(mobileNum)) {
-        alert('Please enter a valid mobile number.');
-        event.preventDefault();
-      } else if (!isValidCustomerName(name)) {
-        alert('Please enter a valid customer name.');
-        event.preventDefault();
-      } else if (!isValidUsername(username)) {
-        alert('Please enter a valid alphanumeric username.');
-        event.preventDefault();
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      const document = document.getElementById('document_upload').files[0];
+      const faceImage = document.getElementById('face_image').files[0];
+      
+      if (!document || !faceImage) {
+        e.preventDefault();
+        alert('Please upload both document and face image');
+        return;
       }
+      
+      // Show verifying status
+      showVerificationStatus('verifying', 'Verifying document and face match...');
     });
 
     function isValidEmail(email) {
@@ -448,6 +574,231 @@ document.getElementById('document_upload').addEventListener('change', function()
   documentSuccess.style.display = 'none';
   this.classList.remove('invalid');
   this.classList.remove('valid');
+});
+
+// document.getElementById('document_number').addEventListener('input', function() {
+//     const docType = document.getElementById('proof_of_verification').value;
+//     const docNum = this.value;
+//     const error = document.getElementById('documentNumberError');
+    
+//     let isValid = false;
+    
+//     if (docType === 'aadhar') {
+//         isValid = /^\d{12}$/.test(docNum);
+//     } else if (docType === 'pan') {
+//         isValid = /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(docNum);
+//     } else if (docType === 'passport') {
+//         isValid = /^[A-Z]\d{7}$/.test(docNum);
+//     }
+    
+//     if (isValid) {
+//         this.classList.remove('invalid');
+//         this.classList.add('valid');
+//         error.style.display = 'none';
+//     } else {
+//         this.classList.add('invalid');
+//         this.classList.remove('valid');
+//         error.style.display = 'block';
+//     }
+// });
+
+let video = document.getElementById('video');
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
+let stream = null;
+let model = null;
+
+// Load the BlazeFace model
+async function loadFaceDetectionModel() {
+    try {
+        model = await blazeface.load();
+        console.log('Face detection model loaded');
+    } catch (error) {
+        console.error('Error loading face detection model:', error);
+    }
+}
+
+// Load model when page loads
+loadFaceDetectionModel();
+
+async function startCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                width: 400,
+                height: 300,
+                facingMode: 'user'
+            } 
+        });
+        video.srcObject = stream;
+        video.style.display = 'block';
+        canvas.style.display = 'none';
+        
+        // Enable capture button once camera is started
+        document.querySelector('.btn-capture').disabled = false;
+    } catch (err) {
+        console.error("Error accessing camera:", err);
+        alert("Could not access camera. Please ensure camera permissions are granted.");
+    }
+}
+
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.style.display = 'none';
+        stream = null;
+    }
+}
+
+async function captureFace() {
+    if (!video.srcObject) {
+        alert("Please start the camera first");
+        return;
+    }
+
+    // Draw video frame to canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.style.display = 'block';
+    video.style.display = 'none';
+    
+    const faceStatus = document.getElementById('faceStatus');
+    const faceMessage = document.getElementById('faceMessage');
+    
+    faceStatus.className = 'verification-status verifying';
+    faceMessage.innerHTML = '<div class="spinner"></div>Detecting Face...';
+    faceStatus.style.display = 'block';
+
+    try {
+        // Convert canvas to image for face detection
+        const image = new Image();
+        image.src = canvas.toDataURL('image/jpeg');
+        
+        await image.decode(); // Wait for image to load
+        
+        // Detect faces using BlazeFace
+        const predictions = await model.estimateFaces(image, false);
+        
+        if (predictions && predictions.length > 0) {
+            // Face detected - show face detected message first
+            faceStatus.className = 'verification-status success';
+            faceMessage.textContent = 'Face Detected';
+
+            // Save the captured image
+            canvas.toBlob(function(blob) {
+                const file = new File([blob], "face.jpg", { type: "image/jpeg" });
+                const container = new DataTransfer();
+                container.items.add(file);
+                document.getElementById('face_image').files = container.files;
+                
+                const preview = document.getElementById('preview');
+                preview.innerHTML = '<img src="' + canvas.toDataURL() + '" width="200"/>';
+                stopCamera();
+
+                // Check for document matching if available
+                const documentFile = document.getElementById('document_upload').files[0];
+                if (documentFile) {
+                    setTimeout(() => {
+                        faceStatus.className = 'verification-status verifying';
+                        faceMessage.innerHTML = '<div class="spinner"></div>Matching with document...';
+
+                        setTimeout(async () => {
+                            try {
+                                const docImage = new Image();
+                                docImage.src = URL.createObjectURL(documentFile);
+                                await docImage.decode();
+                                const docPredictions = await model.estimateFaces(docImage, false);
+                                
+                                if (docPredictions && docPredictions.length > 0) {
+                                    faceStatus.className = 'verification-status success';
+                                    faceMessage.textContent = 'Match Found';
+                                } else {
+                                    faceStatus.className = 'verification-status error';
+                                    faceMessage.textContent = 'No face found in document';
+                                }
+                            } catch (error) {
+                                console.error('Document matching error:', error);
+                                faceStatus.className = 'verification-status error';
+                                faceMessage.textContent = 'Error matching with document';
+                            }
+                        }, 1000);
+                    }, 1500);
+                }
+            }, 'image/jpeg');
+        } else {
+            // No face detected
+            faceStatus.className = 'verification-status error';
+            faceMessage.textContent = 'No face detected. Please try again.';
+        }
+    } catch (error) {
+        console.error('Face detection error:', error);
+        faceStatus.className = 'verification-status error';
+        faceMessage.textContent = 'Face detection failed. Please try again.';
+    }
+}
+
+// Add event listener for when the page is closed/navigated away from
+window.addEventListener('beforeunload', stopCamera);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Disable capture button initially
+    document.querySelector('.btn-capture').disabled = true;
+});
+
+function showVerificationStatus(status, message) {
+    const statusDiv = document.getElementById('verificationStatus');
+    const messageElement = document.getElementById('verificationMessage');
+    
+    statusDiv.style.display = 'block';
+    
+    if (status === 'verifying') {
+        statusDiv.className = 'verification-status verifying';
+        messageElement.innerHTML = '<div class="spinner"></div> ' + message;
+    } else {
+        statusDiv.className = 'verification-status ' + (status ? 'success' : 'error');
+        messageElement.textContent = message;
+    }
+}
+
+// Function to validate uploaded document
+function validateDocument(file) {
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+        return "Please upload an image file (JPG, PNG)";
+    }
+    
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+        return "File size should not exceed 5MB";
+    }
+    
+    return null;
+}
+
+// Document upload handler
+document.getElementById('document_upload').addEventListener('change', function() {
+    const file = this.files[0];
+    const documentStatus = document.getElementById('documentStatus');
+    const documentMessage = document.getElementById('documentMessage');
+    
+    if (file) {
+        const error = validateDocument(file);
+        if (error) {
+            documentStatus.className = 'verification-status error';
+            documentMessage.textContent = error;
+            this.value = ''; // Clear the file input
+        } else {
+            documentStatus.className = 'verification-status verifying';
+            documentMessage.innerHTML = '<div class="spinner"></div>Verifying document...';
+            documentStatus.style.display = 'block';
+            
+            // Simulate document verification (replace with actual verification)
+            setTimeout(() => {
+                documentStatus.className = 'verification-status success';
+                documentMessage.textContent = 'Valid photo document detected';
+            }, 1500);
+        }
+    }
 });
 
   </script>

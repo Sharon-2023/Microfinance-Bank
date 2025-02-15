@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 import random
 import string
+import pyotp
+from django.conf import settings
 
 
 class Customer(models.Model):
@@ -21,7 +23,16 @@ class Customer(models.Model):
         upload_to='customer_documents/', null=True, blank=True)
     pin_hash = models.CharField(max_length=128, blank=True, null=True)
     is_active = models.BooleanField(default=False)
-
+    # document_type = models.CharField(max_length=20, choices=[
+    #     ('aadhar', 'Aadhar Card'),
+    #     ('pan', 'PAN Card'),
+    #     ('passport', 'Passport')
+    # ])
+    # document_number = models.CharField(max_length=20, unique=True)
+    # document_file = models.FileField(upload_to='customer_documents/')
+    # face_image = models.ImageField(upload_to='customer_faces/', null=True)
+    # is_face_verified = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.customer_name
 
@@ -30,6 +41,14 @@ class Customer(models.Model):
 
     def check_pin(self, raw_pin):
         return check_password(raw_pin, self.pin_hash)
+
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(
+    #             fields=['document_type', 'document_number'],
+    #             name='unique_document'
+    #         )
+    #     ]
 
 
 class Admin(models.Model):
@@ -381,5 +400,29 @@ class CreditScore(models.Model):
     def __str__(self):
         return f"Credit Score for {self.customer}: {self.score}"
     
+
+class UserDocument(models.Model):
+    DOCUMENT_TYPES = [
+        ('aadhar_card', 'Aadhar Card'),
+        ('pan_card', 'PAN Card'),
+        ('passport', 'Passport'),
+        ('utility_bills', 'Utility Bills'),
+    ]
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPES)
+    document_number = models.CharField(max_length=50, unique=True)
+    document_file = models.FileField(upload_to='documents/')
+    is_verified = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    face_image = models.ImageField(upload_to='faces/', null=True, blank=True)
+    has_verified_face = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ['user', 'document_type']
+
+
+
 
 

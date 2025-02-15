@@ -14,6 +14,7 @@
             <th>Loan Amount</th>
             <th>Monthly Income</th>
             <th>Employment Status</th>
+            <th>Proof of Employment</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -27,6 +28,13 @@
             <td>{{ loan.loan_amount_required }}</td>
             <td>{{ loan.monthly_income }}</td>
             <td>{{ loan.get_employment_status_display }}</td>
+            <td>
+                {% if loan.proof_of_employment %}
+                    <a href="{{ loan.proof_of_employment.url }}" target="_blank">View Document</a>
+                {% else %}
+                    Not Provided
+                {% endif %}
+            </td>
             <td>
                 {% if loan.is_approved %}
                 <span style="color: green;">Approved</span>

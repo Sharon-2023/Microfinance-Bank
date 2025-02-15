@@ -396,7 +396,6 @@
                 <select id="loanType" name="loanType" required>
                     <option value="">Select loan type</option>
                     <option value="Personal">Personal</option>
-                    <option value="Education">Gold Loan</option>
                 </select>
                 <span id="loanTypeError" class="error-message"></span>
             </div>
@@ -413,6 +412,21 @@
                     oninput="validateLoanAmount(this)"
                 >
                 <span id="loanAmountError" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="loanDuration">Loan Duration (Months)</label>
+                <input 
+                    type="number" 
+                    id="loanDuration" 
+                    name="loanDuration" 
+                    min="3"
+                    max="24"
+                    required
+                    oninput="validateLoanDuration(this)"
+                    placeholder="Enter duration (3-24 months)"
+                >
+                <span id="durationError" class="error-message"></span>
             </div>
 
             <div class="form-group">
@@ -512,6 +526,25 @@
             return false;
         } else {
             errorElement.textContent = '';
+            return true;
+        }
+    }
+
+    function validateLoanDuration(input) {
+        const duration = parseInt(input.value);
+        const errorElement = document.getElementById('durationError');
+        
+        if (isNaN(duration) || duration < 3) {
+            errorElement.textContent = 'Minimum loan duration is 3 months';
+            input.classList.add('invalid');
+            return false;
+        } else if (duration > 24) {
+            errorElement.textContent = 'Maximum loan duration is 24 months';
+            input.classList.add('invalid');
+            return false;
+        } else {
+            errorElement.textContent = '';
+            input.classList.remove('invalid');
             return true;
         }
     }
@@ -650,6 +683,7 @@
             validatePinCode(document.getElementById('pinCode')) &&
             validateMonthlyIncome(document.getElementById('monthlyIncome')) &&
             validateLoanAmount(document.getElementById('loanAmount')) &&
+            validateLoanDuration(document.getElementById('loanDuration')) &&
             validateLoanPurpose(document.getElementById('loanPurpose'));
         
         // Add salary certificate validation for employed status
