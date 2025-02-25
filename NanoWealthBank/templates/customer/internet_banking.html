@@ -136,39 +136,38 @@ function openRazorpay() {
 }
 
 function handlePaymentSuccess(response) {
-    // Create a form to submit the payment details
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = "{% url 'payment_success' %}";
-    
-    // Add CSRF token
-    const csrfToken = document.createElement('input');
-    csrfToken.type = 'hidden';
-    csrfToken.name = 'csrfmiddlewaretoken';
-    csrfToken.value = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    form.appendChild(csrfToken);
-    
-    // Add payment details
-    const paymentData = {
-        'payment_id': response.razorpay_payment_id,
-        'amount': document.getElementById('amount').value,
-        'receiver_name': document.getElementById('receiver_name').value,
-        'receiver_account_number': document.getElementById('receiver_account_number').value
-    };
-    
-    // Create hidden inputs for each piece of data
-    for (const [key, value] of Object.entries(paymentData)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        form.appendChild(input);
-    }
-    
-    // Add form to document and submit
-    document.body.appendChild(form);
-    form.submit();
+    const formData = new FormData();
+    formData.append('receiver_name', document.getElementById('receiver_name').value);
+    formData.append('receiver_account_number', document.getElementById('receiver_account_number').value);
+    formData.append('amount', document.getElementById('amount').value);
+    formData.append('receiver_account_type', document.getElementById('receiver_account_type').value);
+    formData.append('ifsc_code', document.getElementById('ifsc_code').value);
+    formData.append('purpose', document.getElementById('purpose').value);
+    formData.append('payment_id', response.razorpay_payment_id);
+    formData.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+
+    fetch("{% url 'internet_banking' %}", {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to payment success page with transaction details
+            window.location.href = `/payment-success/?payment_id=${response.razorpay_payment_id}&amount=${document.getElementById('amount').value}&receiver_name=${document.getElementById('receiver_name').value}&receiver_account_number=${document.getElementById('receiver_account_number').value}`;
+        } else {
+            alert('Error saving transaction: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving transaction. Please try again.');
+    });
 }
+
 </script>
 
 <style>

@@ -89,77 +89,137 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-
 def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         print(email, password)
 
-        # First check for Manager
+        # Check for Admin
         try:
-            manager = Manager.objects.get(manager_id=email)
-            if check_password(password, manager.password):
-                request.session['user_id'] = manager.id
-                request.session['user_email'] = manager.email
-                request.session['user_role'] = 'manager'
-                request.session['username'] = manager.name
-                return redirect('managerdashboard')
+            admin = Admin.objects.get(email=email)
+            if admin.password == password:
+                request.session['user_id'] = admin.id
+                request.session['user_email'] = admin.email
+                request.session['user_role'] = 'admin'
+                request.session['username'] = admin.username
+                return redirect('admindashboard')
             else:
-                messages.error(request, "Invalid manager credentials.")
+                messages.error(request, "Invalid admin credentials.")
                 return render(request, 'login.html')
-        except Manager.DoesNotExist:
-            # If not a manager, check for Admin
+        except Admin.DoesNotExist:
+            # Check for Loan Officer
             try:
-                admin = Admin.objects.get(email=email)
-                if admin.password == password:
-                    request.session['user_id'] = admin.id
-                    request.session['user_email'] = admin.email
-                    request.session['user_role'] = 'admin'
-                    request.session['username'] = admin.username
-                    return redirect('admindashboard')
+                loan_officer = LoanOfficer.objects.get(email=email)
+                if loan_officer.password == password:
+                    request.session['user_id'] = loan_officer.id
+                    request.session['user_email'] = loan_officer.email
+                    request.session['user_role'] = 'loan_officer'
+                    request.session['username'] = f"{loan_officer.first_name} {loan_officer.last_name}"
+                    return redirect('loanofficerdashboard')
                 else:
-                    messages.error(request, "Invalid admin credentials.")
+                    messages.error(request, "Invalid loan officer credentials.")
                     return render(request, 'login.html')
-            except Admin.DoesNotExist:
-                # Check for Loan Officer
+            except LoanOfficer.DoesNotExist:
+                # Finally check for Customer
                 try:
-                    loan_officer = LoanOfficer.objects.get(email=email)
-                    if loan_officer.password == password:
-                        request.session['user_id'] = loan_officer.id
-                        request.session['user_email'] = loan_officer.email
-                        request.session['user_role'] = 'loan_officer'
-                        request.session['username'] = f"{loan_officer.first_name} {loan_officer.last_name}"
-                        return redirect('loanofficerdashboard')
-                    else:
-                        messages.error(request, "Invalid loan officer credentials.")
-                        return render(request, 'login.html')
-                except LoanOfficer.DoesNotExist:
-                    # Finally check for Customer
-                    try:
-                        customer = Customer.objects.get(email=email)
-                        if check_password(password, customer.password):
-                            if customer.is_active:
-                                request.session['user_id'] = customer.id
-                                request.session['user_email'] = customer.email
-                                request.session['user_role'] = 'customer'
-                                request.session['username'] = customer.username
-                                return redirect('userdashboard')
-                            else:
-                                messages.error(request, "Customer Not Approved Yet.")
-                                return render(request, 'login.html')
+                    customer = Customer.objects.get(email=email)
+                    if check_password(password, customer.password):
+                        if customer.is_active:
+                            request.session['user_id'] = customer.id
+                            request.session['user_email'] = customer.email
+                            request.session['user_role'] = 'customer'
+                            request.session['username'] = customer.username
+                            return redirect('userdashboard')
                         else:
-                            messages.error(request, "Invalid customer credentials.")
+                            messages.error(request, "Customer Not Approved Yet.")
                             return render(request, 'login.html')
-                    except Customer.DoesNotExist:
-                        messages.error(request, "No account found with this email.")
+                    else:
+                        messages.error(request, "Invalid customer credentials.")
                         return render(request, 'login.html')
+                except Customer.DoesNotExist:
+                    messages.error(request, "No account found with this email.")
+                    return render(request, 'login.html')
 
-    return render(request, 'login.html')
+
+# # If login is successful, check if the device is trusted
+#         device_id = request.COOKIES.get('device_id')
+#         if not device_id or not cache.get(f"trusted_device_{user_id}_{device_id}"):
+#             # Generate a unique device ID if it doesn't exist
+#             device_id = str(uuid.uuid4())
+#             response = redirect('verify_device')
+#             response.set_cookie('device_id', device_id, max_age=365*24*60*60)  # Store device ID for 1 year
+#             return response
+
+#         # If the device is trusted, proceed to the dashboard
+#         return redirect('dashboard')
+#     return render(request, 'login.html')
+
+
+# def verify_device(request):
+#     if request.method == 'POST':
+#         entered_code = request.POST.get('code')
+#         stored_code = cache.get(f"device_verification_code_{request.session.get('user_id')}")
+
+#         if entered_code == stored_code:
+#             # Mark the device as trusted
+#             device_id = request.COOKIES.get('device_id')
+#             user_id = request.session.get('user_id')
+#             cache.set(f"trusted_device_{user_id}_{device_id}", True, timeout=365*24*60*60)  # Trusted for 1 year
+#             return redirect('dashboard')
+#         else:
+#             messages.error(request, 'Invalid verification code. Please try again.')
+#             return redirect('verify_device')
+
+#     # Generate and send a verification code
+#     user_id = request.session.get('user_id')
+#     email = request.session.get('user_email')
+#     verification_code = str(random.randint(100000, 999999))
+#     cache.set(f"device_verification_code_{user_id}", verification_code, timeout=600)  # Code valid for 10 minutes
+
+#     # Send the code via email
+#     send_mail(
+#         'Device Verification Code',
+#         f'Your verification code is: {verification_code}',
+#         settings.EMAIL_HOST_USER,
+#         [email],
+#         fail_silently=False,
+#     )
+
+#     return render(request, 'customer/verify_device.html')
+
+# from functools import wraps
+# from django.http import HttpResponseForbidden
+
+# def require_device_authentication(view_func):
+#     @wraps(view_func)
+#     def _wrapped_view(request, *args, **kwargs):
+#         user_id = request.session.get('user_id')
+#         device_id = request.COOKIES.get('device_id')
+
+#         if not user_id or not device_id or not cache.get(f"trusted_device_{user_id}_{device_id}"):
+#             return redirect('verify_device')  # Redirect to device verification if not trusted
+#         return view_func(request, *args, **kwargs)
+#     return _wrapped_view
+
+# def manage_trusted_devices(request):
+#     user_id = request.session.get('user_id')
+#     trusted_devices = []
+
+#     # Retrieve all trusted devices for the user
+#     for key in cache.keys(f"trusted_device_{user_id}_*"):
+#         device_id = key.split('_')[-1]
+#         trusted_devices.append(device_id)
+
+#     if request.method == 'POST':
+#         device_id_to_remove = request.POST.get('device_id')
+#         cache.delete(f"trusted_device_{user_id}_{device_id_to_remove}")
+#         messages.success(request, 'Device removed successfully.')
+#         return redirect('manage_trusted_devices')
+
+#     return render(request, 'customer/manage_trusted_devices.html', {'trusted_devices': trusted_devices})
 
 user_pins = {}
-
-
 # 2FA decorator
 # def require_2fa(view_func):
 #     @wraps(view_func)
@@ -938,6 +998,8 @@ def add_deposit(request):
     return render(request, 'customer/deposits_add.html', {'userdata': userdata})
 
 
+
+# @require_device_authentication
 @csrf_exempt
 def internet_banking(request):
     user = request.session.get('user_id')
@@ -963,7 +1025,7 @@ def internet_banking(request):
                 # Calculate new balance
                 new_balance = current_balance - amount
 
-                # Create and save transaction with current_balance
+                # Create and save transaction
                 transaction = Transaction(
                     user_id=user,
                     owner_name=account.name if hasattr(account, 'name') else account.customer_name,
@@ -1009,17 +1071,24 @@ def internet_banking(request):
 
 
 def payment_success(request):
-    if request.method != 'POST':
-        return redirect('home')  # Redirect if not POST
-        
+    # Retrieve transaction details from query parameters
+    payment_id = request.GET.get('payment_id')
+    amount = request.GET.get('amount')
+    receiver_name = request.GET.get('receiver_name')
+    receiver_account_number = request.GET.get('receiver_account_number')
+
+    # Prepare context for the template
     context = {
-        'payment_id': request.POST.get('payment_id'),
-        'amount': request.POST.get('amount'),
-        'receiver_name': request.POST.get('receiver_name'),
-        'receiver_account_number': request.POST.get('receiver_account_number'),
+        'payment_id': payment_id,
+        'amount': amount,
+        'receiver_name': receiver_name,
+        'receiver_account_number': receiver_account_number,
         'transaction_date': timezone.now().strftime("%B %d, %Y, %I:%M %p")
     }
+
+    # Render the payment success page
     return render(request, 'customer/payment_success.html', context)
+
 
 # admin dashboard
 

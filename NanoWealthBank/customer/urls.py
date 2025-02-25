@@ -147,4 +147,9 @@ urlpatterns = [
 
     path('document-verification/', views.document_verification, name='document_verification'),
     path('biometric-verification/', views.biometric_verification, name='biometric_verification'),
+
+    # path('verify-device/', views.verify_device, name='verify_device'),
+    # path('manage-trusted-devices/', views.manage_trusted_devices, name='manage_trusted_devices'),
+
+
 ]

@@ -1,0 +1,15 @@
+{% extends 'customer/base.html' %}
+{% block title %}Verify Device{% endblock %}
+{% block content %}
+<div class="device-verification-container">
+  <h1>Verify Your Device</h1>
+  <p>We've sent a verification code to your email. Please enter it below to verify this device.</p>
+  
+  <form method="post">
+    {% csrf_token %}
+    <label for="code">Verification Code:</label>
+    <input type="text" id="code" name="code" required />
+    <button type="submit">Verify</button>
+  </form>
+</div>
+{% endblock %}

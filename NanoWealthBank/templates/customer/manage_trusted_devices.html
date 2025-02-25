@@ -1,0 +1,21 @@
+{% extends 'customer/base.html' %}
+{% block title %}Manage Trusted Devices{% endblock %}
+{% block content %}
+<div class="trusted-devices-container">
+  <h1>Manage Trusted Devices</h1>
+  <p>Devices you have marked as trusted:</p>
+  
+  <ul>
+    {% for device in trusted_devices %}
+    <li>
+      Device ID: {{ device }}
+      <form method="post" style="display:inline;">
+        {% csrf_token %}
+        <input type="hidden" name="device_id" value="{{ device }}" />
+        <button type="submit">Remove</button>
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
