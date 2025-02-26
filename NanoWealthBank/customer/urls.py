@@ -157,7 +157,7 @@ urlpatterns = [
     path('setup-pin/', views.setup_pin, name='setup_pin'),
     
     #balance topup page- security pin verification
-    # path('verify-transaction-pin/', views.verify_transaction_pin, name='verify_transaction_pin'),
+    path('verify-transaction-pin/', views.verify_transaction_pin, name='verify_transaction_pin'),
 
    
 ]

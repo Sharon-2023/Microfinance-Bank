@@ -2788,97 +2788,45 @@ def verify_document_and_face(document, face_image):
         return False, "Invalid document format. Please upload a clear photo of your Aadhar, PAN, or Passport."
 
 # #balnce topup page- securi
-# @require_POST
-# def verify_transaction_pin(request):
-#     try:
-#         data = json.loads(request.body)
-#         entered_pin = str(data.get('pin'))
+@require_POST
+def verify_transaction_pin(request):
+    try:
+        data = json.loads(request.body)
+        entered_pin = str(data.get('pin'))
         
-#         # Get user's stored PIN
-#         user_id = request.session.get('user_id')
-#         if not user_id:
-#             return JsonResponse({
-#                 'success': False,
-#                 'message': 'User session expired. Please login again.'
-#             })
+        # Get user's stored PIN
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return JsonResponse({
+                'success': False,
+                'message': 'User session expired. Please login again.'
+            })
 
-#         user = Customer.objects.get(id=user_id)
+        user = Customer.objects.get(id=user_id)
         
-#         if not user.transaction_pin:
-#             return JsonResponse({
-#                 'success': False,
-#                 'message': 'Please set up your transaction PIN first'
-#             })
+        if not user.transaction_pin:
+            return JsonResponse({
+                'success': False,
+                'message': 'Please set up your transaction PIN first'
+            })
 
-#         # Verify PIN
-#         if check_password(entered_pin, user.transaction_pin):
-#             return JsonResponse({
-#                 'success': True,
-#                 'message': 'PIN verified successfully'
-#             })
-#         else:
-#             return JsonResponse({
-#                 'success': False,
-#                 'message': 'Incorrect PIN. Please try again.'
-#             })
-        
-#     except Exception as e:
-#         print(f"Error in PIN verification: {str(e)}")
-#         return JsonResponse({
-#             'success': False,
-#             'message': 'An error occurred. Please try again.'
-#         })
+        # Verify PIN
+        if check_password(entered_pin, user.transaction_pin):
+            return JsonResponse({
+                'success': True,
+                'message': 'PIN verified successfully'
+            })
+        else:
+            return JsonResponse({
+                'success': False,
+                'message': 'Incorrect PIN. Please try again.'
+            })
 
-# def balance_topup(request):
-#     if request.method == 'POST':
-#         try:
-#             user_id = request.session.get('user_id')
-#             user = Customer.objects.get(id=user_id)
-            
-#             # Get the amount from the form
-#             amount = Decimal(request.POST.get('amount', '0'))
-            
-#             if amount <= 0:
-#                 messages.error(request, "Amount must be greater than 0")
-#                 return redirect('balance_topup')
-            
-#             # Get the account type from the form
-#             account_type = request.POST.get('account_type')
-            
-#             # Find the correct account
-#             if account_type == 'savings':
-#                 account = Savings.objects.filter(user_id=user.id).first()
-#             else:
-#                 account = Current.objects.filter(user_id=user.id).first()
-            
-#             if not account:
-#                 messages.error(request, f"No {account_type} account found")
-#                 return redirect('balance_topup')
-            
-#             # Update the balance
-#             account.balance += amount
-#             account.save()
-            
-#             # Create transaction record
-#             Transaction.objects.create(
-#                 sender_account=account,
-#                 receiver_account=account,  # Same account for topup
-#                 amount=amount,
-#                 transaction_type='TOPUP'
-#             )
-            
-#             messages.success(request, f"Successfully added {amount} to your {account_type} account")
-#             return redirect('userdashboard')
-            
-#         except ValueError:
-#             messages.error(request, "Invalid amount entered")
-#             return redirect('balance_topup')
-#         except Exception as e:
-#             messages.error(request, f"An error occurred: {str(e)}")
-#             return redirect('balance_topup')
-    
-#     # For GET request, just render the form
-#     return render(request, 'customer/balance_topup.html')
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': 'An error occurred. Please try again.'
+        })
 
 
 

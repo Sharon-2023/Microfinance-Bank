@@ -60,6 +60,28 @@ Money{% endblock %} {% block content %}
         {% endfor %}
     </div>
     {% endif %}
+
+    <!-- Add this PIN modal just before closing the fixed-deposit-container div -->
+    <div id="pinVerificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Enter Transaction PIN</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="pin-container">
+                <div class="pin-input-group">
+                    <input type="password" class="pin-input" maxlength="1" data-index="1">
+                    <input type="password" class="pin-input" maxlength="1" data-index="2">
+                    <input type="password" class="pin-input" maxlength="1" data-index="3">
+                    <input type="password" class="pin-input" maxlength="1" data-index="4">
+                    <input type="password" class="pin-input" maxlength="1" data-index="5">
+                    <input type="password" class="pin-input" maxlength="1" data-index="6">
+                </div>
+                <div id="pinError" class="error-message"></div>
+                <button onclick="verifyPin()" class="verify-button">Verify PIN</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -201,6 +223,170 @@ Money{% endblock %} {% block content %}
             padding: 1.5rem;
         }
     }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+    }
+
+    .modal-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+        color: #2d3436;
+        margin: 0;
+    }
+
+    .close {
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .pin-container {
+        text-align: center;
+    }
+
+    .pin-input-group {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .pin-input {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 1.2rem;
+        -webkit-text-security: disc;
+    }
+
+    .pin-input:focus {
+        border-color: #00b4db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 180, 219, 0.1);
+    }
+
+    .verify-button {
+        background: #00b4db;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .verify-button:hover {
+        background: #0083b0;
+    }
+
+    .error-message {
+        color: #e74c3c;
+        margin: 1rem 0;
+        min-height: 20px;
+    }
 </style>
+
+<!-- Add this script at the end of your file -->
+<script>
+    // Get the form and add submit event listener
+    document.querySelector('.topup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('pinVerificationModal').style.display = 'block';
+        document.querySelector('.pin-input[data-index="1"]').focus();
+    });
+
+    // Close modal when clicking the X
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('pinVerificationModal').style.display = 'none';
+        clearPinInputs();
+    });
+
+    // Handle PIN input navigation
+    document.querySelectorAll('.pin-input').forEach(input => {
+        input.addEventListener('keyup', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                const currentIndex = parseInt(input.getAttribute('data-index'));
+                if (currentIndex < 6) {
+                    document.querySelector(`.pin-input[data-index="${currentIndex + 1}"]`).focus();
+                }
+            } else if (e.key === 'Backspace') {
+                const currentIndex = parseInt(input.getAttribute('data-index'));
+                if (currentIndex > 1) {
+                    document.querySelector(`.pin-input[data-index="${currentIndex - 1}"]`).focus();
+                }
+            }
+        });
+    });
+
+    function verifyPin() {
+        const pin = Array.from(document.querySelectorAll('.pin-input'))
+            .map(input => input.value)
+            .join('');
+
+        if (pin.length !== 6) {
+            document.getElementById('pinError').textContent = 'Please enter all 6 digits';
+            return;
+        }
+
+        // Submit the form with PIN
+        fetch('/verify-transaction-pin/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ pin: pin })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.querySelector('.topup-form').submit();
+            } else {
+                document.getElementById('pinError').textContent = data.message;
+                clearPinInputs();
+            }
+        })
+        .catch(error => {
+            document.getElementById('pinError').textContent = 'An error occurred. Please try again.';
+            clearPinInputs();
+        });
+    }
+
+    function clearPinInputs() {
+        document.querySelectorAll('.pin-input').forEach(input => {
+            input.value = '';
+        });
+        document.querySelector('.pin-input[data-index="1"]').focus();
+    }
+</script>
 
 {% endblock %}
