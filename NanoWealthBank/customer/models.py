@@ -23,7 +23,7 @@ class Customer(models.Model):
         upload_to='customer_documents/', null=True, blank=True)
     pin_hash = models.CharField(max_length=128, blank=True, null=True)
     is_active = models.BooleanField(default=False)
-    transaction_pin = models.CharField(max_length=128, blank=True, null=True)  # Store hashed PIN
+    transaction_pin = models.CharField(max_length=6, null=True, blank=True)
     
     def __str__(self):
         return self.customer_name
@@ -40,6 +40,12 @@ class Customer(models.Model):
 
     def verify_pin(self, pin):
         return check_password(pin, self.transaction_pin)  # Verify the PIN
+
+    def save(self, *args, **kwargs):
+        if self.transaction_pin:
+            # Ensure PIN is stored as a clean string
+            self.transaction_pin = str(self.transaction_pin).strip()
+        super().save(*args, **kwargs)
 
 
 class Admin(models.Model):

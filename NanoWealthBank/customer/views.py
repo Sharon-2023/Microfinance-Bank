@@ -601,26 +601,45 @@ def view_profile(request):
 
     # If the form is submitted, handle POST request to update the profile
     if request.method == 'POST':
-        # Get data from the form fields
-        customer_name = request.POST.get('customer_name')
-        email = request.POST.get('email')
-        mobile_number = request.POST.get('mobile_number')
-        date_of_birth = request.POST.get('date_of_birth')
+        action = request.POST.get('action')
+        
+        if action == 'change_pin':
+            current_pin = request.POST.get('current_pin')
+            new_pin = request.POST.get('new_pin')
+            confirm_pin = request.POST.get('confirm_pin')
+            
+            # Validate current PIN
+            if str(user.transaction_pin) != current_pin:
+                messages.error(request, "Current PIN is active.")
+            # Validate new PIN
+            elif len(new_pin) != 6 or not new_pin.isdigit():
+                messages.error(request, "New PIN must be 6 digits.")
+            # Confirm PINs match
+            elif new_pin != confirm_pin:
+                messages.error(request, "New PINs do not match.")
+            else:
+                # Update PIN
+                user.transaction_pin = new_pin
+                user.save()
+                messages.success(request, "PIN updated successfully!")
+        else:
+            # Handle regular profile updates
+            customer_name = request.POST.get('customer_name')
+            email = request.POST.get('email')
+            mobile_number = request.POST.get('mobile_number')
+            date_of_birth = request.POST.get('date_of_birth')
 
-        # Update the user's profile data
-        user.customer_name = customer_name
-        user.email = email
-        user.mobile_number = mobile_number
-        user.date_of_birth = date_of_birth
+            user.customer_name = customer_name
+            user.email = email
+            user.mobile_number = mobile_number
+            user.date_of_birth = date_of_birth
+            user.save()
+            messages.success(request, "Profile updated successfully!")
 
-        # Save updated information
-        user.save()
-
-        # Success message
-        messages.success(request, "Profile updated successfully!")
-
-        # Redirect to the profile page to show the updated data
         return redirect('view_profile')
+
+    # Check if user has PIN set up
+    has_pin = bool(user.transaction_pin) if hasattr(user, 'transaction_pin') else False
 
     # Render the profile template with the necessary data
     return render(request, 'customer/view_profile.html', {
@@ -628,6 +647,7 @@ def view_profile(request):
         'savings_account': saving_bank,
         'current_bank': current_bank,
         'not_approved_message': not_approved_message,
+        'has_pin': has_pin,
     })
 
 
@@ -844,9 +864,9 @@ def topup_balance(request):
 
     # Render top-up form page if GET request
     return render(request, 'customer/balance_topup.html', {'account': account})
+
+
 # Transactions
-
-
 def transactions(request):
     user = request.session.get('user_id')
     account_number = 0
@@ -1016,6 +1036,7 @@ def add_deposit(request):
 
 
 # @require_device_authentication
+
 @csrf_exempt
 def internet_banking(request):
     user = request.session.get('user_id')
@@ -1086,7 +1107,30 @@ def internet_banking(request):
     })
 
 
+def setup_pin(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
 
+    customer = Customer.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        pin = request.POST.get('pin')
+        confirm_pin = request.POST.get('confirm_pin')
+
+        if pin != confirm_pin:
+            messages.error(request, 'PINs do not match.')
+            return redirect('setup_pin')
+
+        if len(pin) != 6 or not pin.isdigit():
+            messages.error(request, 'PIN must be a 6-digit number.')
+            return redirect('setup_pin')
+
+        customer.set_pin(pin)
+        messages.success(request, 'PIN set successfully!')
+        return redirect('userdashboard')
+
+    return render(request, 'customer/setup_pin.html')
 
 def payment_success(request):
     # Retrieve transaction details from query parameters
@@ -2742,6 +2786,99 @@ def verify_document_and_face(document, face_image):
     except Exception as e:
         print(f"Document verification error: {str(e)}")
         return False, "Invalid document format. Please upload a clear photo of your Aadhar, PAN, or Passport."
+
+# #balnce topup page- securi
+# @require_POST
+# def verify_transaction_pin(request):
+#     try:
+#         data = json.loads(request.body)
+#         entered_pin = str(data.get('pin'))
+        
+#         # Get user's stored PIN
+#         user_id = request.session.get('user_id')
+#         if not user_id:
+#             return JsonResponse({
+#                 'success': False,
+#                 'message': 'User session expired. Please login again.'
+#             })
+
+#         user = Customer.objects.get(id=user_id)
+        
+#         if not user.transaction_pin:
+#             return JsonResponse({
+#                 'success': False,
+#                 'message': 'Please set up your transaction PIN first'
+#             })
+
+#         # Verify PIN
+#         if check_password(entered_pin, user.transaction_pin):
+#             return JsonResponse({
+#                 'success': True,
+#                 'message': 'PIN verified successfully'
+#             })
+#         else:
+#             return JsonResponse({
+#                 'success': False,
+#                 'message': 'Incorrect PIN. Please try again.'
+#             })
+        
+#     except Exception as e:
+#         print(f"Error in PIN verification: {str(e)}")
+#         return JsonResponse({
+#             'success': False,
+#             'message': 'An error occurred. Please try again.'
+#         })
+
+# def balance_topup(request):
+#     if request.method == 'POST':
+#         try:
+#             user_id = request.session.get('user_id')
+#             user = Customer.objects.get(id=user_id)
+            
+#             # Get the amount from the form
+#             amount = Decimal(request.POST.get('amount', '0'))
+            
+#             if amount <= 0:
+#                 messages.error(request, "Amount must be greater than 0")
+#                 return redirect('balance_topup')
+            
+#             # Get the account type from the form
+#             account_type = request.POST.get('account_type')
+            
+#             # Find the correct account
+#             if account_type == 'savings':
+#                 account = Savings.objects.filter(user_id=user.id).first()
+#             else:
+#                 account = Current.objects.filter(user_id=user.id).first()
+            
+#             if not account:
+#                 messages.error(request, f"No {account_type} account found")
+#                 return redirect('balance_topup')
+            
+#             # Update the balance
+#             account.balance += amount
+#             account.save()
+            
+#             # Create transaction record
+#             Transaction.objects.create(
+#                 sender_account=account,
+#                 receiver_account=account,  # Same account for topup
+#                 amount=amount,
+#                 transaction_type='TOPUP'
+#             )
+            
+#             messages.success(request, f"Successfully added {amount} to your {account_type} account")
+#             return redirect('userdashboard')
+            
+#         except ValueError:
+#             messages.error(request, "Invalid amount entered")
+#             return redirect('balance_topup')
+#         except Exception as e:
+#             messages.error(request, f"An error occurred: {str(e)}")
+#             return redirect('balance_topup')
+    
+#     # For GET request, just render the form
+#     return render(request, 'customer/balance_topup.html')
 
 
 
