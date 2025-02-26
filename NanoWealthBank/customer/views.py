@@ -54,6 +54,7 @@ import google.generativeai as genai
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
+import uuid
 import pyotp
 #import face_recognition 
 from functools import wraps
@@ -95,51 +96,66 @@ def login(request):
         password = request.POST.get('password')
         print(email, password)
 
-        # Check for Admin
+        user = None
+        user_role = None
+
         try:
-            admin = Admin.objects.get(email=email)
-            if admin.password == password:
-                request.session['user_id'] = admin.id
-                request.session['user_email'] = admin.email
-                request.session['user_role'] = 'admin'
-                request.session['username'] = admin.username
-                return redirect('admindashboard')
-            else:
-                messages.error(request, "Invalid admin credentials.")
-                return render(request, 'login.html')
-        except Admin.DoesNotExist:
-            # Check for Loan Officer
+            manager = Manager.objects.get(manager_id=email)
+            if check_password(password, manager.password):
+                user, user_role = manager, 'manager'
+        except Manager.DoesNotExist:
             try:
-                loan_officer = LoanOfficer.objects.get(email=email)
-                if loan_officer.password == password:
-                    request.session['user_id'] = loan_officer.id
-                    request.session['user_email'] = loan_officer.email
-                    request.session['user_role'] = 'loan_officer'
-                    request.session['username'] = f"{loan_officer.first_name} {loan_officer.last_name}"
-                    return redirect('loanofficerdashboard')
-                else:
-                    messages.error(request, "Invalid loan officer credentials.")
-                    return render(request, 'login.html')
-            except LoanOfficer.DoesNotExist:
-                # Finally check for Customer
+                admin = Admin.objects.get(email=email)
+                if admin.password == password:
+                    user, user_role = admin, 'admin'
+            except Admin.DoesNotExist:
                 try:
-                    customer = Customer.objects.get(email=email)
-                    if check_password(password, customer.password):
-                        if customer.is_active:
-                            request.session['user_id'] = customer.id
-                            request.session['user_email'] = customer.email
-                            request.session['user_role'] = 'customer'
-                            request.session['username'] = customer.username
-                            return redirect('userdashboard')
-                        else:
-                            messages.error(request, "Customer Not Approved Yet.")
-                            return render(request, 'login.html')
-                    else:
-                        messages.error(request, "Invalid customer credentials.")
+                    loan_officer = LoanOfficer.objects.get(email=email)
+                    if loan_officer.password == password:
+                        user, user_role = loan_officer, 'loan_officer'
+                except LoanOfficer.DoesNotExist:
+                    try:
+                        customer = Customer.objects.get(email=email)
+                        if check_password(password, customer.password):
+                            if customer.is_active:
+                                user, user_role = customer, 'customer'
+                            else:
+                                messages.error(request, "Customer Not Approved Yet.")
+                                return render(request, 'login.html')
+                    except Customer.DoesNotExist:
+                        messages.error(request, "No account found with this email.")
                         return render(request, 'login.html')
-                except Customer.DoesNotExist:
-                    messages.error(request, "No account found with this email.")
-                    return render(request, 'login.html')
+
+        if user:
+            request.session['user_id'] = user.id
+            request.session['user_email'] = user.email
+            request.session['user_role'] = user_role
+            request.session['username'] = getattr(user, 'username', f"{getattr(user, 'first_name', '')} {getattr(user, 'last_name', '')}").strip()
+            
+            # # Check for trusted device
+            # device_id = request.COOKIES.get('device_id')
+            # if not device_id or not cache.get(f"trusted_device_{user.id}_{device_id}"):
+            #     device_id = str(uuid.uuid4())
+            #     response = redirect('verify_device')
+            #     response.set_cookie('device_id', device_id, max_age=365*24*60*60)  # 1 year
+            #     return response
+            
+            # Redirect based on user role
+            if user_role == 'manager':
+                return redirect('managerdashboard')
+            elif user_role == 'admin':
+                return redirect('admindashboard')
+            elif user_role == 'loan_officer':
+                return redirect('loanofficerdashboard')
+            elif user_role == 'customer':
+                return redirect('userdashboard')
+        
+        messages.error(request, "Invalid credentials.")
+        return render(request, 'login.html')
+    
+    # Explicitly return a response for GET requests
+    return render(request, 'login.html')
+
 
 
 # # If login is successful, check if the device is trusted
@@ -1068,6 +1084,8 @@ def internet_banking(request):
         'customer': account,
         'account_balance': account.balance if account else 0
     })
+
+
 
 
 def payment_success(request):

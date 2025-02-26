@@ -21,7 +21,7 @@
                         {% endfor %}
                     {% endif %}
 
-                    <form method="POST" action="{% url 'activate_classiccard' %}" class="needs-validation" novalidate>
+                    <form method="POST" action="{% url 'activate_classiccard' %}" id="classic_card" class="needs-validation" novalidate>
                         {% csrf_token %}
                         
                         <div class="form-group">

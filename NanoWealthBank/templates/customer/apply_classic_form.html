@@ -19,19 +19,19 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" name="full_name" value="{{ customer.customer_name }}" readonly>
+                                    <input type="text" id=full_name class="form-control" name="full_name" value="{{ customer.customer_name }}" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" name="email" value="{{ customer.email }}" readonly>
+                                    <input type="email" id=email class="form-control" name="email" value="{{ customer.email }}" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Mobile Number</label>
-                                    <input type="tel" class="form-control" name="mobile" value="{{ customer.mobile_number }}" readonly>
+                                    <input type="tel" id=mobile class="form-control" name="mobile" value="{{ customer.mobile_number }}" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Date of Birth</label>
-                                    <input type="date" class="form-control" name="dob" value="{{ customer.date_of_birth|date:'Y-m-d' }}" readonly>
+                                    <input type="date" id=dob class="form-control" name="dob" value="{{ customer.date_of_birth|date:'Y-m-d' }}" readonly>
                                 </div>
                             </div>
                         </div>
@@ -42,19 +42,19 @@
                             <div class="row">
                                 <div class="col-md-12 mb-3">
                                     <label class="form-label">Address Line</label>
-                                    <input type="text" class="form-control" name="address" required>
+                                    <input type="text" id=address class="form-control" name="address" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">PIN Code</label>
-                                    <input type="text" class="form-control" name="pincode" id="pincode" maxlength="6" required>
+                                    <input type="text" id=pincode class="form-control" name="pincode" id="pincode" maxlength="6" required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">City</label>
-                                    <input type="text" class="form-control" name="city" id="city" readonly required>
+                                    <input type="text" id=city class="form-control" name="city" id="city" readonly required>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">State</label>
-                                    <input type="text" class="form-control" name="state" id="state" readonly required>
+                                    <input type="text" id=state class="form-control" name="state" id="state" readonly required>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
 
                         <!-- Submit Button -->
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                            <button type="submit" id=submit class="btn btn-primary btn-lg">Submit Application</button>
                         </div>
                     </form>
                 </div>

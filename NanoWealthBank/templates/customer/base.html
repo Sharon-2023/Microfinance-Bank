@@ -369,14 +369,14 @@
         </li>
         <ul>
           <li>
-            <span class="sidebar-span" onclick="toggleDropdown(this)">
+            <span class="sidebar-span" id="card_services" onclick="toggleDropdown(this)">
               Card Services
               <span class="dropdown-arrow">▼</span>
             </span>
 
             <ul class="dropdown-content">
               <li>
-                <a href="{% url 'apply_card' %}" class="dropdown-content-link">
+                <a href="{% url 'apply_card' %}" id="apply_card" class="dropdown-content-link">
                   Apply New Card
                 </a>
               </li>

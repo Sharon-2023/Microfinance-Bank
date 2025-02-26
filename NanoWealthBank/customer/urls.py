@@ -65,6 +65,8 @@ urlpatterns = [
     path('add_deposit/', views.add_deposit, name='add_deposit'),
     path('download_statement/', views.download_statement, name='download_statement'),
     path('internet-banking/', views.internet_banking, name='internet_banking'),
+    
+
 
     path('admin_dashboard/', views.admin_dashboard, name='admindashboard'),
     path('customer_list/', views.customer_list, name='customer_list'),

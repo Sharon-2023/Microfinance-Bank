@@ -23,15 +23,7 @@ class Customer(models.Model):
         upload_to='customer_documents/', null=True, blank=True)
     pin_hash = models.CharField(max_length=128, blank=True, null=True)
     is_active = models.BooleanField(default=False)
-    # document_type = models.CharField(max_length=20, choices=[
-    #     ('aadhar', 'Aadhar Card'),
-    #     ('pan', 'PAN Card'),
-    #     ('passport', 'Passport')
-    # ])
-    # document_number = models.CharField(max_length=20, unique=True)
-    # document_file = models.FileField(upload_to='customer_documents/')
-    # face_image = models.ImageField(upload_to='customer_faces/', null=True)
-    # is_face_verified = models.BooleanField(default=False)
+    transaction_pin = models.CharField(max_length=128, blank=True, null=True)  # Store hashed PIN
     
     def __str__(self):
         return self.customer_name
@@ -42,13 +34,12 @@ class Customer(models.Model):
     def check_pin(self, raw_pin):
         return check_password(raw_pin, self.pin_hash)
 
-    # class Meta:
-    #     constraints = [
-    #         models.UniqueConstraint(
-    #             fields=['document_type', 'document_number'],
-    #             name='unique_document'
-    #         )
-    #     ]
+    def set_pin(self, pin):
+        self.transaction_pin = make_password(pin)  # Hash the PIN
+        self.save()
+
+    def verify_pin(self, pin):
+        return check_password(pin, self.transaction_pin)  # Verify the PIN
 
 
 class Admin(models.Model):
