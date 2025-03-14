@@ -19,6 +19,8 @@ from django.urls import path, include
 from customer import views
 from django.conf import settings
 from django.conf.urls.static import static
+from admin_app import views as admin_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +33,8 @@ urlpatterns = [
     path('upload-salary-certificate/', views.upload_salary_certificate, name='upload_salary_certificate'),
     path('download-receipt/', views.download_receipt, name='download_receipt'),
     path('customer/card_details/', views.card_details, name='card_details'),
+    path('admin_deposits/', admin_views.admin_deposits_list, name='admin_deposits_list'),
+    path('analytics/', admin_views.admin_analytics, name='admin_analytics'),
 ]
 
 if settings.DEBUG:

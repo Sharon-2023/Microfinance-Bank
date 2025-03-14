@@ -1,35 +1,363 @@
 {% extends 'customer/base.html' %}
 {% load static %}
-{% block title %}Add Deposit{% endblock %}
+{% block title %}Add Fixed Deposit{% endblock %}
 {% block content %}
 
 <div class="fixed-deposit-container">
-    <h1>Add New Fixed Deposit</h1>
-    <form method="post" action="{% url 'add_deposit' %}">
-        {% csrf_token %}
-        
-        <label for="customer_name">Customer Name:</label>
-        <input type="text" id="customer_name" name="customer_name" value="{{userdata.customer_name}}" readonly >
-        <br><br>
+    <div class="fd-header">
+        <h1>Create Fixed Deposit</h1>
+        <p>Choose your investment duration and amount to get started</p>
+    </div>
 
-        <label for="deposit_amount">Deposit Amount:</label>
-        <input type="number" id="deposit_amount" name="deposit_amount" step="0.01" required>
-        <br><br>
+    <div class="fd-calculator">
+        <form method="post" action="{% url 'add_deposit' %}" id="fdForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Account Details</label>
+                <div class="account-info">
+                    <div class="info-item">
+                        <span>Account Holder:</span>
+                        <strong>{{userdata.customer_name}}</strong>
+                        <input type="hidden" name="customer_name" value="{{userdata.customer_name}}">
+                    </div>
+                    <div class="info-item">
+                        <span>Available Balance:</span>
+                        <strong>₹{{userdata.balance}}</strong>
+                    </div>
+                </div>
+            </div>
 
-        <label for="interest_rate">Interest Rate (%):</label>
-        <input type="number" id="interest_rate" name="interest_rate" step="0.01" value="10" readonly>
-        <br><br>
+            <div class="form-group">
+                <label for="deposit_amount">Deposit Amount</label>
+                <div class="amount-input">
+                    <span class="currency">₹</span>
+                    <input type="number" id="deposit_amount" name="deposit_amount" 
+                           min="1000" step="100" required 
+                           oninput="calculateMaturityAmount()"
+                           max="{{userdata.balance}}">
+                </div>
+                <small>Minimum: ₹1,000 | Maximum: Available balance</small>
+            </div>
 
-        <label for="duration_months">Duration (Months):</label>
-        <input type="number" id="duration_months" name="duration_months" required>
-        <br><br>
+            <div class="form-group">
+                <label for="duration_months">Select Duration</label>
+                <div class="duration-options">
+                    <div class="duration-option">
+                        <input type="radio" id="duration5d" name="duration_months" value="0.167">
+                        <label for="duration5d">5 Days<br><small>8% p.a.</small></label>
+                    </div>
+                    <div class="duration-option">
+                        <input type="radio" id="duration1m" name="duration_months" value="1">
+                        <label for="duration1m">1 Month<br><small>8.5% p.a.</small></label>
+                    </div>
+                    <div class="duration-option">
+                        <input type="radio" id="duration3m" name="duration_months" value="3">
+                        <label for="duration3m">3 Months<br><small>9% p.a.</small></label>
+                    </div>
+                    <div class="duration-option">
+                        <input type="radio" id="duration6m" name="duration_months" value="6">
+                        <label for="duration6m">6 Months<br><small>9.5% p.a.</small></label>
+                    </div>
+                    <div class="duration-option">
+                        <input type="radio" id="duration1y" name="duration_months" value="12">
+                        <label for="duration1y">1 Year<br><small>10% p.a.</small></label>
+                    </div>
+                </div>
+            </div>
 
-        <button type="submit">Submit</button>
-    </form>
-    <div style="margin: 10px;padding:5px">
+            <div class="calculation-summary">
+                <h3>Investment Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <span>Principal Amount</span>
+                        <strong id="principalDisplay">₹0</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Interest Rate</span>
+                        <strong id="rateDisplay">0%</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Interest Earned</span>
+                        <strong id="interestDisplay">₹0</strong>
+                    </div>
+                    <div class="summary-item">
+                        <span>Maturity Date</span>
+                        <strong id="maturityDate">-</strong>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Maturity Amount</span>
+                        <strong id="maturityDisplay">₹0</strong>
+                    </div>
+                </div>
+            </div>
 
-        <a  href="{% url 'list_deposits' %}">Back to Deposit List</a>
+            <div class="payment-section">
+                <h3>Payment Method</h3>
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <input type="radio" id="debitFromAccount" name="payment_method" value="account" checked>
+                        <label for="debitFromAccount">
+                            <i class="fas fa-university"></i>
+                            Debit from Account
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Create Fixed Deposit</button>
+                <a href="{% url 'list_deposits' %}" class="back-btn">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<style>
+    .fixed-deposit-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+
+    .fd-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .fd-header h1 {
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+    }
+
+    .fd-header p {
+        color: #666;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .account-info {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin: 0.5rem 0;
+    }
+
+    .amount-input {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .currency {
+        position: absolute;
+        left: 1rem;
+        color: #666;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 0.75rem;
+        padding-left: 2rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .duration-options {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .duration-option {
+        position: relative;
+    }
+
+    .duration-option input[type="radio"] {
+        display: none;
+    }
+
+    .duration-option label {
+        display: block;
+        padding: 1rem;
+        text-align: center;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .duration-option input[type="radio"]:checked + label {
+        background: #6B46C1;
+        color: white;
+        border-color: #6B46C1;
+    }
+
+    .calculation-summary {
+        background: #f8fafc;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem;
+        background: white;
+        border-radius: 6px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .summary-item.total {
+        grid-column: 1 / -1;
+        background: #6B46C1;
+        color: white;
+    }
+
+    .payment-section {
+        margin: 2rem 0;
+    }
+
+    .payment-options {
+        margin-top: 1rem;
+    }
+
+    .payment-option label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .submit-btn, .back-btn {
+        flex: 1;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn {
+        background: #6B46C1;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .back-btn {
+        background: #f8fafc;
+        color: #666;
+        border: 1px solid #e2e8f0;
+    }
+
+    .submit-btn:hover {
+        background: #553C9A;
+    }
+
+    .back-btn:hover {
+        background: #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+        .duration-options {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    function calculateMaturityAmount() {
+        const principal = parseFloat(document.getElementById('deposit_amount').value) || 0;
+        const selectedDuration = document.querySelector('input[name="duration_months"]:checked');
+        const duration = selectedDuration ? parseFloat(selectedDuration.value) : 0;
+        
+        let rate;
+        if (duration >= 12) rate = 10;
+        else if (duration >= 6) rate = 9.5;
+        else if (duration >= 3) rate = 9;
+        else if (duration >= 1) rate = 8.5;
+        else rate = 8;
+
+        // Calculate compound interest
+        const monthlyRate = rate / (12 * 100);
+        const maturityAmount = principal * Math.pow(1 + monthlyRate, duration);
+        const interestEarned = maturityAmount - principal;
+
+        // Calculate maturity date
+        const today = new Date();
+        if (duration < 1) {
+            today.setDate(today.getDate() + 5);
+        } else {
+            today.setMonth(today.getMonth() + Math.floor(duration));
+            const remainingDays = Math.round((duration % 1) * 30);
+            today.setDate(today.getDate() + remainingDays);
+        }
+
+        // Update display
+        document.getElementById('principalDisplay').textContent = '₹' + principal.toLocaleString('en-IN');
+        document.getElementById('rateDisplay').textContent = rate + '%';
+        document.getElementById('interestDisplay').textContent = '₹' + interestEarned.toLocaleString('en-IN', {
+            maximumFractionDigits: 2
+        });
+        document.getElementById('maturityDisplay').textContent = '₹' + maturityAmount.toLocaleString('en-IN', {
+            maximumFractionDigits: 2
+        });
+        document.getElementById('maturityDate').textContent = today.toLocaleDateString('en-IN');
+    }
+
+    // Add event listeners
+    document.querySelectorAll('input[name="duration_months"]').forEach(radio => {
+        radio.addEventListener('change', calculateMaturityAmount);
+    });
+
+    document.getElementById('deposit_amount').addEventListener('input', calculateMaturityAmount);
+
+    // Initialize calculation
+    document.addEventListener('DOMContentLoaded', calculateMaturityAmount);
+</script>
 
 {% endblock %}

@@ -1,13 +1,13 @@
-{% extends 'customer/base.html' %}
-{% load static %} 
+{% extends 'baseadmin.html' %}
+{% load static %}
 
-{% block title %}Deposit Details{% endblock %}
+{% block title %}Fixed Deposits List{% endblock %}
 
 {% block content %}
 <div class="fixed-deposit-container">
     <div class="fd-header">
-        <h1>Fixed Deposit List</h1>
-        <p>Manage your fixed deposits and track their performance</p>
+        <h1>Customer Fixed Deposits</h1>
+        <p>View and manage all customer fixed deposits</p>
     </div>
 
     {% if messages %}
@@ -20,17 +20,12 @@
     </div>
     {% endif %}
     
-    <div class="add-deposit">
-        <button type="submit"><a href="{% url 'add_deposit' %}" style="text-decoration: none;color:inherit">
-            <i class="fas fa-plus"></i> Add New Deposit
-        </a></button>
-    </div>
-    
     {% if deposits %}
     <table class="loan-table">
         <thead>
             <tr>
                 <th>Deposit ID</th>
+                <th>Customer Name</th>
                 <th>Deposit Amount</th>
                 <th>Interest Rate (%)</th>
                 <th>Duration</th>
@@ -44,6 +39,7 @@
         {% for deposit in deposits %}
             <tr>
                 <td><strong>FD-{{ deposit.id }}</strong></td>
+                <td>{{ deposit.customer_name }}</td>
                 <td>₹{{ deposit.deposit_amount|floatformat:2 }}</td>
                 <td>{{ deposit.interest_rate|floatformat:2 }}%</td>
                 <td>
@@ -71,7 +67,7 @@
     </table>
     {% else %}
     <div class="no-deposits">
-        <p>No fixed deposits found. Create your first fixed deposit now!</p>
+        <p>No fixed deposits found in the system.</p>
     </div>
     {% endif %}
 </div>
@@ -129,30 +125,6 @@
         color: #2D3748;
     }
 
-    .add-deposit {
-        margin: 20px 0;
-        text-align: right;
-    }
-
-    .add-deposit button {
-        background: #6B46C1;
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .add-deposit button:hover {
-        background: #553C9A;
-        transform: translateY(-1px);
-    }
-
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;
@@ -179,11 +151,6 @@
         margin: 2rem 0;
     }
 
-    .no-deposits p {
-        color: #4A5568;
-        font-size: 1.1rem;
-    }
-
     tr:hover {
         background: #F7FAFC;
         transition: background-color 0.2s ease;
@@ -202,59 +169,5 @@
             white-space: nowrap;
         }
     }
-
-    .messages {
-        margin: 1rem 0;
-    }
-
-    .alert {
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        font-weight: 500;
-    }
-
-    .alert-success {
-        background-color: #C6F6D5;
-        color: #22543D;
-        border: 1px solid #9AE6B4;
-    }
-
-    .alert-error {
-        background-color: #FED7D7;
-        color: #822727;
-        border: 1px solid #FEB2B2;
-    }
-
-    /* Animation for new alerts */
-    @keyframes slideIn {
-        from {
-            transform: translateY(-20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    .alert {
-        animation: slideIn 0.3s ease-out;
-    }
 </style>
-
-<script>
-    // Auto-hide messages after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            const messages = document.querySelector('.messages');
-            if (messages) {
-                messages.style.transition = 'opacity 0.5s ease-out';
-                messages.style.opacity = '0';
-                setTimeout(() => messages.remove(), 500);
-            }
-        }, 5000);
-    });
-</script>
-
-{% endblock %}
+{% endblock %} 

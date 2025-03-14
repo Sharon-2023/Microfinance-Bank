@@ -9,12 +9,20 @@
   </head>
   <body>
     <div class="navbar">
-      <h1>Admin Dashboard</h1>
+      <div class="nav-brand">
+        <h1>NanoWealth Bank</h1>
+      </div>
       <div class="nav-right">
-        <a href="{% url 'logout_view' %}" class="logout-btn">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Logout</span>
-        </a>
+        <div class="admin-profile" onclick="toggleDropdown()">
+          <i class="fas fa-user-circle"></i>
+          <span>Admin</span>
+          <div class="dropdown-menu" id="adminDropdown">
+            <a href="{% url 'logout_view' %}" class="dropdown-item">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -31,9 +39,9 @@
           <li>
             <a href="{% url 'loanofficer_list' %}"><i class="fas fa-user-tie"></i> Loan Officer List</a>
           </li>
-          <li>
+          <!-- <li>
             <a href="{% url 'manager_list' %}"><i class="fas fa-user-shield"></i> Branch Managers</a>
-          </li>
+          </li> -->
           <li>
             <a href="{% url 'transactions_list' %}"><i class="fas fa-exchange-alt"></i> Transaction Monitoring</a>
           </li>
@@ -49,19 +57,42 @@
           <li>
             <a href="{% url 'admin_card_applications' %}"><i class="fas fa-credit-card"></i> Card Applications</a>
           </li>
+          <li>
+            <a href="{% url 'admin_deposits_list' %}" class="nav-link">
+                <i class="fas fa-piggy-bank"></i>
+                <span>Fixed Deposits</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin_analytics' %}">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+          </li>
         </ul>
       </div>
       <main class="container">{% block content %} {% endblock %}</main>
     </div>
 
     <style>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #6B46C1 0%, #9F7AEA 100%);
+        --sidebar-gradient: linear-gradient(180deg, #4A5568 0%, #2D3748 100%);
+        --text-primary: #2D3748;
+        --text-secondary: #E2E8F0;
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+      }
+
       body {
         margin: 0;
         padding: 0;
         overflow-x: hidden;
         min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f4f6f9;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background: #f8fafc;
+        color: var(--text-primary);
       }
 
       .dashboard {
@@ -76,36 +107,33 @@
         left: 0;
         right: 0;
         height: 70px;
-        background: linear-gradient(135deg, #0a2463 0%, #1e3d59 100%);
+        background: var(--primary-gradient);
         color: white;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 2rem;
         z-index: 1000;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-md);
       }
 
       .navbar h1 {
         font-size: 1.5rem;
         font-weight: 600;
-        color: #fff;
-        margin: 0;
         letter-spacing: 0.5px;
-        text-transform: uppercase;
       }
 
       .left-container {
         width: 280px;
         height: calc(100vh - 70px);
-        background: linear-gradient(180deg, #0a2463 0%, #1e3d59 100%);
+        background: var(--sidebar-gradient);
         padding: 1.5rem 0;
         position: fixed;
         left: 0;
         top: 70px;
-        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-md);
         overflow-y: auto;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         z-index: 999;
       }
 
@@ -113,9 +141,7 @@
         flex: 1;
         margin-left: 280px;
         padding: 2rem;
-        overflow-y: auto;
-        height: calc(100vh - 70px);
-        background: #f4f6f9;
+        background: #f8fafc;
       }
 
       .menu-items {
@@ -125,64 +151,69 @@
       }
 
       .menu-items li {
-        position: relative;
-        margin: 0.5rem 0;
+        margin: 0.25rem 0;
       }
 
       .menu-items a {
         display: flex;
         align-items: center;
-        padding: 1rem 1.5rem;
-        color: #e8eef7;
+        padding: 0.875rem 1.5rem;
+        color: var(--text-secondary);
         text-decoration: none;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: var(--transition);
         font-weight: 500;
-        position: relative;
-        overflow: hidden;
+        letter-spacing: 0.3px;
       }
 
-      .menu-items a:before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 4px;
-        background-color: #4a90e2;
-        opacity: 0;
-        transition: all 0.3s ease;
+      .menu-items a i {
+        width: 24px;
+        font-size: 1.1rem;
+        margin-right: 12px;
+        text-align: center;
       }
 
       .menu-items a:hover {
         background: rgba(255, 255, 255, 0.1);
-        color: #4a90e2;
+        color: #fff;
         transform: translateX(5px);
       }
 
-      .menu-items a:hover:before {
-        opacity: 1;
-      }
-
       .menu-items a.active {
-        background: rgba(74, 144, 226, 0.2);
-        color: #4a90e2;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border-left: 3px solid #fff;
       }
 
-      .menu-items a i {
-        margin-right: 12px;
-        font-size: 1.2rem;
-        width: 24px;
-        text-align: center;
-        transition: all 0.3s ease;
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid #e2e8f0;
       }
 
-      .menu-items a:hover i {
-        transform: scale(1.1);
-        color: #4a90e2;
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e2e8f0;
       }
 
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .logout-btn {
+        display: none;
+      }
+
+      /* Custom Scrollbar */
       .left-container::-webkit-scrollbar {
         width: 6px;
       }
@@ -196,31 +227,7 @@
         border-radius: 3px;
       }
 
-      .left-container::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.3);
-      }
-
-      .menu-items li:last-child a {
-        margin-top: 0;
-        background: none;
-        border: none;
-      }
-
-      .menu-items a::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-        top: 0;
-        left: -100%;
-        transition: all 0.5s ease;
-      }
-
-      .menu-items a:hover::after {
-        left: 0;
-      }
-
+      /* Responsive Design */
       @media (max-width: 768px) {
         .left-container {
           width: 70px;
@@ -231,78 +238,120 @@
           padding: 1rem;
         }
 
-        .menu-items a {
-          padding: 1rem;
-          justify-content: center;
-        }
-
         .menu-items a span {
           display: none;
         }
 
-        .menu-items a i {
-          margin: 0;
-          font-size: 1.3rem;
+        .menu-items a {
+          justify-content: center;
+          padding: 1rem;
         }
 
-        .navbar {
-          padding: 0 1rem;
+        .menu-items a i {
+          margin: 0;
         }
 
         .navbar h1 {
           font-size: 1.2rem;
         }
 
-        .logout-btn span {
+        .admin-profile span {
           display: none;
         }
-        
-        .logout-btn {
-          padding: 0.5rem;
-        }
-      }
-
-      .menu-items a.active::before {
-        opacity: 1;
-        box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
-      }
-
-      .menu-items a:hover {
-        box-shadow: 0 0 15px rgba(74, 144, 226, 0.1);
-      }
-
-      .container {
-        background: linear-gradient(135deg, #f4f6f9 0%, #ffffff 100%);
-        border-radius: 20px 0 0 0;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
       }
 
       .nav-right {
         display: flex;
         align-items: center;
+        gap: 1.5rem;
       }
 
-      .logout-btn {
+      .admin-profile {
+        position: relative;
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 0.5rem 1.2rem;
-        background: rgba(244, 67, 54, 0.1);
-        color: #fff;
+        gap: 0.75rem;
+        color: white;
+        cursor: pointer;
+        padding: 0.5rem;
         border-radius: 8px;
+        transition: var(--transition);
+      }
+
+      .admin-profile:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        min-width: 160px;
+        display: none;
+        z-index: 1000;
+        margin-top: 0.5rem;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .dropdown-menu.show {
+        display: block;
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-primary);
         text-decoration: none;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: var(--transition);
       }
 
-      .logout-btn:hover {
-        background: rgba(244, 67, 54, 0.2);
-        transform: translateY(-2px);
+      .dropdown-item:hover {
+        background: #f8fafc;
+        color: #6B46C1;
       }
 
-      .logout-btn i {
-        font-size: 1.1rem;
+      .dropdown-item i {
+        font-size: 1rem;
+      }
+
+      .admin-profile span {
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-brand h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: white;
       }
     </style>
+
+    <script>
+      function toggleDropdown() {
+        const dropdown = document.getElementById('adminDropdown');
+        dropdown.classList.toggle('show');
+      }
+
+      // Close dropdown when clicking outside
+      window.onclick = function(event) {
+        if (!event.target.closest('.admin-profile')) {
+          const dropdown = document.getElementById('adminDropdown');
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    </script>
   </body>
 </html>

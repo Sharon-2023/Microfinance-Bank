@@ -87,9 +87,13 @@ class Savings(models.Model):
     is_blocked = models.BooleanField(default=False)   # Admin block status
     balance = models.DecimalField(
         max_digits=10, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        db_table = 'savings_account'
 
 
 class Current(models.Model):
@@ -110,9 +114,14 @@ class Current(models.Model):
     is_blocked = models.BooleanField(default=False)   # Admin block status
     balance = models.DecimalField(
         max_digits=10, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.customer_name
+
+    class Meta:
+        db_table = 'current_account'
+
 
 class LoanApplication(models.Model):
     STATUS_CHOICES = (
@@ -148,7 +157,6 @@ class LoanApplication(models.Model):
         return f"Loan Application for {self.name}"
 
 
-
 class Transaction(models.Model):
     ACCOUNT_TYPE_CHOICES = [
         ('SAVINGS', 'Savings'),
@@ -178,37 +186,26 @@ class Transaction(models.Model):
     def __str__(self):
         return f"Transfer to {self.receiver_name} - {self.receiver_account_number}"
 
+    class Meta:
+        db_table = 'transaction'
+
+
 class FixedDeposit(models.Model):
-    user_id = models.CharField(max_length=50, blank=True, null=True)
     customer_name = models.CharField(max_length=100)
     deposit_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    interest_rate = models.DecimalField(max_digits=5, decimal_places=2)  # in percentage
-    duration_months = models.PositiveIntegerField()  # Duration in months
-    start_date = models.DateField(default=timezone.now)
-    maturity_date = models.DateField(editable=False)
-    maturity_amount = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
-
-    def save(self, *args, **kwargs):
-        # Calculate the maturity date based on duration
-        self.maturity_date = self.start_date + timedelta(days=30 * self.duration_months)
-        
-        # Calculate the maturity amount with compound interest formula
-        # A = P * (1 + r/n)^(nt) where P=principal, r=interest rate, t=time in years, n=compounding frequency
-        principal = float(self.deposit_amount)
-        rate = float(self.interest_rate) / 100  # Convert percentage to decimal
-        time = self.duration_months / 12  # Convert months to years
-        n = 1  # Assuming yearly compounding for simplicity; you can make it configurable if needed
-        maturity_amount = principal * (1 + rate / n) ** (n * time)
-        
-        # Store calculated maturity amount
-        self.maturity_amount = round(maturity_amount, 2)
-        
-        # Call the parent save method to save the model
-        super(FixedDeposit, self).save(*args, **kwargs)
+    duration_months = models.DecimalField(max_digits=5, decimal_places=3)
+    interest_rate = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateTimeField()
+    maturity_date = models.DateTimeField()
+    maturity_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.customer_name} - Deposit: {self.deposit_amount} - Maturity: {self.maturity_amount}"
-    
+        return f"FD-{self.id}-{self.customer_name}"
+
+    class Meta:
+        ordering = ['-start_date']
+
 
 class ClassicCardApplication(models.Model):
     BRANCH_CHOICES = [
@@ -243,6 +240,7 @@ class ClassicCardApplication(models.Model):
     def __str__(self):
         return f"Classic Card Application - {self.full_name}"
     
+
 class Manager(models.Model):
     manager_id = models.CharField(max_length=9, unique=True, null=True, blank=True)
     name = models.CharField(max_length=100)
@@ -418,6 +416,46 @@ class UserDocument(models.Model):
     
     class Meta:
         unique_together = ['user', 'document_type']
+
+
+# class KYCVerification(models.Model):
+#     STATUS_CHOICES = [
+#         ('PENDING', 'Pending'),
+#         ('APPROVED', 'Approved'),
+#         ('REJECTED', 'Rejected'),
+#         ('EXPIRED', 'Expired'),
+#     ]
+    
+#     DOCUMENT_TYPES = [
+#         ('AADHAAR', 'Aadhaar Card'),
+#         ('PAN', 'PAN Card'),
+#         ('PASSPORT', 'Passport'),
+#     ]
+    
+#     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+#     reference_number = models.CharField(max_length=20, unique=True, null=True)
+#     document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPES)
+#     document_number = models.CharField(max_length=20)
+#     document_file = models.FileField(upload_to='kyc_documents/')
+#     selfie = models.ImageField(upload_to='kyc_selfies/', null=True)
+#     address_proof = models.FileField(upload_to='address_proofs/', null=True)
+#     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
+#     submission_date = models.DateTimeField(auto_now_add=True)
+#     verification_date = models.DateTimeField(null=True)
+#     expiry_date = models.DateTimeField(null=True)
+#     verified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     rejection_reason = models.TextField(null=True, blank=True)
+    
+#     class Meta:
+#         ordering = ['-submission_date']
+        
+#     def __str__(self):
+#         return f"KYC-{self.reference_number} ({self.customer.customer_name})"
+        
+#     def is_expired(self):
+#         if self.expiry_date:
+#             return timezone.now() > self.expiry_date
+#         return False
 
 
 

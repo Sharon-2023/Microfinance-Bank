@@ -150,14 +150,16 @@ urlpatterns = [
     path('document-verification/', views.document_verification, name='document_verification'),
     path('biometric-verification/', views.biometric_verification, name='biometric_verification'),
 
-    # path('verify-device/', views.verify_device, name='verify_device'),
-    # path('manage-trusted-devices/', views.manage_trusted_devices, name='manage_trusted_devices'),
-
     #security pin verification- view profile page
     path('setup-pin/', views.setup_pin, name='setup_pin'),
     
     #balance topup page- security pin verification
     path('verify-transaction-pin/', views.verify_transaction_pin, name='verify_transaction_pin'),
 
-   
+
+    path('verify-face/', views.verify_face, name='verify_face'),
+
+#admin analytics
+    path('analytics/', views.admin_analytics, name='admin_analytics'),
+
 ]
