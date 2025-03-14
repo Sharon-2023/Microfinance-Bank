@@ -82,6 +82,28 @@ Money{% endblock %} {% block content %}
             </div>
         </div>
     </div>
+
+    <!-- Updated success modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <div class="success-checkmark">
+                <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                    <div class="icon-circle"></div>
+                    <div class="icon-fix"></div>
+                </div>
+            </div>
+            <div class="success-message">
+                <h2>Success!</h2>
+                <p>Money deposited successfully!</p>
+                <div class="amount-added">
+                    <span>Amount Added:</span>
+                    <strong>₹<span id="addedAmount">0.00</span></strong>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -313,6 +335,206 @@ Money{% endblock %} {% block content %}
         margin: 1rem 0;
         min-height: 20px;
     }
+
+    /* Updated and new success modal styles */
+    .success-modal {
+        text-align: center;
+        padding: 2rem;
+        animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .success-checkmark {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1rem;
+        position: relative;
+    }
+
+    .check-icon {
+        width: 80px;
+        height: 80px;
+        position: relative;
+        border-radius: 50%;
+        box-sizing: content-box;
+        border: 4px solid #4CAF50;
+    }
+
+    .check-icon::before {
+        top: 3px;
+        left: -2px;
+        width: 30px;
+        transform-origin: 100% 50%;
+        border-radius: 100px 0 0 100px;
+    }
+
+    .check-icon::after {
+        top: 0;
+        left: 30px;
+        width: 60px;
+        transform-origin: 0 50%;
+        border-radius: 0 100px 100px 0;
+        animation: rotate-circle 4.25s ease-in;
+    }
+
+    .icon-line {
+        height: 5px;
+        background-color: #4CAF50;
+        display: block;
+        border-radius: 2px;
+        position: absolute;
+        z-index: 10;
+    }
+
+    .icon-line.line-tip {
+        top: 46px;
+        left: 14px;
+        width: 25px;
+        transform: rotate(45deg);
+        animation: icon-line-tip 0.75s;
+    }
+
+    .icon-line.line-long {
+        top: 38px;
+        right: 8px;
+        width: 47px;
+        transform: rotate(-45deg);
+        animation: icon-line-long 0.75s;
+    }
+
+    .icon-circle {
+        top: -4px;
+        left: -4px;
+        z-index: 10;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        position: absolute;
+        box-sizing: content-box;
+        border: 4px solid rgba(76, 175, 80, 0.5);
+    }
+
+    .icon-fix {
+        top: 8px;
+        width: 5px;
+        left: 26px;
+        z-index: 1;
+        height: 85px;
+        position: absolute;
+        transform: rotate(-45deg);
+        background-color: #fff;
+    }
+
+    @keyframes rotate-circle {
+        0% {
+            transform: rotate(-45deg);
+        }
+        5% {
+            transform: rotate(-45deg);
+        }
+        12% {
+            transform: rotate(-405deg);
+        }
+        100% {
+            transform: rotate(-405deg);
+        }
+    }
+
+    @keyframes icon-line-tip {
+        0% {
+            width: 0;
+            left: 1px;
+            top: 19px;
+        }
+        54% {
+            width: 0;
+            left: 1px;
+            top: 19px;
+        }
+        70% {
+            width: 50px;
+            left: -8px;
+            top: 37px;
+        }
+        84% {
+            width: 17px;
+            left: 21px;
+            top: 48px;
+        }
+        100% {
+            width: 25px;
+            left: 14px;
+            top: 46px;
+        }
+    }
+
+    @keyframes icon-line-long {
+        0% {
+            width: 0;
+            right: 46px;
+            top: 54px;
+        }
+        65% {
+            width: 0;
+            right: 46px;
+            top: 54px;
+        }
+        84% {
+            width: 55px;
+            right: 0px;
+            top: 35px;
+        }
+        100% {
+            width: 47px;
+            right: 8px;
+            top: 38px;
+        }
+    }
+
+    .success-message {
+        margin-top: 1.5rem;
+    }
+
+    .success-message h2 {
+        color: #2d3436;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .success-message p {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .amount-added {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .amount-added span {
+        color: #666;
+    }
+
+    .amount-added strong {
+        color: #4CAF50;
+        font-size: 1.2rem;
+    }
 </style>
 
 <!-- Add this script at the end of your file -->
@@ -369,7 +591,20 @@ Money{% endblock %} {% block content %}
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.querySelector('.topup-form').submit();
+                // Hide PIN modal
+                document.getElementById('pinVerificationModal').style.display = 'none';
+                
+                // Update amount in success modal
+                const amount = document.getElementById('topup_amount').value;
+                document.getElementById('addedAmount').textContent = amount;
+                
+                // Show success modal
+                document.getElementById('successModal').style.display = 'block';
+                
+                // Submit form and redirect after 2.5 seconds
+                setTimeout(() => {
+                    document.querySelector('.topup-form').submit();
+                }, 2500);
             } else {
                 document.getElementById('pinError').textContent = data.message;
                 clearPinInputs();
