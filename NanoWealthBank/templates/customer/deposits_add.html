@@ -44,8 +44,8 @@
                 <label for="duration_months">Select Duration</label>
                 <div class="duration-options">
                     <div class="duration-option">
-                        <input type="radio" id="duration5d" name="duration_months" value="0.167">
-                        <label for="duration5d">5 Days<br><small>8% p.a.</small></label>
+                        <input type="radio" id="duration_5d" name="duration_months" value="0.167">
+                        <label for="duration_5d">5 Days<br><small>8% p.a.</small></label>
                     </div>
                     <div class="duration-option">
                         <input type="radio" id="duration1m" name="duration_months" value="1">
@@ -106,7 +106,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="submit-btn">Create Fixed Deposit</button>
+                <button type="submit" id="create_fixed_deposit" class="submit-btn">Create Fixed Deposit</button>
                 <a href="{% url 'list_deposits' %}" class="back-btn">Cancel</a>
             </div>
         </form>

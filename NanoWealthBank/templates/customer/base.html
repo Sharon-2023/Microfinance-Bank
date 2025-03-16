@@ -393,17 +393,9 @@
             </ul>
           </li>
         <li>
-          <span class="sidebar-span" onclick="toggleDropdown(this)">
-            Deposits
-            <span class="dropdown-arrow">▼</span>
-          </span>
-          <ul class="dropdown-content">
-            <li>
-              <a class="dropdown-content-link" href="{% url 'list_deposits' %}">
-                Fixed Deposits
-              </a>
-            </li>
-          </ul>
+          <a href="{% url 'list_deposits' %}" class="sidebar-link">
+            Fixed Deposits
+          </a>
         </li>
           
         <li>

@@ -55,7 +55,10 @@
             <a href="{% url 'current_account_approval' %}"><i class="fas fa-wallet"></i> Current Account</a>
           </li>
           <li>
-            <a href="{% url 'admin_card_applications' %}"><i class="fas fa-credit-card"></i> Card Applications</a>
+            <a href="{% url 'admin_card_applications' %}" id="admin_card_applications" class="nav-link">
+              <i class="fas fa-credit-card"></i>
+              <span>Card Applications</span>
+            </a>
           </li>
           <li>
             <a href="{% url 'admin_deposits_list' %}" class="nav-link">
