@@ -17,18 +17,22 @@
       display: flex;
       align-items: center;
       background-color: #232041;
-      padding: 10px 20px;
+      padding: 6px 15px;
       color: white;
+      min-height: 40px;
     }
 
     .navbar img {
-      height: 40px;
-      margin-right: 10px;
+      height: 30px;
+      width: auto;
+      margin-right: 8px;
+      margin-left: 5px;
     }
 
     .navbar h1 {
-      font-size: 24px;
+      font-size: 20px;
       margin: 0;
+      white-space: nowrap;
     }
 
     .container {
@@ -160,277 +164,145 @@
     padding: 10px 20px;
   }
 
-  .camera-section {
+  .camera-container {
     margin: 20px 0;
     text-align: center;
   }
 
-  .camera-section video, .camera-section canvas {
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-
-  .camera-controls {
+  .camera-buttons {
     margin: 10px 0;
   }
 
-  .btn-start-camera, .btn-capture {
-    padding: 10px 20px;
-    margin: 0 5px;
+  .status-message {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .status-message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+  }
+
+  .status-message.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+  }
+
+  video, img {
+    width: 100%;
+    max-width: 640px;
+    margin: 10px auto;
+    border-radius: 8px;
+  }
+
+  button {
+    margin: 5px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
   }
 
-  .btn-start-camera {
-    background-color: #4CAF50;
-    color: white;
+  button:hover {
+    background-color: #0056b3;
   }
 
-  .btn-capture {
-    background-color: #2196F3;
-    color: white;
-  }
-
-  .btn-capture:disabled {
+  button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
   }
 
-  #preview img {
+  .camera-guide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+  }
+
+  #extractedFace {
     max-width: 200px;
-    border: 2px solid #ccc;
+    margin-top: 10px;
+  }
+
+  .verification-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .verification-item {
+    margin-bottom: 30px;
+  }
+
+  .status-message {
+    padding: 15px;
     border-radius: 4px;
     margin-top: 10px;
   }
 
-  .verification-status {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  .verification-status.processing {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-  }
-
-  .verification-status.success {
+  .status-message.success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
   }
 
-  .verification-status.error {
+  .status-message.error {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
   }
 
-  .verification-result {
-    text-align: center;
-  }
-
-  .verification-result h4 {
-    margin-bottom: 10px;
-  }
-
-  .metrics {
-    text-align: left;
+  #extractedFace {
+    max-width: 200px;
     margin-top: 10px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 4px;
   }
 
-  .metrics p {
-    margin: 5px 0;
-    font-size: 14px;
+  video, canvas {
+    max-width: 100%;
+    margin-top: 10px;
   }
 
-  .spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    border-top-color: #333;
-    animation: spin 1s ease-in-out infinite;
-    margin-right: 10px;
+  .file-upload-container {
+    margin-bottom: 15px;
   }
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .verification-steps {
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-
-  .step-list {
-    margin-top: 15px;
-  }
-
-  .step {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    padding: 8px;
-    border-radius: 4px;
-    background-color: #fff;
-    opacity: 0.6;
-  }
-
-  .step.active {
-    opacity: 1;
-    background-color: #fff3cd;
-  }
-
-  .step.complete {
-    opacity: 1;
-    background-color: #d4edda;
-  }
-
-  .step .spinner {
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
-    border: 2px solid #ccc;
-    border-top-color: #333;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .step.active .spinner {
-    animation: spin 1s linear infinite;
-    border-top-color: #856404;
-  }
-
-  .step.complete .spinner {
-    animation: none;
+  button {
+    padding: 8px 16px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
     border: none;
-    content: '✓';
-    color: #155724;
-  }
-
-  .step.complete .spinner::after {
-    content: '✓';
-    font-weight: bold;
-  }
-
-  .metrics-container {
-    margin-top: 20px;
-  }
-
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-top: 15px;
-  }
-
-  .metric-box {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-
-  .metric-box.similarity {
-    grid-column: 1 / -1;
-    background-color: #e3f2fd;
-  }
-
-  .metric-box h5 {
-    margin: 0 0 10px 0;
-    color: #666;
-    font-size: 14px;
-  }
-
-  .metric-value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2196f3;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .step-details {
-    margin-left: 30px;
-    margin-top: 5px;
-    font-size: 14px;
-    display: none;
-  }
-
-  .step.active .step-details {
-    display: block;
-  }
-
-  .parameter {
-    margin: 5px 0;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-    width: 200px;
-  }
-
-  .parameter span {
-    font-weight: bold;
-    color: #2196f3;
-  }
-
-  .step.complete .parameter span {
-    color: #155724;
-  }
-
-  .step-details {
-    padding: 10px;
-    margin-left: 35px;
-    background: rgba(255, 255, 255, 0.9);
     border-radius: 4px;
-    display: none;
+    cursor: pointer;
   }
 
-  .step.active .step-details {
-    display: block;
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
   }
 
-  .parameter {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px 0;
-    font-size: 14px;
-    color: #333;
+  .error-message {
+    color: #dc3545;
+    margin-top: 5px;
   }
 
-  .parameter span:last-child {
-    font-weight: bold;
-    color: #2196f3;
-  }
-
-  .step-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-
-  .spinner {
-    margin-right: 10px;
+  .success-message {
+    color: #28a745;
+    margin-top: 5px;
   }
 
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
 </head>
 <body>
   <div class="navbar">
@@ -453,7 +325,7 @@
         <h3>Customer Details</h3>
         <label for="dob">Date of Birth:</label>
         <input type="date" id="dob" name="dob" required>
-        
+       
         <label for="mobilenum">Mobile Number:</label>
         <input type="text" id="mobilenum" name="mobilenum" required placeholder="+1 1234567890">
         <div id="phoneError" class="error-message" style="display: none;">Please enter a valid mobile number.</div>
@@ -488,51 +360,31 @@
 
   <div class="verification-container">
     <div class="verification-item">
-      <label for="proof_of_verification">Proof of Verification:</label>
-      <select id="proof_of_verification" name="proof_of_verification" required>
-        <option value="">Select Proof of Verification</option>
-        <option value="aadhar_card">Aadhar Card</option>
-        <option value="pan_card">PAN Card</option>
-        <option value="passport">Passport</option>
-      </select>
+      <h3>Step 1: Upload Government ID</h3>
+      <div class="file-upload-container">
+        <input type="file" id="document_upload" name="document_upload" accept=".jpg,.jpeg,.png,.pdf" required>
+        <button type="button" id="uploadBtn">Process Document</button>
+      </div>
+      <div id="documentError" class="error-message" style="display: none;"></div>
+      <div id="documentSuccess" class="success-message" style="display: none;"></div>
+      <canvas id="extractedFace" style="display: none;"></canvas>
     </div>
 
     <div class="verification-item">
-      <label for="document_upload">Upload Photo ID Document (PDF only)</label>
-      <input type="file" id="document_upload" name="document_upload" accept="application/pdf" required>
-      <small class="form-text text-muted">Please upload a clear PDF of your ID document containing your photo and details</small>
-      <div id="documentError" class="error-message" style="display: none;"></div>
-      <div id="documentSuccess" class="success-message" style="display: none;">Document uploaded successfully!</div>
+      <h3>Step 2: Live Photo Verification</h3>
+      <div id="cameraSection">
+        <video id="video" style="display: none;"></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <img id="captured_photo" style="display: none;" alt="Captured photo">
+        <button type="button" id="startCamera">Start Camera</button>
+        <button type="button" id="capturePhoto" style="display: none;">Take Photo</button>
+        <button type="button" id="retakePhoto" style="display: none;">Retake Photo</button>
+      </div>
     </div>
 
-    <!-- Checkbox for physical document submission -->
-    <div class="verification-item" style="display: flex;">
-      <input type="checkbox" id="physical_document_acknowledgment" name="physical_document_acknowledgment" style="width:50px;" required>
-      <label for="physical_document_acknowledgment" >I will submit a physical document to the bank</label>
+    <div class="verification-item">
+      <div id="kycStatus" class="status-message" style="display: none;"></div>
     </div>
-  </div>
-
-  <div class="form-group">
-    <label for="face_image">Face Verification</label>
-    <div class="camera-section">
-        <video id="video" width="400" height="300" autoplay playsinline style="display: none;"></video>
-        <canvas id="canvas" width="400" height="300" style="display: none;"></canvas>
-        <div id="preview"></div>
-        <input type="hidden" name="face_image" id="face_image">
-        
-        <div class="camera-controls">
-            <button type="button" onclick="startCamera()" class="btn-start-camera">Start Camera</button>
-            <button type="button" onclick="captureFace()" class="btn-capture" disabled>Capture Photo</button>
-        </div>
-    </div>
-  </div>
-
-  <div id="documentStatus" class="verification-status" style="display: none;">
-    <p id="documentMessage"></p>
-  </div>
-
-  <div id="faceStatus" class="verification-status" style="display: none;">
-    <p id="faceMessage"></p>
   </div>
 
   <button type="submit">Submit</button>
@@ -548,749 +400,424 @@
     </form>
   </div>
 
+  <!-- Update the libraries section -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/deepface-js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
   <script>
-    let currentStep = 1;
+  let documentFace = null;
+  let liveFace = null;
+  let faceDetectionNet;
+  let isFaceDetectionModelLoaded = false;
 
-    function setMaxDate() {
-      const today = new Date();
-      const maxDate = today.toISOString().split('T')[0]; // Get the date in YYYY-MM-DD format
-      document.getElementById('dob').setAttribute('max', maxDate);
-    }
+  // Initialize PDF.js
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    function nextStep() {
-      if (currentStep < 3) {
-        document.getElementById('step-' + currentStep).classList.remove('active');
-        document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
-        currentStep++;
-        document.getElementById('step-' + currentStep).classList.add('active');
-        document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
+  // Update the model loading function to include all required models
+  async function loadFaceDetectionModels() {
+      try {
+          await faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+          await faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+          await faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+          isFaceDetectionModelLoaded = true;
+          console.log('All face detection models loaded successfully');
+      } catch (error) {
+          console.error('Error loading face detection models:', error);
+          throw new Error('Failed to load face detection models');
       }
-    }
-
-    function prevStep() {
-      if (currentStep > 1) {
-        document.getElementById('step-' + currentStep).classList.remove('active');
-        document.querySelector('.step[data-step="' + currentStep + '"]').classList.remove('active');
-        currentStep--;
-        document.getElementById('step-' + currentStep).classList.add('active');
-        document.querySelector('.step[data-step="' + currentStep + '"]').classList.add('active');
-      }
-    }
-
-    function cancelSignup() {
-      if (confirm("Are you sure you want to cancel the signup process?")) {
-        window.location.href = "{% url 'home' %}";
-      }
-    }
-
-    // Validate mobile number with no letters
-    document.getElementById('mobilenum').addEventListener('input', function() {
-      const mobileNum = this.value;
-      const phoneError = document.getElementById('phoneError');
-
-      if (isValidMobileNumber(mobileNum)) {
-        this.classList.remove('invalid');
-        this.classList.add('valid');
-        phoneError.style.display = 'none';
-      } else {
-        this.classList.add('invalid');
-        this.classList.remove('valid');
-        phoneError.style.display = 'block';
-      }
-    });
-
-    document.getElementById('customername').addEventListener('input', function() {
-      const name = this.value;
-      const nameError = document.getElementById('nameError');
-
-      if (isValidCustomerName(name)) {
-        this.classList.remove('invalid');
-        this.classList.add('valid');
-        nameError.style.display = 'none';
-      } else {
-        this.classList.add('invalid');
-        this.classList.remove('valid');
-        nameError.style.display = 'block';
-      }
-    });
-
-    document.getElementById('username').addEventListener('input', function() {
-      const username = this.value;
-      const usernameError = document.getElementById('usernameError');
-
-      if (isValidUsername(username)) {
-        this.classList.remove('invalid');
-        this.classList.add('valid');
-        usernameError.style.display = 'none';
-      } else {
-        this.classList.add('invalid');
-        this.classList.remove('valid');
-        usernameError.style.display = 'block';
-      }
-    });
-
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-      const document = document.getElementById('document_upload').files[0];
-      const faceImage = document.getElementById('face_image').files[0];
-      
-      if (!document || !faceImage) {
-        e.preventDefault();
-        alert('Please upload both document and face image');
-        return;
-      }
-      
-      // Show verifying status
-      showVerificationStatus('verifying', 'Verifying document and face match...');
-    });
-
-    function isValidEmail(email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(email);
-    }
-
-    function isValidMobileNumber(mobileNum) {
-      const phoneRegex = /^\+\d{1,3} \d{10}$/; // +country code followed by 10 digits
-      return phoneRegex.test(mobileNum) && !/[a-zA-Z]/.test(mobileNum); // No alphabets allowed
-    }
-
-    function isValidCustomerName(name) {
-      const nameRegex = /^[A-Z][a-z]+(?: [A-Z][a-z]+)*$/; // Each part must start with a capital letter
-      return nameRegex.test(name) && !/\d/.test(name) && !/[^\w\s]/.test(name); // No digits or symbols
-    }
-
-    function isValidUsername(username) {
-      const usernameRegex = /^[a-zA-Z0-9]+$/; // Alphanumeric only
-      return usernameRegex.test(username);
-    }
-
-    setMaxDate();
-
-    function uploadDocument() {
-  const fileInput = document.getElementById('document_upload');
-  const file = fileInput.files[0];
-  const documentError = document.getElementById('documentError');
-  const documentSuccess = document.getElementById('documentSuccess');
-
-  if (file && isValidFile(file)) {
-    // Here you would typically upload the file to your server
-    // For this example, we'll just simulate a successful upload
-    simulateFileUpload(file)
-      .then(() => {
-        documentError.style.display = 'none';
-        documentSuccess.style.display = 'block';
-        fileInput.classList.remove('invalid');
-        fileInput.classList.add('valid');
-      })
-      .catch((error) => {
-        documentError.textContent = 'Error uploading file: ' + error.message;
-        documentError.style.display = 'block';
-        documentSuccess.style.display = 'none';
-      });
-  } else {
-    documentError.style.display = 'block';
-    documentSuccess.style.display = 'none';
-    if (!file) {
-      documentError.textContent = 'Please select a PDF document to upload.';
-    } else if (file.type !== 'application/pdf') {
-      documentError.textContent = 'Please upload a PDF document only.';
-    } else {
-      documentError.textContent = 'PDF file size should not exceed 5MB.';
-    }
-    fileInput.value = ''; // Clear the invalid file selection
-    fileInput.classList.add('invalid');
-    fileInput.classList.remove('valid');
   }
-}
 
-function isValidFile(file) {
-  const validType = 'application/pdf';
-  const maxSize = 5 * 1024 * 1024; // 5MB
-
-  return file.type === validType && file.size <= maxSize;
-}
-
-// Simulate file upload (replace this with actual server upload in production)
-function simulateFileUpload(file) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() > 0.1) { // 90% success rate for simulation
-        resolve();
-      } else {
-        reject(new Error('Upload failed'));
+  // Initialize when document is ready
+  document.addEventListener('DOMContentLoaded', async () => {
+      try {
+          console.log('Loading face detection models...');
+          await loadFaceDetectionModels();
+          console.log('Face detection models loaded successfully');
+          document.getElementById('uploadBtn').addEventListener('click', processDocument);
+          document.getElementById('startCamera').addEventListener('click', startCamera);
+          document.getElementById('capturePhoto').addEventListener('click', capturePhoto);
+          document.getElementById('retakePhoto').addEventListener('click', retakePhoto);
+      } catch (error) {
+          showError('Error initializing: ' + error.message);
       }
-    }, 1000); // Simulate 1 second upload time
   });
-}
 
-document.getElementById('document_upload').addEventListener('change', function() {
-    const file = this.files[0];
-    const documentError = document.getElementById('documentError');
-    const documentSuccess = document.getElementById('documentSuccess');
-    
-    // Reset messages
-    documentError.style.display = 'none';
-    documentSuccess.style.display = 'none';
-    
-    if (file) {
-        // Check file type
-        if (!file.name.endsWith('.pdf')) {
-            documentError.textContent = 'Please upload a PDF file only';
-            documentError.style.display = 'block';
-            this.value = ''; // Clear the file input
-            return;
-        }
-        
-        // Check file size (5MB max)
-        if (file.size > 5 * 1024 * 1024) {
-            documentError.textContent = 'File size should not exceed 5MB';
-            documentError.style.display = 'block';
-            this.value = ''; // Clear the file input
-            return;
-        }
-        
-        // Show success message
-        documentSuccess.style.display = 'block';
-    }
-});
+  async function extractFaceFromImage(img) {
+      if (!isFaceDetectionModelLoaded) {
+          await loadFaceDetectionModels();
+      }
 
-// document.getElementById('document_number').addEventListener('input', function() {
-//     const docType = document.getElementById('proof_of_verification').value;
-//     const docNum = this.value;
-//     const error = document.getElementById('documentNumberError');
-    
-//     let isValid = false;
-    
-//     if (docType === 'aadhar') {
-//         isValid = /^\d{12}$/.test(docNum);
-//     } else if (docType === 'pan') {
-//         isValid = /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(docNum);
-//     } else if (docType === 'passport') {
-//         isValid = /^[A-Z]\d{7}$/.test(docNum);
-//     }
-    
-//     if (isValid) {
-//         this.classList.remove('invalid');
-//         this.classList.add('valid');
-//         error.style.display = 'none';
-//     } else {
-//         this.classList.add('invalid');
-//         this.classList.remove('valid');
-//         error.style.display = 'block';
-//     }
-// });
+      try {
+          const detections = await faceapi.detectSingleFace(img)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
 
-let video = document.getElementById('video');
-let canvas = document.getElementById('canvas');
-let context = canvas.getContext('2d');
-let stream = null;
-let model = null;
+          if (!detections) {
+              throw new Error('No face detected in image');
+          }
 
-// Load the BlazeFace model
-async function loadFaceDetectionModel() {
-    try {
-        model = await blazeface.load();
-        console.log('Face detection model loaded');
-    } catch (error) {
-        console.error('Error loading face detection model:', error);
-    }
-}
+          const box = detections.detection.box;
+          const canvas = document.createElement('canvas');
+          const padding = 50;
+          
+          canvas.width = box.width + (padding * 2);
+          canvas.height = box.height + (padding * 2);
+          
+          const context = canvas.getContext('2d');
+          context.drawImage(
+              img,
+              box.x - padding,
+              box.y - padding,
+              box.width + (padding * 2),
+              box.height + (padding * 2),
+              0,
+              0,
+              canvas.width,
+              canvas.height
+          );
 
-// Load model when page loads
-loadFaceDetectionModel();
+          return canvas;
+      } catch (error) {
+          console.error('Face extraction error:', error);
+          throw new Error('Failed to extract face from image');
+      }
+  }
 
-async function startCamera() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { 
-                width: 400,
-                height: 300,
-                facingMode: 'user'
-            } 
-        });
-        video.srcObject = stream;
-        video.style.display = 'block';
-        canvas.style.display = 'none';
-        
-        // Enable capture button once camera is started
-        document.querySelector('.btn-capture').disabled = false;
-    } catch (err) {
-        console.error("Error accessing camera:", err);
-        alert("Could not access camera. Please ensure camera permissions are granted.");
-    }
-}
+  // Add this helper function to load images
+  async function loadImage(file) {
+      return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = (error) => reject(new Error('Failed to load image: ' + error.message));
+          img.src = URL.createObjectURL(file);
+      });
+  }
 
-function stopCamera() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        video.style.display = 'none';
-        stream = null;
-    }
-}
+  async function processDocument() {
+      const fileInput = document.getElementById('document_upload');
+      const file = fileInput.files[0];
+      const documentError = document.getElementById('documentError');
+      const documentSuccess = document.getElementById('documentSuccess');
 
-async function captureFace() {
-    if (!video.srcObject) {
-        alert("Please start the camera first");
-        return;
-    }
+      if (!file) {
+          showError('Please select a document first');
+          return;
+      }
 
-    // Draw video frame to canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.style.display = 'block';
-    video.style.display = 'none';
-    
-    const faceStatus = document.getElementById('faceStatus');
-    const faceMessage = document.getElementById('faceMessage');
-    
-    faceStatus.className = 'verification-status processing';
-    faceMessage.textContent = '✅ Face Detected - Processing Verification...';
-    faceStatus.style.display = 'block';
+      try {
+          documentSuccess.textContent = 'Processing document...';
+          documentSuccess.style.display = 'block';
+          documentError.style.display = 'none';
 
-    try {
-        // Convert canvas to image for face detection
-        const image = new Image();
-        image.src = canvas.toDataURL('image/jpeg');
-        
-        await image.decode(); // Wait for image to load
-        
-        // Detect faces using BlazeFace
-        const predictions = await model.estimateFaces(image, false);
-        
-        if (predictions && predictions.length > 0) {
-            // Initialize parameters display immediately
-            let currentStep = 1;
-            
-            function showStepParameters(stepNumber) {
-                const step = document.getElementById(`step${stepNumber}`);
-                const details = document.getElementById(`step${stepNumber}-details`);
-                
-                step.classList.add('active');
-                details.style.display = 'block';  // Make sure details are visible
-                
-                switch(stepNumber) {
-                    case 1:
-                        updateParameterWithCounter('face-confidence', 0, 98, 1000);
-                        updateParameterWithCounter('feature-points', 0, 128, 1000);
-                        break;
-                    case 2:
-                        updateParameterWithCounter('doc-progress', 0, 100, 1000);
-                        updateParameterWithCounter('quality-score', 0, 85, 1000);
-                        break;
-                    case 3:
-                        updateParameterWithCounter('similarity-progress', 0, 75, 1000);
-                        updateParameterWithCounter('match-confidence', 0, 82, 1000);
-                        break;
-                    case 4:
-                        updateParameterWithCounter('f1-score', 0, 92, 1000);
-                        updateParameterWithCounter('accuracy', 0, 90, 1000);
-                        updateParameterWithCounter('precision', 0, 88, 1000);
-                        updateParameterWithCounter('recall', 0, 94, 1000);
-                        break;
-                }
-            }
+          let img;
+          if (file.type === 'application/pdf') {
+              console.log('Processing PDF file...');
+              img = await processPDF(file);
+          } else if (file.type.startsWith('image/')) {
+              console.log('Processing image file...');
+              img = await loadImage(file);
+          } else {
+              throw new Error('Unsupported file type. Please upload an image (JPG, PNG) or PDF.');
+          }
 
-            function updateParameterWithCounter(elementId, start, end, duration) {
-                const element = document.getElementById(elementId);
-                const steps = 50;
-                const stepDuration = duration / steps;
-                const increment = (end - start) / steps;
-                let current = start;
-                let step = 0;
+          // Check if models are loaded
+          if (!isFaceDetectionModelLoaded) {
+              await loadFaceDetectionModels();
+          }
 
-                const timer = setInterval(() => {
-                    current += increment;
-                    step++;
-                    
-                    if (elementId === 'feature-points') {
-                        element.textContent = Math.round(current);
-                    } else {
-                        element.textContent = current.toFixed(1) + '%';
-                    }
+          console.log('Detecting face in document...');
+          const detection = await faceapi.detectSingleFace(img).withFaceLandmarks();
 
-                    if (step >= steps) {
-                        clearInterval(timer);
-                        if (elementId === 'feature-points') {
-                            element.textContent = Math.round(end);
-                        } else {
-                            element.textContent = end.toFixed(1) + '%';
-                        }
-                    }
-                }, stepDuration);
-            }
+          if (!detection) {
+              throw new Error('No face detected in document');
+          }
 
-            // Show initial processing status
-            faceStatus.className = 'verification-status processing';
-            faceMessage.innerHTML = `
-                <div class="verification-steps">
-                    <h4>✅ Face Detected - Verification in Progress</h4>
-                    <div class="step-list">
-                        <div class="step" id="step1">
-                            <div class="step-header">
-                                <span class="spinner"></span>
-                                <span class="step-text">1. Extracting facial features</span>
-                            </div>
-                            <div class="step-details" id="step1-details">
-                                <div class="parameter">
-                                    <span>Face Confidence:</span>
-                                    <span id="face-confidence">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Feature Points:</span>
-                                    <span id="feature-points">0</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step" id="step2">
-                            <div class="step-header">
-                                <span class="spinner"></span>
-                                <span class="step-text">2. Processing document image</span>
-                            </div>
-                            <div class="step-details" id="step2-details">
-                                <div class="parameter">
-                                    <span>Document Analysis:</span>
-                                    <span id="doc-progress">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Quality Score:</span>
-                                    <span id="quality-score">0%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step" id="step3">
-                            <div class="step-header">
-                                <span class="spinner"></span>
-                                <span class="step-text">3. Calculating similarity scores</span>
-                            </div>
-                            <div class="step-details" id="step3-details">
-                                <div class="parameter">
-                                    <span>Similarity:</span>
-                                    <span id="similarity-progress">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Confidence:</span>
-                                    <span id="match-confidence">0%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="step" id="step4">
-                            <div class="step-header">
-                                <span class="spinner"></span>
-                                <span class="step-text">4. Computing verification metrics</span>
-                            </div>
-                            <div class="step-details" id="step4-details">
-                                <div class="parameter">
-                                    <span>F1-Score:</span>
-                                    <span id="f1-score">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Accuracy:</span>
-                                    <span id="accuracy">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Precision:</span>
-                                    <span id="precision">0%</span>
-                                </div>
-                                <div class="parameter">
-                                    <span>Recall:</span>
-                                    <span id="recall">0%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+          // Create canvas for extracted face
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+         
+          // Add padding around the face
+          const box = detection.detection.box;
+          const padding = 50;
+          canvas.width = box.width + (padding * 2);
+          canvas.height = box.height + (padding * 2);
 
-            // Start processing steps
-            showStepParameters(1);
-            
-            setTimeout(() => {
-                document.getElementById('step1').classList.add('complete');
-                showStepParameters(2);
-            }, 2000);
-            
-            setTimeout(() => {
-                document.getElementById('step2').classList.add('complete');
-                showStepParameters(3);
-            }, 4000);
-            
-            setTimeout(() => {
-                document.getElementById('step3').classList.add('complete');
-                showStepParameters(4);
-            }, 6000);
+          // Draw the face region to the canvas
+          context.drawImage(
+              img,
+              box.x - padding,
+              box.y - padding,
+              box.width + (padding * 2),
+              box.height + (padding * 2),
+              0,
+              0,
+              canvas.width,
+              canvas.height
+          );
 
-            // Save the captured image
-            canvas.toBlob(function(blob) {
-                const file = new File([blob], "face.jpg", { type: "image/jpeg" });
-                const container = new DataTransfer();
-                container.items.add(file);
-                document.getElementById('face_image').files = container.files;
-                
-                const preview = document.getElementById('preview');
-                preview.innerHTML = '<img src="' + canvas.toDataURL() + '" width="200"/>';
-                stopCamera();
+          // Store the face canvas
+          documentFace = canvas;
 
-                // Check for document matching if available
-                const documentFile = document.getElementById('document_upload').files[0];
-                if (documentFile) {
-                    // Step 1: Face Detection
-                    document.getElementById('step1').classList.add('active');
-                    updateParameterWithCounter('face-confidence', 98, 98, 1000);
-                    document.getElementById('feature-points').textContent = '128';
-                    
-                    setTimeout(() => {
-                        document.getElementById('step1').classList.add('complete');
-                        
-                        // Step 2: Document Processing
-                        document.getElementById('step2').classList.add('active');
-                        updateParameterWithCounter('doc-progress', 100, 100, 1000);
-                        updateParameterWithCounter('quality-score', 85, 85, 1000);
-                    }, 1500);
+          // Display the extracted face
+          const extractedFaceCanvas = document.getElementById('extractedFace');
+          extractedFaceCanvas.style.display = 'block';
+          extractedFaceCanvas.width = canvas.width;
+          extractedFaceCanvas.height = canvas.height;
+          extractedFaceCanvas.getContext('2d').drawImage(canvas, 0, 0);
 
-                    setTimeout(() => {
-                        document.getElementById('step2').classList.add('complete');
-                        
-                        // Step 3: Similarity Calculation
-                        document.getElementById('step3').classList.add('active');
-                        updateParameterWithCounter('similarity-progress', 75, 75, 1000);
-                        updateParameterWithCounter('match-confidence', 82, 82, 1000);
-                    }, 3000);
+          // Show success message
+          documentSuccess.textContent = 'Face extracted successfully. Please proceed with live photo.';
+          document.getElementById('startCamera').disabled = false;
 
-                    setTimeout(() => {
-                        document.getElementById('step3').classList.add('complete');
-                        
-                        // Step 4: Metrics Computation
-                        document.getElementById('step4').classList.add('active');
-                        updateParameterWithCounter('f1-score', 92, 92, 1000);
-                        updateParameterWithCounter('accuracy', 90, 90, 1000);
-                        updateParameterWithCounter('precision', 88, 88, 1000);
-                        updateParameterWithCounter('recall', 94, 94, 1000);
-                    }, 4500);
+      } catch (error) {
+          console.error('Document processing error:', error);
+          showError('Error processing document: ' + error.message);
+      }
+  }
 
-                    // Create form data and send verification request
-                    const formData = new FormData();
-                    formData.append('document', documentFile);
-                    formData.append('face_image', file);
+  async function processPDF(file) {
+      try {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          const page = await pdf.getPage(1); // Get first page
 
-                    fetch('/verify-face/', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRFToken': getCookie('csrftoken')
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update parameters with actual values from the backend
-                        if (data.processing_params) {
-                            // Step 1 updates
-                            document.getElementById('step1').classList.add('active');
-                            updateParameterWithCounter('face-confidence', data.processing_params.step1.face_confidence, data.processing_params.step1.face_confidence, 1000);
-                            document.getElementById('feature-points').textContent = data.processing_params.step1.feature_points;
-                            
-                            setTimeout(() => {
-                                document.getElementById('step1').classList.add('complete');
-                                
-                                // Step 2 updates
-                                document.getElementById('step2').classList.add('active');
-                                updateParameterWithCounter('doc-progress', data.processing_params.step2.doc_progress, data.processing_params.step2.doc_progress, 1000);
-                                updateParameterWithCounter('quality-score', data.processing_params.step2.quality_score, data.processing_params.step2.quality_score, 1000);
-                            }, 1500);
+          // Set canvas dimensions based on PDF page
+          const viewport = page.getViewport({ scale: 1.5 }); // Adjust scale as needed
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
 
-                            setTimeout(() => {
-                                document.getElementById('step2').classList.add('complete');
-                                
-                                // Step 3 updates
-                                document.getElementById('step3').classList.add('active');
-                                updateParameterWithCounter('similarity-progress', data.processing_params.step3.similarity_progress, data.processing_params.step3.similarity_progress, 1000);
-                                updateParameterWithCounter('match-confidence', data.processing_params.step3.match_confidence, data.processing_params.step3.match_confidence, 1000);
-                            }, 3000);
+          // Render PDF page to canvas
+          await page.render({
+              canvasContext: context,
+              viewport: viewport
+          }).promise;
 
-                            setTimeout(() => {
-                                document.getElementById('step3').classList.add('complete');
-                                
-                                // Step 4 updates
-                                document.getElementById('step4').classList.add('active');
-                                updateParameterWithCounter('f1-score', data.processing_params.step4.f1_score, data.processing_params.step4.f1_score, 1000);
-                                updateParameterWithCounter('accuracy', data.processing_params.step4.accuracy, data.processing_params.step4.accuracy, 1000);
-                                updateParameterWithCounter('precision', data.processing_params.step4.precision, data.processing_params.step4.precision, 1000);
-                                updateParameterWithCounter('recall', data.processing_params.step4.recall, data.processing_params.step4.recall, 1000);
-                            }, 4500);
+          // Convert canvas to image
+          const img = new Image();
+          return new Promise((resolve, reject) => {
+              img.onload = () => resolve(img);
+              img.onerror = reject;
+              img.src = canvas.toDataURL('image/jpeg');
+          });
+      } catch (error) {
+          console.error('PDF processing error:', error);
+          throw new Error('Failed to process PDF document');
+      }
+  }
 
-                            // Final result display after all steps
-                            setTimeout(() => {
-                                document.getElementById('step4').classList.add('complete');
-                                displayFinalResult(data);
-                            }, 6000);
-                        }
-                    })
-                    .catch(error => {
-                        faceStatus.className = 'verification-status error';
-                        faceMessage.textContent = '❌ Error during verification. Please try again.';
-                        console.error('Error:', error);
-                    });
-                }
-            });
-        } else {
-            faceStatus.className = 'verification-status error';
-            faceMessage.textContent = '❌ No face detected. Please try again.';
-        }
-    } catch (error) {
-        faceStatus.className = 'verification-status error';
-        faceMessage.textContent = '❌ Error capturing image. Please try again.';
-        console.error('Error:', error);
-    }
-}
+  // Helper function to show errors
+  function showError(message) {
+      console.error('Error:', message);
+      const documentError = document.getElementById('documentError');
+      const documentSuccess = document.getElementById('documentSuccess');
+     
+      documentError.textContent = message;
+      documentError.style.display = 'block';
+      documentSuccess.style.display = 'none';
+  }
 
-// Add event listener for when the page is closed/navigated away from
-window.addEventListener('beforeunload', stopCamera);
+  async function startCamera() {
+      const video = document.getElementById('video');
+      const startButton = document.getElementById('startCamera');
+      const captureButton = document.getElementById('capturePhoto');
 
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-    // Disable capture button initially
-    document.querySelector('.btn-capture').disabled = true;
-});
+      try {
+          // Request camera access with specific constraints
+          const stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                  width: { ideal: 640 },
+                  height: { ideal: 480 },
+                  facingMode: 'user'
+              }
+          });
 
-function showVerificationStatus(status, message) {
-    const statusDiv = document.getElementById('verificationStatus');
-    const messageElement = document.getElementById('verificationMessage');
-    
-    statusDiv.style.display = 'block';
-    
-    if (status === 'verifying') {
-        statusDiv.className = 'verification-status verifying';
-        messageElement.innerHTML = '<div class="spinner"></div> ' + message;
-    } else {
-        statusDiv.className = 'verification-status ' + (status ? 'success' : 'error');
-        messageElement.textContent = message;
-    }
-}
+          // Set video source and show video element
+          video.srcObject = stream;
+          video.style.display = 'block';
+          await video.play();
 
-// Function to validate uploaded document
-function validateDocument(file) {
-    // Check file type
-    if (!file.type.startsWith('image/')) {
-        return "Please upload an image file (JPG, PNG)";
-    }
-    
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-        return "File size should not exceed 5MB";
-    }
-    
-    return null;
-}
+          // Hide start button and show capture button
+          startButton.style.display = 'none';
+          captureButton.style.display = 'inline-block';
 
-// Document upload handler
-document.getElementById('document_upload').addEventListener('change', function() {
-    const file = this.files[0];
-    const documentStatus = document.getElementById('documentStatus');
-    const documentMessage = document.getElementById('documentMessage');
-    
-    if (file) {
-        const error = validateDocument(file);
-        if (error) {
-            documentStatus.className = 'verification-status error';
-            documentMessage.textContent = error;
-            this.value = ''; // Clear the file input
-        } else {
-            documentStatus.className = 'verification-status verifying';
-            documentMessage.innerHTML = '<div class="spinner"></div>Verifying document...';
-            documentStatus.style.display = 'block';
-            
-            // Simulate document verification (replace with actual verification)
-            setTimeout(() => {
-                documentStatus.className = 'verification-status success';
-                documentMessage.textContent = 'Valid photo document detected';
-            }, 1500);
-        }
-    }
-});
+      } catch (error) {
+          console.error('Camera access error:', error);
+          showError('Error accessing camera: ' + error.message);
+      }
+  }
 
-async function verifyFace() {
-    const documentFile = document.getElementById('document_upload').files[0];
-    const faceImage = document.getElementById('face_image').files[0];
-    
-    if (!documentFile || !faceImage) {
-        alert('Please upload both document and face image');
-        return;
-    }
-    
-    const formData = new FormData();
-    formData.append('document', documentFile);
-    formData.append('face_image', faceImage);
-    
-    try {
-        const response = await fetch('/verify-face/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        });
-        
-        const result = await response.json();
-        
-        const faceStatus = document.getElementById('faceStatus');
-        const faceMessage = document.getElementById('faceMessage');
-        
-        faceStatus.className = `verification-status ${result.success ? 'success' : 'error'}`;
-        faceMessage.textContent = result.message;
-        faceStatus.style.display = 'block';
-        
-    } catch (error) {
-        console.error('Face verification error:', error);
-        alert('Error during face verification. Please try again.');
-    }
-}
+  async function capturePhoto() {
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const capturedPhoto = document.getElementById('captured_photo');
+      const captureButton = document.getElementById('capturePhoto');
+      const retakeButton = document.getElementById('retakePhoto');
 
-// Function to display final result
-function displayFinalResult(data) {
-    if (data.success) {
-        faceStatus.className = 'verification-status success';
-        faceMessage.innerHTML = `
-            <div class="verification-result success">
-                <h4>✅ ${data.message}</h4>
-                <div class="metrics-container">
-                    <div class="metric-box similarity">
-                        <h5>Similarity Score</h5>
-                        <div class="metric-value">${(data.similarity * 100).toFixed(2)}%</div>
-                    </div>
-                    ${data.metrics ? `
-                        <div class="metrics-grid">
-                            <div class="metric-box">
-                                <h5>F1-Score</h5>
-                                <div class="metric-value">${(data.metrics.f1_score * 100).toFixed(2)}%</div>
-                            </div>
-                            <div class="metric-box">
-                                <h5>Accuracy</h5>
-                                <div class="metric-value">${(data.metrics.accuracy * 100).toFixed(2)}%</div>
-                            </div>
-                            <div class="metric-box">
-                                <h5>Precision</h5>
-                                <div class="metric-value">${(data.metrics.precision * 100).toFixed(2)}%</div>
-                            </div>
-                            <div class="metric-box">
-                                <h5>Recall</h5>
-                                <div class="metric-value">${(data.metrics.recall * 100).toFixed(2)}%</div>
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            </div>`;
-    } else {
-        faceStatus.className = 'verification-status error';
-        faceMessage.innerHTML = `
-            <div class="verification-result error">
-                <h4>❌ ${data.message}</h4>
-                ${data.similarity ? `
-                    <div class="metric-box similarity">
-                        <h5>Similarity Score</h5>
-                        <div class="metric-value">${(data.similarity * 100).toFixed(2)}%</div>
-                    </div>
-                ` : ''}
-            </div>`;
-    }
-}
+      try {
+          // Set canvas dimensions to match video
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          
+          // Draw video frame to canvas
+          const context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+          // Extract face from captured photo
+          liveFace = await extractFaceFromImage(canvas);
+
+          if (liveFace) {
+              // Stop video stream
+              const stream = video.srcObject;
+              stream.getTracks().forEach(track => track.stop());
+
+              // Update display
+              video.style.display = 'none';
+              captureButton.style.display = 'none';
+              retakeButton.style.display = 'inline-block';
+
+              // Show captured photo
+              capturedPhoto.src = liveFace.toDataURL('image/jpeg');
+              capturedPhoto.style.display = 'block';
+
+              // Verify faces if document face is available
+              if (documentFace) {
+                  await verifyFaces();
+              }
+          }
+      } catch (error) {
+          console.error('Photo capture error:', error);
+          showError('Error capturing photo: ' + error.message);
+      }
+  }
+
+  function retakePhoto() {
+      const video = document.getElementById('video');
+      const capturedPhoto = document.getElementById('captured_photo');
+      const startButton = document.getElementById('startCamera');
+      const retakeButton = document.getElementById('retakePhoto');
+      const kycStatus = document.getElementById('kycStatus');
+
+      // Reset display
+      capturedPhoto.style.display = 'none';
+      retakeButton.style.display = 'none';
+      startButton.style.display = 'inline-block';
+      kycStatus.style.display = 'none';
+
+      // Clear previous capture
+      liveFace = null;
+
+      // Stop any existing stream
+      if (video.srcObject) {
+          const stream = video.srcObject;
+          stream.getTracks().forEach(track => track.stop());
+      }
+  }
+
+  async function verifyFaces() {
+      const kycStatus = document.getElementById('kycStatus');
+      kycStatus.style.display = 'block';
+      kycStatus.textContent = 'Verifying faces...';
+      kycStatus.className = 'status-message';
+
+      try {
+          if (!documentFace || !liveFace) {
+              throw new Error('Both document and live photos are required');
+          }
+
+          // Convert canvases to base64 strings
+          const docImageData = documentFace.toDataURL('image/jpeg');
+          const liveImageData = liveFace.toDataURL('image/jpeg');
+
+          // Create FormData object
+          const formData = new FormData();
+          formData.append('document_face', docImageData);
+          formData.append('live_face', liveImageData);
+
+          // Get CSRF token
+          const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+          // Send to server for verification
+          const response = await fetch('/verify-faces/', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                  'X-CSRFToken': csrftoken
+              }
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+              kycStatus.className = 'status-message success';
+              kycStatus.textContent = `KYC SUCCESSFUL (Similarity: ${data.similarity.toFixed(2)}%)`;
+              return true;
+          } else {
+              kycStatus.className = 'status-message error';
+              kycStatus.textContent = data.message || 'Face verification failed';
+              return false;
+          }
+      } catch (error) {
+          console.error('Verification error:', error);
+          kycStatus.className = 'status-message error';
+          kycStatus.textContent = error.message || 'Face verification failed';
+          return false;
+      }
+  }
+
+  let currentStep = 1;
+  const totalSteps = 3;
+
+  function nextStep() {
+      // Get the current step content and next step content
+      const currentStepContent = document.getElementById(`step-${currentStep}`);
+      const nextStepNumber = currentStep + 1;
+      const nextStepContent = document.getElementById(`step-${nextStepNumber}`);
+
+      // Hide current step
+      currentStepContent.classList.remove('active');
+      
+      // Show next step
+      nextStepContent.classList.add('active');
+      
+      // Update progress bar
+      document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+      document.querySelector(`.step[data-step="${nextStepNumber}"]`).classList.add('active');
+      
+      // Update current step
+      currentStep = nextStepNumber;
+  }
+
+  function prevStep() {
+      if (currentStep > 1) {
+          // Hide current step
+          document.getElementById(`step-${currentStep}`).classList.remove('active');
+          
+          // Show previous step
+          const prevStepNumber = currentStep - 1;
+          document.getElementById(`step-${prevStepNumber}`).classList.add('active');
+          
+          // Update progress bar
+          document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+          document.querySelector(`.step[data-step="${prevStepNumber}"]`).classList.add('active');
+          
+          // Update current step
+          currentStep = prevStepNumber;
+      }
+  }
+
+  function cancelSignup() {
+      if (confirm('Are you sure you want to cancel the signup process?')) {
+          window.location.href = '/';  // Redirect to home page
+      }
+  }
   </script>
+
+  <!-- Add PDF.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 </body>
 </html>
+

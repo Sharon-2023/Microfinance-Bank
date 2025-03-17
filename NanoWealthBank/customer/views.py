@@ -70,6 +70,12 @@ from .verification import KYCVerificationEngine
 from django.db import transaction
 from django.contrib.admin.views.decorators import staff_member_required
 from dateutil.relativedelta import relativedelta
+import face_recognition
+import numpy as np
+import base64
+import cv2
+import io
+from PIL import Image
 
 # Configure Gemini API
 genai.configure(api_key=settings.GEMINI_API_KEY)
@@ -1265,8 +1271,13 @@ def profile_edit(request):
 
 
 def loan_to_be_approved(request):
-    loans = LoanApplication.objects.filter(is_approved=False)
-    return render(request, 'loanofficer/loans.html', {'loans': loans})
+    # Fetch all loan applications
+    loans = LoanApplication.objects.all().order_by('-application_date')
+    
+    context = {
+        'loans': loans,
+    }
+    return render(request, 'loanofficer/loans.html', context)
 
 # View to approve a specific loan
 
@@ -3018,6 +3029,55 @@ def admin_analytics(request):
     }
     
     return render(request, 'admin/analytics.html', context)
+
+@ensure_csrf_cookie
+def verify_faces(request):
+    if request.method == 'POST':
+        try:
+            # Get the base64 image data
+            doc_face_data = request.POST.get('document_face').split(',')[1]
+            live_face_data = request.POST.get('live_face').split(',')[1]
+
+            # Convert base64 to images
+            doc_face = Image.open(io.BytesIO(base64.b64decode(doc_face_data)))
+            live_face = Image.open(io.BytesIO(base64.b64decode(live_face_data)))
+
+            # Convert to numpy arrays
+            doc_face_np = np.array(doc_face)
+            live_face_np = np.array(live_face)
+
+            # Get face encodings
+            doc_encoding = face_recognition.face_encodings(doc_face_np)[0]
+            live_encoding = face_recognition.face_encodings(live_face_np)[0]
+
+            # Calculate face distance
+            face_distance = face_recognition.face_distance([doc_encoding], live_encoding)[0]
+            similarity = (1 - face_distance) * 100
+
+            # Check if faces match (threshold can be adjusted)
+            if similarity >= 60:
+                return JsonResponse({
+                    'success': True,
+                    'similarity': similarity,
+                    'message': 'Face verification successful'
+                })
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'similarity': similarity,
+                    'message': 'Faces do not match'
+                })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            }, status=500)
+
+    return JsonResponse({
+        'success': False,
+        'message': 'Invalid request'
+    }, status=400)
 
 
 

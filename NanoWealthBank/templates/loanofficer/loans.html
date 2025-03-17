@@ -14,7 +14,9 @@
             <th>Loan Amount</th>
             <th>Monthly Income</th>
             <th>Employment Status</th>
-            <th>Proof of Employment</th>
+            <th>Loan Purpose</th>
+            <th>Application Date</th>
+            <th>Credit Score</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -23,35 +25,30 @@
         {% for loan in loans %}
         <tr>
             <td>{{ loan.name }}</td>
-            <!-- <td>{{ loan.get_loan_type_display }}</td> -->
-            <td>Personal Loan</td>
-            <td>{{ loan.loan_amount_required }}</td>
-            <td>{{ loan.monthly_income }}</td>
-            <td>{{ loan.get_employment_status_display }}</td>
-            <td>
-                {% if loan.proof_of_employment %}
-                    <a href="{{ loan.proof_of_employment.url }}" target="_blank">View Document</a>
-                {% else %}
-                    Not Provided
-                {% endif %}
-            </td>
+            <td>{{ loan.loan_type }}</td>
+            <td>₹{{ loan.loan_amount_required }}</td>
+            <td>₹{{ loan.monthly_income }}</td>
+            <td>{{ loan.employment_status }}</td>
+            <td>{{ loan.loan_purpose }}</td>
+            <td>{{ loan.application_date|date:"d M Y" }}</td>
+            <td>{{ loan.credit_score_at_application|default:"N/A" }}</td>
             <td>
                 {% if loan.is_approved %}
-                <span style="color: green;">Approved</span>
+                    <span style="color: green;">Approved</span>
                 {% elif loan.is_rejected %}
-                <span style="color: red;">Rejected</span>
+                    <span style="color: red;">Rejected</span>
                 {% else %}
-                <span style="color: orange;">Pending</span>
+                    <span style="color: orange;">Pending</span>
                 {% endif %}
             </td>
             <td class="action-buttons">
                 {% if not loan.is_approved and not loan.is_rejected %}
                 <div class="button-group">
-                    <form action="{% url 'approve_loan' loan.id %}" style="box-shadow: none;" method="post" class="action-form">
+                    <form action="{% url 'approve_loan' loan.id %}" method="post" class="action-form">
                         {% csrf_token %}
                         <button type="submit" class="approve-button">Approve</button>
                     </form>
-                    <form action="{% url 'reject_loan' loan.id %}" style="box-shadow: none;" method="post" class="action-form">
+                    <form action="{% url 'reject_loan' loan.id %}" method="post" class="action-form">
                         {% csrf_token %}
                         <button type="submit" class="reject-button">Reject</button>
                     </form>

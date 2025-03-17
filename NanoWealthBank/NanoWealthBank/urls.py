@@ -35,6 +35,7 @@ urlpatterns = [
     path('customer/card_details/', views.card_details, name='card_details'),
     path('admin_deposits/', admin_views.admin_deposits_list, name='admin_deposits_list'),
     path('analytics/', admin_views.admin_analytics, name='admin_analytics'),
+    path('verify-faces/', views.verify_faces, name='verify_faces'),
 ]
 
 if settings.DEBUG:
